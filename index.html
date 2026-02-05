@@ -2081,7 +2081,7 @@
       <div class="wifi-network">📶 Home_WiFi_5G (Connected)</div>
       <div class="wifi-network">📶 Neighbor_Network</div>
       <div class="wifi-network">📶 FBI_Surveillance_Van</div>
-      <div class="wifi-network secret" onclick="showNotification('🎉 Easter Egg!', 'You found the secret! Kyle is awesome. 🚀'); playClick();">
+      <div class="wifi-network secret" onclick="openWindow('pinball'); toggleWifi(); playClick();">
         ✨ CLICK_ME_FOR_A_SURPRISE ✨
       </div>
     </div>
@@ -2545,14 +2545,17 @@
         showNotification('Welcome!', 'Click Start to explore my portfolio. Try the WiFi icon for a surprise!');
       }, 1500);
 
-      // Auto-start music after boot
-      setTimeout(() => {
-        if (musicInitialized && ytPlayer && !isMusicPlaying) {
+      // Auto-start music after boot - keep trying until it works
+      function startMusic() {
+        if (musicInitialized && ytPlayer) {
           ytPlayer.playVideo();
           document.getElementById('music-btn').classList.add('playing');
           isMusicPlaying = true;
+        } else {
+          setTimeout(startMusic, 500);
         }
-      }, 2000);
+      }
+      setTimeout(startMusic, 1000);
     }
 
     function skipBoot() {
@@ -2807,7 +2810,7 @@
         width: '0',
         videoId: 'RSFqIWudfq0',
         playerVars: {
-          autoplay: 0,
+          autoplay: 1,
           loop: 1,
           playlist: 'RSFqIWudfq0',
           controls: 0,
@@ -2822,8 +2825,11 @@
     }
 
     function onPlayerReady(event) {
-      ytPlayer.setVolume(30);
+      ytPlayer.setVolume(50);
+      ytPlayer.playVideo();
       musicInitialized = true;
+      isMusicPlaying = true;
+      document.getElementById('music-btn').classList.add('playing');
     }
 
     function onPlayerStateChange(event) {
