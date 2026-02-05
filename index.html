@@ -2614,12 +2614,25 @@
 
     function triggerShutdown() {
       playClick();
-      document.body.style.transition = 'opacity 2s';
-      document.body.style.opacity = '0';
+      // Play XP shutdown sound
+      playXPSound(XPSounds.shutdown, 0.5);
+      // Hide shutdown dialog
+      hideShutdown();
+      // Create shutdown screen
+      const shutdownScreen = document.createElement('div');
+      shutdownScreen.id = 'xp-shutdown';
+      shutdownScreen.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,#2b4f9e 0%,#3561b1 50%,#1e3c7a 100%);z-index:10000;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;transition:opacity 0.5s;';
+      shutdownScreen.innerHTML = `
+        <div style="color:#fff;font-family:'Franklin Gothic Medium',Tahoma,sans-serif;font-size:24px;font-style:italic;margin-bottom:20px;">Windows is shutting down...</div>
+        <div style="color:rgba(255,255,255,0.7);font-size:12px;font-family:Tahoma;">Saving your settings...</div>
+      `;
+      document.body.appendChild(shutdownScreen);
+      setTimeout(() => shutdownScreen.style.opacity = '1', 50);
+      // Fade to black
       setTimeout(() => {
-        document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:Tahoma;">It is now safe to turn off your computer.</div>';
-        document.body.style.opacity = '1';
-      }, 2000);
+        shutdownScreen.style.background = '#000';
+        shutdownScreen.innerHTML = '<div style="color:#ff8c00;font-family:Tahoma,sans-serif;font-size:16px;text-align:center;line-height:1.6;">It is now safe to turn off<br>your computer.</div>';
+      }, 3000);
     }
 
     // ========== SCREENSAVER ==========
