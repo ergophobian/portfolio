@@ -980,7 +980,7 @@
 
     function switchToGamesDesktop() {
       const desktop = document.getElementById('desktop');
-      const normalIcons = document.querySelector('.icons-container:not(#games-icons)');
+      const normalIconContainers = document.querySelectorAll('.icons-container:not(#games-icons)');
       const gamesIcons = document.getElementById('games-icons');
       const taskbar = document.querySelector('.taskbar');
       const loadingOverlay = document.getElementById('games-loading');
@@ -999,7 +999,7 @@
 
       setTimeout(() => {
         // Hide everything except games
-        if (normalIcons) normalIcons.style.display = 'none';
+        normalIconContainers.forEach(c => c.style.display = 'none');
         if (taskbar) taskbar.style.display = 'none';
         if (gamesIcons) gamesIcons.style.display = 'flex';
 
@@ -1016,11 +1016,11 @@
 
     function switchToNormalDesktop() {
       const desktop = document.getElementById('desktop');
-      const normalIcons = document.querySelector('.icons-container:not(#games-icons)');
+      const normalIconContainers = document.querySelectorAll('.icons-container:not(#games-icons)');
       const gamesIcons = document.getElementById('games-icons');
       const taskbar = document.querySelector('.taskbar');
 
-      if (normalIcons) normalIcons.style.display = 'flex';
+      normalIconContainers.forEach(c => c.style.display = 'flex');
       if (gamesIcons) gamesIcons.style.display = 'none';
       if (taskbar) taskbar.style.display = '';
 

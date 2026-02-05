@@ -92,6 +92,22 @@
       z-index: 10;
     }
 
+    /* Portfolio icons - centered grid */
+    #portfolio-icons {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 20px;
+      width: 280px;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
     .desktop-icon {
       width: 75px;
       padding: 4px;
