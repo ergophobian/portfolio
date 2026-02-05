@@ -595,3 +595,4 @@
         showNotification('Music', 'Now playing: Lofi beats 🎵');
       }
     }
+
