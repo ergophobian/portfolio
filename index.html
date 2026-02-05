@@ -1483,7 +1483,7 @@
 </head>
 <body>
   <!-- Boot Screen - Authentic Windows XP -->
-  <div class="boot-screen" id="boot-screen">
+  <div class="boot-screen" id="boot-screen" onclick="skipBoot()" title="Click to skip">
     <div class="xp-flag">
       <svg width="50" height="50" viewBox="0 0 88 88">
         <path d="M0 12.4L35.7 7.3V42.5H0V12.4Z" fill="#F25022"/>
@@ -2199,28 +2199,37 @@
       audio.play().catch(() => {});
     }
 
+    // Authentic Windows XP sound URLs
+    const XPSounds = {
+      click: 'https://cdn.freesound.org/previews/73/73581_1061166-lq.mp3',
+      balloon: 'https://cdn.freesound.org/previews/73/73581_1061166-lq.mp3',
+      startup: 'https://www.winhistory.de/more/winstart/mp3/winxp.mp3',
+      error: 'https://cdn.freesound.org/previews/91/91926_1499396-lq.mp3',
+      notify: 'https://cdn.freesound.org/previews/220/220206_3635427-lq.mp3'
+    };
+
     function playClick() {
-      playXPSound('https://www.myinstants.com/media/sounds/windows-xp-click.mp3', 0.3);
+      playXPSound(XPSounds.click, 0.3);
     }
 
     function playStartSound() {
-      playXPSound('https://www.myinstants.com/media/sounds/windows-xp-balloon.mp3', 0.4);
+      playXPSound(XPSounds.balloon, 0.4);
     }
 
     function playWindowOpen() {
-      playXPSound('https://www.myinstants.com/media/sounds/windows-xp-balloon.mp3', 0.3);
+      playXPSound(XPSounds.notify, 0.3);
     }
 
     function playWindowClose() {
-      playXPSound('https://www.myinstants.com/media/sounds/windows-xp-click.mp3', 0.3);
+      playXPSound(XPSounds.click, 0.3);
     }
 
     function playStartupSound() {
-      playXPSound('https://www.winhistory.de/more/winstart/mp3/winxp.mp3', 0.5);
+      playXPSound(XPSounds.startup, 0.5);
     }
 
     function playErrorSound() {
-      playXPSound('https://www.myinstants.com/media/sounds/erro.mp3', 0.4);
+      playXPSound(XPSounds.error, 0.4);
     }
 
     function updateVolume(val) {
@@ -2613,6 +2622,9 @@
     }
 
     function bootSequence() {
+      // Play the iconic Windows XP startup sound
+      playStartupSound();
+
       // Show XP welcome screen for 3 seconds then transition to desktop
       setTimeout(() => {
         finishBoot();
