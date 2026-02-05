@@ -764,7 +764,7 @@
         }
         tuft.position.set(
           (Math.random() - 0.5) * 15,
-          -0.45,
+          -0.35,
           (Math.random() - 0.5) * 15
         );
         scene.add(tuft);
@@ -814,7 +814,7 @@
 
         flower.position.set(
           (Math.random() - 0.5) * 12,
-          -0.48,
+          -0.38,
           (Math.random() - 0.5) * 12
         );
         scene.add(flower);
@@ -924,10 +924,10 @@
           catGroup.add(leg);
         });
 
-        // Position cat on the terrain
+        // Position cat on the terrain (raised above ground)
         catGroup.position.set(
           (Math.random() - 0.5) * 6,
-          -0.42,
+          -0.32,
           1 + Math.random() * 3
         );
 
@@ -1052,13 +1052,13 @@
       monitorGroup.position.set(0, 1.1, -0.18);
       scene.add(monitorGroup);
 
-      // === SCREEN with scan lines effect ===
-      const screenGeometry = new THREE.PlaneGeometry(0.82, 0.62);
+      // === SCREEN - Clean XP Bliss display ===
+      const screenGeometry = new THREE.PlaneGeometry(0.82, 0.62, 1, 1);
 
-      // Create XP desktop texture with scan lines
+      // Create clean XP desktop texture (no vignette to avoid moiré)
       const canvas = document.createElement('canvas');
-      canvas.width = 1024;
-      canvas.height = 768;
+      canvas.width = 820;  // Match aspect ratio to geometry to avoid stretching
+      canvas.height = 620;
       const ctx = canvas.getContext('2d');
 
       // XP Bliss background - authentic colors
@@ -1075,34 +1075,34 @@
       ctx.fillStyle = '#2D8F38';
       ctx.beginPath();
       ctx.moveTo(0, canvas.height);
-      ctx.bezierCurveTo(200, 450, 400, 350, 600, 420);
-      ctx.bezierCurveTo(800, 490, 900, 380, 1024, 450);
-      ctx.lineTo(1024, canvas.height);
+      ctx.bezierCurveTo(160, 350, 320, 270, 480, 330);
+      ctx.bezierCurveTo(640, 390, 720, 300, 820, 360);
+      ctx.lineTo(820, canvas.height);
       ctx.fill();
 
       // Middle hill
       ctx.fillStyle = '#3CB043';
       ctx.beginPath();
       ctx.moveTo(0, canvas.height);
-      ctx.bezierCurveTo(150, 480, 350, 400, 512, 470);
-      ctx.bezierCurveTo(700, 540, 850, 420, 1024, 500);
-      ctx.lineTo(1024, canvas.height);
+      ctx.bezierCurveTo(120, 380, 280, 320, 410, 380);
+      ctx.bezierCurveTo(560, 440, 680, 340, 820, 400);
+      ctx.lineTo(820, canvas.height);
       ctx.fill();
 
       // Front hill - brightest
       ctx.fillStyle = '#4ADE54';
       ctx.beginPath();
       ctx.moveTo(0, canvas.height);
-      ctx.bezierCurveTo(256, 580, 512, 520, 768, 580);
-      ctx.bezierCurveTo(900, 620, 1000, 550, 1024, canvas.height - 100);
-      ctx.lineTo(1024, canvas.height);
+      ctx.bezierCurveTo(205, 470, 410, 420, 615, 470);
+      ctx.bezierCurveTo(720, 500, 780, 450, 820, canvas.height - 80);
+      ctx.lineTo(820, canvas.height);
       ctx.fill();
 
-      // Fluffy clouds
-      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      // Fluffy clouds - drawn with solid fills
+      ctx.fillStyle = '#ffffff';
       const cloudPositions = [
-        [120, 100, 45], [280, 140, 55], [450, 90, 50],
-        [620, 130, 48], [780, 100, 52], [920, 150, 45]
+        [100, 80, 36], [220, 110, 44], [360, 72, 40],
+        [500, 100, 38], [620, 80, 42], [740, 120, 36]
       ];
       cloudPositions.forEach(([x, y, r]) => {
         ctx.beginPath();
@@ -1114,95 +1114,64 @@
         ctx.fill();
       });
 
-      // Slight screen curvature vignette
-      const vignetteGrad = ctx.createRadialGradient(
-        canvas.width/2, canvas.height/2, canvas.width * 0.3,
-        canvas.width/2, canvas.height/2, canvas.width * 0.7
-      );
-      vignetteGrad.addColorStop(0, 'rgba(0,0,0,0)');
-      vignetteGrad.addColorStop(1, 'rgba(0,0,0,0.15)');
-      ctx.fillStyle = vignetteGrad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Desktop icons
-      ctx.fillStyle = '#fff';
-      ctx.shadowColor = 'rgba(0,0,0,0.5)';
-      ctx.shadowBlur = 2;
-      ctx.shadowOffsetX = 1;
-      ctx.shadowOffsetY = 1;
-
+      // Desktop icons (simplified, no shadows that cause artifacts)
       const icons = [
-        { name: 'My Computer', y: 50 },
-        { name: 'Recycle Bin', y: 130 },
-        { name: 'My Documents', y: 210 }
+        { name: 'My Computer', y: 40 },
+        { name: 'Recycle Bin', y: 105 },
+        { name: 'My Documents', y: 170 }
       ];
       icons.forEach(icon => {
         // Icon box
-        ctx.fillStyle = 'rgba(255,255,255,0.9)';
-        ctx.fillRect(30, icon.y, 48, 48);
+        ctx.fillStyle = '#e0e8f0';
+        ctx.fillRect(24, icon.y, 38, 38);
         // Icon text
-        ctx.fillStyle = '#fff';
-        ctx.font = '11px Tahoma';
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '9px Tahoma, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(icon.name, 54, icon.y + 65);
+        ctx.fillText(icon.name, 43, icon.y + 52);
       });
       ctx.textAlign = 'left';
-      ctx.shadowBlur = 0;
 
-      // Taskbar
-      const taskbarGrad = ctx.createLinearGradient(0, canvas.height - 40, 0, canvas.height);
-      taskbarGrad.addColorStop(0, '#245ED8');
-      taskbarGrad.addColorStop(0.1, '#3168DC');
-      taskbarGrad.addColorStop(0.9, '#1941A5');
-      taskbarGrad.addColorStop(1, '#1941A5');
-      ctx.fillStyle = taskbarGrad;
-      ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
+      // Taskbar - solid colors
+      ctx.fillStyle = '#245ED8';
+      ctx.fillRect(0, canvas.height - 32, canvas.width, 32);
 
-      // Start button with gradient
-      const startGrad = ctx.createLinearGradient(2, canvas.height - 38, 2, canvas.height - 6);
-      startGrad.addColorStop(0, '#3C9C3C');
-      startGrad.addColorStop(0.5, '#2D8F2D');
-      startGrad.addColorStop(1, '#1E6B1E');
-      ctx.fillStyle = startGrad;
-      ctx.beginPath();
-      ctx.roundRect(2, canvas.height - 38, 100, 32, 5);
-      ctx.fill();
+      // Taskbar top edge highlight
+      ctx.fillStyle = '#3168DC';
+      ctx.fillRect(0, canvas.height - 32, canvas.width, 3);
 
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold italic 16px Tahoma';
-      ctx.fillText('start', 35, canvas.height - 17);
+      // Start button
+      ctx.fillStyle = '#2D8F2D';
+      ctx.fillRect(2, canvas.height - 30, 80, 26);
+
+      // Start button highlight
+      ctx.fillStyle = '#3C9C3C';
+      ctx.fillRect(2, canvas.height - 30, 80, 2);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold italic 13px Tahoma, sans-serif';
+      ctx.fillText('start', 28, canvas.height - 13);
 
       // Clock in system tray
-      ctx.fillStyle = '#fff';
-      ctx.font = '11px Tahoma';
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '9px Tahoma, sans-serif';
       ctx.textAlign = 'right';
-      ctx.fillText('4:20 PM', canvas.width - 10, canvas.height - 15);
+      ctx.fillText('4:20 PM', canvas.width - 8, canvas.height - 12);
 
+      // Create texture with settings to prevent moiré/aliasing
       const screenTexture = new THREE.CanvasTexture(canvas);
       screenTexture.minFilter = THREE.LinearFilter;
       screenTexture.magFilter = THREE.LinearFilter;
-      screenTexture.anisotropy = 4;
+      screenTexture.generateMipmaps = false; // Disable mipmaps to prevent artifacts
 
       const screenMaterial = new THREE.MeshBasicMaterial({
-        map: screenTexture,
-        transparent: false
+        map: screenTexture
       });
 
       screenMesh = new THREE.Mesh(screenGeometry, screenMaterial);
-      screenMesh.position.set(0, 1.15, 0.365);
+      screenMesh.position.set(0, 1.15, 0.37);
       screenMesh.name = 'screen';
       scene.add(screenMesh);
-
-      // Screen glass reflection overlay (subtle)
-      const glassGeometry = new THREE.PlaneGeometry(0.82, 0.62);
-      const glassMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.03
-      });
-      const glass = new THREE.Mesh(glassGeometry, glassMaterial);
-      glass.position.set(0, 1.15, 0.367);
-      scene.add(glass);
 
       // Monitor stand (neck)
       const standNeck = new THREE.Mesh(
@@ -1383,7 +1352,7 @@
         chairGroup.add(wheel);
       }
 
-      chairGroup.position.set(0, -0.15, 1.1); // Pushed back from desk, raised up
+      chairGroup.position.set(0, -0.05, 1.1); // Pushed back from desk, raised up above terrain
       chairGroup.rotation.y = 0.15; // Slightly angled
       scene.add(chairGroup);
 
@@ -1696,7 +1665,7 @@
           cat.rotation.y = -cat.userData.direction + Math.PI / 2;
 
           // Bobbing animation while walking
-          cat.position.y = -0.42 + Math.sin(time * 10) * 0.01;
+          cat.position.y = -0.32 + Math.sin(time * 10) * 0.01;
 
           // Keep cat in bounds
           if (Math.abs(cat.position.x) > 5) cat.userData.direction = Math.PI - cat.userData.direction;
@@ -1754,4 +1723,4 @@
   </script>
 </body>
 </html>
-<!-- v2.2.0 - better grass and clouds -->
+<!-- v2.3.0 - fixed screen glitch and clipping issues -->
