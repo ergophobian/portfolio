@@ -44,36 +44,14 @@
       pointer-events: none;
     }
 
-    /* Windows XP Bliss Wallpaper - Video Background */
+    /* Windows XP Bliss Wallpaper - High Quality */
     .desktop {
       width: 100vw;
       height: 100vh;
-      background: #3a6ea5;
+      background: url('https://i.imgur.com/Zk6TR5k.jpg') center center;
+      background-size: cover;
       position: relative;
       overflow: hidden;
-    }
-
-    .video-background {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      min-width: 100%;
-      min-height: 100%;
-      width: auto;
-      height: auto;
-      transform: translate(-50%, -50%);
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .video-background iframe {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 180vw;
-      height: 180vh;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
     }
 
     /* CRT Scanline Effect */
@@ -1366,15 +1344,19 @@
       color: #333;
     }
 
-    /* Boot Screen - Video */
+    /* Boot Screen - Authentic Windows XP */
     .boot-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: #000;
+      background: linear-gradient(180deg, #5a7edc 0%, #4a6fd4 30%, #3d5fc9 60%, #2d4eb8 100%);
       z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       overflow: hidden;
     }
 
@@ -1382,25 +1364,62 @@
       display: none;
     }
 
-    .skip-boot {
-      position: absolute;
-      bottom: 30px;
-      right: 30px;
-      color: rgba(255,255,255,0.5);
-      font-size: 12px;
-      font-family: Tahoma, sans-serif;
-      cursor: pointer;
-      padding: 8px 16px;
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 4px;
-      z-index: 10001;
-      transition: all 0.2s;
+    .xp-logo {
+      margin-bottom: 60px;
     }
 
-    .skip-boot:hover {
+    .xp-logo img {
+      width: 320px;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .welcome-text {
+      font-family: 'Franklin Gothic Medium', 'Trebuchet MS', Arial, sans-serif;
+      font-size: 72px;
+      font-weight: normal;
+      font-style: italic;
       color: #fff;
-      border-color: #fff;
-      background: rgba(255,255,255,0.1);
+      text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+      letter-spacing: 2px;
+      margin-bottom: 50px;
+      animation: welcomeFade 2s ease-in-out;
+    }
+
+    @keyframes welcomeFade {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .xp-loader {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .xp-loader-block {
+      width: 12px;
+      height: 20px;
+      background: linear-gradient(180deg, #fff 0%, #b8d4f8 50%, #7eb4ea 100%);
+      border-radius: 2px;
+      animation: loaderPulse 1.5s ease-in-out infinite;
+      box-shadow: 0 0 8px rgba(255,255,255,0.5);
+    }
+
+    .xp-loader-block:nth-child(1) { animation-delay: 0s; }
+    .xp-loader-block:nth-child(2) { animation-delay: 0.15s; }
+    .xp-loader-block:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes loaderPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    .boot-footer {
+      position: absolute;
+      bottom: 30px;
+      font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
     }
 
     /* Screensaver */
@@ -1438,17 +1457,18 @@
   </style>
 </head>
 <body>
-  <!-- Boot Screen - Windows XP Startup Video -->
+  <!-- Boot Screen - Authentic Windows XP -->
   <div class="boot-screen" id="boot-screen">
-    <iframe
-      id="boot-video"
-      src="https://www.youtube.com/embed/Ulmw-pwjmU4?autoplay=1&mute=0&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&start=0&end=38"
-      frameborder="0"
-      allow="autoplay; encrypted-media"
-      allowfullscreen
-      style="position: absolute; top: 50%; left: 50%; width: 120vw; height: 120vh; transform: translate(-50%, -50%); pointer-events: none;">
-    </iframe>
-    <div class="skip-boot" onclick="skipBoot()">Click to skip</div>
+    <div class="xp-logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Windows_logo_-_2002.svg/320px-Windows_logo_-_2002.svg.png" alt="Windows XP">
+    </div>
+    <div class="welcome-text">welcome</div>
+    <div class="xp-loader">
+      <div class="xp-loader-block"></div>
+      <div class="xp-loader-block"></div>
+      <div class="xp-loader-block"></div>
+    </div>
+    <div class="boot-footer">Copyright © Microsoft Corporation</div>
   </div>
 
   <!-- Three.js Background -->
@@ -1458,11 +1478,6 @@
   <div class="crt-overlay"></div>
 
   <div class="desktop" id="desktop" style="display: none;">
-    <!-- Animated Bliss Video Background -->
-    <div class="video-background">
-      <iframe src="https://www.youtube.com/embed/NrdN8nAsccI?autoplay=1&mute=1&loop=1&playlist=NrdN8nAsccI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-
     <!-- Desktop Icons - Authentic XP Style -->
     <div class="icons-container">
       <div class="desktop-icon" data-window="pepmaxx" ondblclick="openWindow('pepmaxx')" onclick="selectIcon(this); playClick();">
@@ -2563,10 +2578,10 @@
     }
 
     function bootSequence() {
-      // Wait for the XP startup video to finish (~38 seconds) then auto-transition
+      // Show XP welcome screen for 3 seconds then transition to desktop
       setTimeout(() => {
         finishBoot();
-      }, 38000);
+      }, 3000);
     }
 
     // ========== 3D PINBALL GAME ==========
