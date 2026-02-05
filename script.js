@@ -159,6 +159,14 @@
           // Also open the controls helper window
           openWindow('pinball-controls');
         }
+
+        // Initialize resize handles for this window
+        initResizeHandles();
+
+        // Initialize app if applicable
+        if (window.initApp) {
+          try { window.initApp(id); } catch(e) {}
+        }
       }
     }
 
@@ -182,6 +190,11 @@
           if (ytPlayer && ytPlayer.setVolume) {
             ytPlayer.setVolume(50);
           }
+        }
+
+        // Destroy app if applicable
+        if (window.destroyApp) {
+          try { window.destroyApp(id); } catch(e) {}
         }
 
         setTimeout(() => {
@@ -256,6 +269,233 @@
       document.removeEventListener('mouseup', stopDrag);
     }
 
+    // ========== WINDOW RESIZING ==========
+    let isResizing = false;
+    let resizeDirection = '';
+    let resizeWindow = null;
+    let resizeStart = { x: 0, y: 0, w: 0, h: 0, top: 0, left: 0 };
+
+    function initResizeHandles() {
+      document.querySelectorAll('.window').forEach(win => {
+        if (win.querySelector('.resize-handle')) return; // already has handles
+        const directions = ['n','s','e','w','ne','nw','se','sw'];
+        directions.forEach(dir => {
+          const handle = document.createElement('div');
+          handle.className = `resize-handle resize-handle-${dir}`;
+          handle.addEventListener('mousedown', (e) => startResize(e, win, dir));
+          win.appendChild(handle);
+        });
+      });
+    }
+
+    function startResize(e, win, direction) {
+      isResizing = true;
+      resizeDirection = direction;
+      resizeWindow = win;
+      resizeStart = {
+        x: e.clientX,
+        y: e.clientY,
+        w: win.offsetWidth,
+        h: win.offsetHeight,
+        top: win.offsetTop,
+        left: win.offsetLeft
+      };
+      bringToFront(win);
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isResizing || !resizeWindow) return;
+      const dx = e.clientX - resizeStart.x;
+      const dy = e.clientY - resizeStart.y;
+      const minW = 300, minH = 200;
+
+      if (resizeDirection.includes('e')) {
+        resizeWindow.style.width = Math.max(minW, resizeStart.w + dx) + 'px';
+      }
+      if (resizeDirection.includes('w')) {
+        const newW = Math.max(minW, resizeStart.w - dx);
+        resizeWindow.style.width = newW + 'px';
+        resizeWindow.style.left = (resizeStart.left + resizeStart.w - newW) + 'px';
+      }
+      if (resizeDirection.includes('s')) {
+        resizeWindow.style.height = Math.max(minH, resizeStart.h + dy) + 'px';
+      }
+      if (resizeDirection.includes('n')) {
+        const newH = Math.max(minH, resizeStart.h - dy);
+        resizeWindow.style.height = newH + 'px';
+        resizeWindow.style.top = (resizeStart.top + resizeStart.h - newH) + 'px';
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      isResizing = false;
+      resizeWindow = null;
+    });
+
+    // ========== DOUBLE-CLICK TITLEBAR TO MAXIMIZE ==========
+    function initTitlebarDblClick() {
+      document.querySelectorAll('.window-titlebar').forEach(titlebar => {
+        titlebar.addEventListener('dblclick', (e) => {
+          const win = titlebar.closest('.window');
+          if (win) {
+            const id = win.id.replace('window-', '');
+            maximizeWindow(id);
+          }
+        });
+      });
+    }
+
+    // ========== KEYBOARD SHORTCUTS ==========
+    let altTabActive = false;
+    let altTabIndex = 0;
+    let altTabWindows = [];
+
+    document.addEventListener('keydown', (e) => {
+      // Alt+F4: Close active window
+      if (e.altKey && e.key === 'F4') {
+        e.preventDefault();
+        const topWindow = getTopWindow();
+        if (topWindow) {
+          const id = topWindow.id.replace('window-', '');
+          closeWindow(id);
+        }
+      }
+
+      // Alt+Tab: Task switcher
+      if (e.altKey && e.key === 'Tab') {
+        e.preventDefault();
+        if (!altTabActive) {
+          altTabWindows = Array.from(openWindows).filter(id => {
+            const win = document.getElementById('window-' + id);
+            return win && win.classList.contains('active');
+          });
+          if (altTabWindows.length > 0) {
+            altTabActive = true;
+            altTabIndex = 0;
+            showTaskSwitcher();
+          }
+        } else {
+          altTabIndex = (altTabIndex + 1) % altTabWindows.length;
+          updateTaskSwitcher();
+        }
+      }
+
+      // Ctrl+Escape or Windows key: Toggle Start Menu
+      if ((e.ctrlKey && e.key === 'Escape') || e.key === 'Meta') {
+        e.preventDefault();
+        toggleStartMenu();
+      }
+
+      // Escape: close task switcher
+      if (e.key === 'Escape' && altTabActive) {
+        hideTaskSwitcher();
+      }
+    });
+
+    document.addEventListener('keyup', (e) => {
+      // When Alt is released during Alt+Tab, switch to selected window
+      if (e.key === 'Alt' && altTabActive) {
+        const selectedId = altTabWindows[altTabIndex];
+        if (selectedId) {
+          const win = document.getElementById('window-' + selectedId);
+          if (win) {
+            win.classList.add('active');
+            win.classList.remove('minimizing');
+            bringToFront(win);
+          }
+        }
+        hideTaskSwitcher();
+      }
+    });
+
+    function getTopWindow() {
+      let topZ = 0;
+      let topWin = null;
+      openWindows.forEach(id => {
+        const win = document.getElementById('window-' + id);
+        if (win && win.classList.contains('active')) {
+          const z = parseInt(win.style.zIndex) || 0;
+          if (z > topZ) { topZ = z; topWin = win; }
+        }
+      });
+      return topWin;
+    }
+
+    function showTaskSwitcher() {
+      let switcher = document.getElementById('task-switcher');
+      if (!switcher) {
+        switcher = document.createElement('div');
+        switcher.id = 'task-switcher';
+        switcher.className = 'task-switcher';
+        document.body.appendChild(switcher);
+      }
+      updateTaskSwitcher();
+      switcher.classList.add('active');
+    }
+
+    function updateTaskSwitcher() {
+      const switcher = document.getElementById('task-switcher');
+      if (!switcher) return;
+
+      let html = '';
+      altTabWindows.forEach((id, i) => {
+        const win = document.getElementById('window-' + id);
+        const title = win?.querySelector('.window-title')?.textContent || id;
+        const icon = win?.querySelector('.window-titlebar img')?.src || '';
+        html += `<div class="task-switcher-item ${i === altTabIndex ? 'selected' : ''}">
+          <img src="${icon}" onerror="this.style.display='none'">
+          <span>${title}</span>
+        </div>`;
+      });
+
+      if (altTabWindows[altTabIndex]) {
+        const win = document.getElementById('window-' + altTabWindows[altTabIndex]);
+        const title = win?.querySelector('.window-title')?.textContent || '';
+        html += `<div class="task-switcher-title">${title}</div>`;
+      }
+
+      switcher.innerHTML = html;
+    }
+
+    function hideTaskSwitcher() {
+      altTabActive = false;
+      const switcher = document.getElementById('task-switcher');
+      if (switcher) switcher.classList.remove('active');
+    }
+
+    // ========== CONTEXT MENU HOOK ==========
+    document.addEventListener('contextmenu', (e) => {
+      if (window.showContextMenu) {
+        // Determine context type
+        const icon = e.target.closest('.desktop-icon');
+        const taskbar = e.target.closest('.taskbar');
+        const win = e.target.closest('.window');
+
+        if (icon) {
+          e.preventDefault();
+          window.showContextMenu(e, 'icon', icon.dataset.window);
+        } else if (taskbar) {
+          e.preventDefault();
+          window.showContextMenu(e, 'taskbar');
+        } else if (!win) {
+          // Desktop background
+          e.preventDefault();
+          window.showContextMenu(e, 'desktop');
+        }
+      }
+    });
+
+    // ========== ALL PROGRAMS SUBMENU ==========
+    function toggleAllPrograms() {
+      const submenu = document.getElementById('all-programs-submenu');
+      if (submenu) {
+        submenu.classList.toggle('active');
+        playClick();
+      }
+    }
+
     // ========== ICON SELECTION ==========
     function selectIcon(icon) {
       document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
@@ -298,6 +538,12 @@
       document.getElementById('calendar-popup').classList.remove('active');
       document.getElementById('wifi-popup').classList.remove('active');
       document.getElementById('volume-popup').classList.remove('active');
+
+      // Close All Programs submenu when start menu toggles
+      const submenu = document.getElementById('all-programs-submenu');
+      if (submenu && !menu.classList.contains('active')) {
+        submenu.classList.remove('active');
+      }
     }
 
     // ========== SYSTEM TRAY ==========
@@ -435,12 +681,84 @@
       }, 3000);
     }
 
-    // ========== SCREENSAVER ==========
+    // ========== SCREENSAVER (Starfield) ==========
     let screensaverActive = false;
+    let screensaverCanvas, screensaverCtx;
+    let stars = [];
+    let inactivityTimer;
+    const INACTIVITY_TIMEOUT = 60000; // 60 seconds
+
+    function resetInactivityTimer() {
+      clearTimeout(inactivityTimer);
+      if (screensaverActive) stopScreensaver();
+      inactivityTimer = setTimeout(startScreensaver, INACTIVITY_TIMEOUT);
+    }
+
+    // Reset on any user activity
+    ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
+      document.addEventListener(evt, resetInactivityTimer, { passive: true });
+    });
 
     function startScreensaver() {
       screensaverActive = true;
-      document.getElementById('screensaver').classList.add('active');
+      const ss = document.getElementById('screensaver');
+      ss.classList.add('active');
+
+      // Create canvas for starfield
+      if (!screensaverCanvas) {
+        screensaverCanvas = document.createElement('canvas');
+        screensaverCanvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%';
+        ss.innerHTML = '';
+        ss.appendChild(screensaverCanvas);
+      }
+      screensaverCanvas.width = window.innerWidth;
+      screensaverCanvas.height = window.innerHeight;
+      screensaverCtx = screensaverCanvas.getContext('2d');
+
+      // Init stars
+      stars = [];
+      for (let i = 0; i < 200; i++) {
+        stars.push({
+          x: Math.random() * screensaverCanvas.width - screensaverCanvas.width/2,
+          y: Math.random() * screensaverCanvas.height - screensaverCanvas.height/2,
+          z: Math.random() * 1000
+        });
+      }
+
+      animateScreensaver();
+    }
+
+    function animateScreensaver() {
+      if (!screensaverActive) return;
+      const ctx = screensaverCtx;
+      const w = screensaverCanvas.width;
+      const h = screensaverCanvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.fillRect(0, 0, w, h);
+
+      stars.forEach(star => {
+        star.z -= 3;
+        if (star.z <= 0) {
+          star.x = Math.random() * w - cx;
+          star.y = Math.random() * h - cy;
+          star.z = 1000;
+        }
+
+        const sx = (star.x / star.z) * 300 + cx;
+        const sy = (star.y / star.z) * 300 + cy;
+        const size = Math.max(0.5, (1 - star.z / 1000) * 3);
+        const brightness = Math.min(255, Math.floor((1 - star.z / 1000) * 255));
+
+        ctx.fillStyle = `rgb(${brightness},${brightness},${brightness})`;
+        ctx.beginPath();
+        ctx.arc(sx, sy, size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(animateScreensaver);
     }
 
     function stopScreensaver() {
@@ -456,6 +774,9 @@
       if (!e.target.closest('.start-menu') && !e.target.closest('.start-button')) {
         document.getElementById('start-menu').classList.remove('active');
         document.getElementById('start-btn').classList.remove('pressed');
+        // Also close All Programs submenu
+        const submenu = document.getElementById('all-programs-submenu');
+        if (submenu) submenu.classList.remove('active');
       }
       if (!e.target.closest('.calendar-popup') && !e.target.closest('.system-time')) {
         document.getElementById('calendar-popup').classList.remove('active');
@@ -541,6 +862,13 @@
       bootScreen.classList.add('hidden');
       desktop.style.display = 'block';
       initThreeJS();
+
+      // Initialize resize handles and titlebar double-click for all windows
+      initResizeHandles();
+      initTitlebarDblClick();
+
+      // Start the inactivity timer for screensaver
+      resetInactivityTimer();
 
       // Show welcome notification
       setTimeout(() => {
@@ -633,7 +961,6 @@
         ytPlayer.playVideo();
         musicBtn.classList.add('playing');
         isMusicPlaying = true;
-        showNotification('Music', 'Now playing: Lofi beats 🎵');
+        showNotification('Music', 'Now playing: Lofi beats');
       }
     }
-

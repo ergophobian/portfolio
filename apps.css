@@ -1,0 +1,648 @@
+/* ================================================================
+   XP APPLICATIONS STYLESHEET
+   Authentic Windows XP styling for Notepad, Calculator, Paint, Minesweeper
+   ================================================================ */
+
+
+/* ================================================================
+   NOTEPAD
+   ================================================================ */
+
+#window-notepad .window-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+}
+
+/* Menu Bar */
+.notepad-menubar {
+  display: flex;
+  background: #ece9d8;
+  border-bottom: 1px solid #aca899;
+  padding: 1px 0;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.notepad-menu-item {
+  padding: 2px 8px;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  font-size: 11px;
+  color: #000;
+  cursor: default;
+  border: 1px solid transparent;
+}
+
+.notepad-menu-item:hover,
+.notepad-menu-item.active {
+  background: #c1d2ee;
+  border: 1px solid #316ac5;
+}
+
+/* Menu Dropdowns */
+.notepad-menu-dropdown {
+  display: none;
+  position: absolute;
+  z-index: 10000;
+  background: #fff;
+  border: 1px solid #aca899;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  min-width: 180px;
+  padding: 2px 0;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  font-size: 11px;
+}
+
+.notepad-menu-dropdown.active {
+  display: block;
+}
+
+.notepad-menu-option {
+  display: flex;
+  align-items: center;
+  padding: 3px 24px 3px 8px;
+  cursor: default;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.notepad-menu-option:hover {
+  background: #316ac5;
+  color: #fff;
+}
+
+.notepad-menu-option .menu-label {
+  flex: 1;
+}
+
+.notepad-menu-option .menu-shortcut {
+  margin-left: 24px;
+  color: #888;
+  font-size: 10px;
+}
+
+.notepad-menu-option:hover .menu-shortcut {
+  color: #ddd;
+}
+
+.notepad-menu-option .menu-check {
+  width: 16px;
+  margin-right: 4px;
+  font-size: 11px;
+  text-align: center;
+  display: inline-block;
+}
+
+.notepad-menu-separator {
+  height: 1px;
+  background: #aca899;
+  margin: 3px 2px;
+}
+
+/* Textarea */
+.notepad-textarea {
+  flex: 1;
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 4px 6px;
+  font-family: 'Lucida Console', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.4;
+  background: #fff;
+  color: #000;
+  tab-size: 8;
+  box-sizing: border-box;
+}
+
+.notepad-textarea:focus {
+  outline: none;
+}
+
+/* Status Bar */
+.notepad-status-bar {
+  display: flex;
+  align-items: center;
+  padding: 2px 8px;
+  background: #ece9d8;
+  border-top: 1px solid #fff;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  font-size: 11px;
+  color: #000;
+  flex-shrink: 0;
+  min-height: 20px;
+}
+
+#notepad-status {
+  margin-left: auto;
+}
+
+
+/* ================================================================
+   CALCULATOR
+   ================================================================ */
+
+#window-calculator .window-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ece9d8;
+  padding: 0;
+  overflow: hidden;
+}
+
+.calc-body {
+  width: 100%;
+  padding: 6px;
+  background: #ece9d8;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  user-select: none;
+}
+
+/* Display */
+.calc-display-wrap {
+  margin-bottom: 6px;
+  padding: 0;
+}
+
+.calc-display {
+  width: 100%;
+  height: 32px;
+  box-sizing: border-box;
+  text-align: right;
+  padding: 2px 6px;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  color: #000;
+  background: #fff;
+  border: 2px inset #808080;
+  outline: none;
+}
+
+/* Button grid */
+.calc-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.calc-row {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.calc-btn {
+  width: 40px;
+  height: 28px;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  border: 2px outset #ddd;
+  background: #ece9d8;
+  color: #000;
+  text-align: center;
+  padding: 0;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.calc-btn:hover {
+  background: #d6d2c4;
+}
+
+.calc-btn:active {
+  border-style: inset;
+  background: #d0cbbf;
+}
+
+/* Number buttons - slightly lighter */
+.calc-num {
+  background: #fff;
+  font-weight: bold;
+}
+
+.calc-num:hover {
+  background: #e8e8e8;
+}
+
+.calc-num:active {
+  border-style: inset;
+  background: #d8d8d8;
+}
+
+/* Zero button spans 2 columns */
+.calc-zero {
+  width: 82px;
+}
+
+/* Operator buttons */
+.calc-op {
+  background: #ece9d8;
+  color: #c00;
+  font-weight: bold;
+}
+
+/* Function buttons (Backspace, CE, C, etc.) */
+.calc-func {
+  background: #ece9d8;
+  color: #c00;
+  font-size: 11px;
+}
+
+/* Memory buttons */
+.calc-mem {
+  background: #ece9d8;
+  color: #c00;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+/* Equals button */
+.calc-eq {
+  background: #ece9d8;
+  color: #c00;
+  font-weight: bold;
+  font-size: 14px;
+  height: 28px;
+}
+
+
+/* ================================================================
+   PAINT
+   ================================================================ */
+
+#window-paint .window-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: #ece9d8;
+  padding: 0;
+}
+
+.paint-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Toolbar */
+.paint-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 4px 6px;
+  background: #ece9d8;
+  border-bottom: 1px solid #aca899;
+  gap: 4px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.paint-tools {
+  display: flex;
+  gap: 2px;
+}
+
+.paint-tool-btn {
+  width: 30px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border-radius: 2px;
+}
+
+.paint-tool-btn:hover {
+  border: 1px solid #316ac5;
+  background: rgba(49, 106, 197, 0.1);
+}
+
+.paint-tool-btn.active {
+  border: 1px solid #316ac5;
+  background: #c1d2ee;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.paint-separator {
+  width: 1px;
+  height: 24px;
+  background: #aca899;
+  margin: 0 4px;
+}
+
+/* Line width buttons */
+.paint-line-widths {
+  display: flex;
+  gap: 2px;
+}
+
+.paint-width-btn {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border-radius: 2px;
+}
+
+.paint-width-btn:hover {
+  border: 1px solid #316ac5;
+  background: rgba(49, 106, 197, 0.1);
+}
+
+.paint-width-btn.active {
+  border: 1px solid #316ac5;
+  background: #c1d2ee;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* Action buttons */
+.paint-action-btn {
+  height: 26px;
+  padding: 0 10px;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  border: 2px outset #ddd;
+  background: #ece9d8;
+  color: #000;
+  outline: none;
+}
+
+.paint-action-btn:hover {
+  background: #d6d2c4;
+}
+
+.paint-action-btn:active {
+  border-style: inset;
+  background: #d0cbbf;
+}
+
+/* Canvas area */
+.paint-canvas-wrap {
+  flex: 1;
+  overflow: auto;
+  background: #808080;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 4px;
+  min-height: 0;
+}
+
+#paint-canvas {
+  background: #fff;
+  border: 1px solid #555;
+  box-shadow: 1px 1px 0 #333;
+  display: block;
+  image-rendering: auto;
+}
+
+/* Bottom bar with palette */
+.paint-bottom-bar {
+  display: flex;
+  align-items: center;
+  padding: 4px 6px;
+  background: #ece9d8;
+  border-top: 1px solid #fff;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.paint-active-colors {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.paint-active-color-primary {
+  width: 20px;
+  height: 20px;
+  border: 2px inset #808080;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Color palette */
+.paint-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  max-width: 280px;
+}
+
+.paint-color-swatch {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #808080;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.paint-color-swatch:hover {
+  border: 1px solid #000;
+  box-shadow: 0 0 0 1px #fff inset;
+}
+
+.paint-color-swatch.active {
+  border: 2px solid #000;
+  box-shadow: 0 0 0 1px #fff inset;
+}
+
+/* Coordinates display */
+.paint-coords {
+  margin-left: auto;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  font-size: 11px;
+  color: #000;
+  padding: 2px 4px;
+  border: 1px inset #808080;
+  background: #ece9d8;
+  min-width: 80px;
+  text-align: center;
+}
+
+
+/* ================================================================
+   MINESWEEPER
+   ================================================================ */
+
+#window-minesweeper .window-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #bdbdbd;
+  padding: 0;
+  overflow: hidden;
+}
+
+.mine-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  background: #c0c0c0;
+  border: 3px outset #e0e0e0;
+  user-select: none;
+}
+
+/* Header with counters and smiley */
+.mine-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 4px 6px;
+  margin-bottom: 6px;
+  background: #c0c0c0;
+  border: 2px inset #808080;
+  box-sizing: border-box;
+}
+
+/* LED-style counter */
+.mine-counter {
+  font-family: 'Courier New', monospace;
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff0000;
+  background: #000;
+  padding: 2px 6px;
+  border: 1px inset #808080;
+  letter-spacing: 2px;
+  min-width: 50px;
+  text-align: center;
+  line-height: 1;
+}
+
+/* Smiley button */
+.mine-smiley {
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  line-height: 1;
+  border: 2px outset #e0e0e0;
+  background: #c0c0c0;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.mine-smiley:active {
+  border-style: inset;
+}
+
+/* Game board */
+.mine-board {
+  display: grid;
+  gap: 0;
+  border: 3px inset #808080;
+  background: #c0c0c0;
+}
+
+/* Individual cell */
+.mine-cell {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px outset #e0e0e0;
+  background: #c0c0c0;
+  box-sizing: border-box;
+  user-select: none;
+  line-height: 1;
+}
+
+.mine-cell:active:not(.revealed):not(.flagged) {
+  border-style: inset;
+  border-color: #808080;
+}
+
+/* Revealed cell */
+.mine-cell.revealed {
+  border: 1px solid #808080;
+  background: #d0d0d0;
+  cursor: default;
+}
+
+/* Flagged cell */
+.mine-cell.flagged {
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Mine cell */
+.mine-cell.mine {
+  font-size: 16px;
+}
+
+/* Hit mine (the one player clicked) */
+.mine-cell.mine-hit {
+  background: #ff0000;
+  font-size: 16px;
+}
+
+/* ================================================================
+   RESPONSIVE ADJUSTMENTS
+   ================================================================ */
+
+@media (max-width: 600px) {
+  .calc-btn {
+    width: 34px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .calc-zero {
+    width: 70px;
+  }
+
+  .calc-display {
+    font-size: 14px;
+    height: 28px;
+  }
+
+  #paint-canvas {
+    width: 300px;
+    height: 200px;
+  }
+
+  .mine-cell {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+  }
+
+  .mine-board {
+    grid-template-columns: repeat(9, 22px) !important;
+    grid-template-rows: repeat(9, 22px) !important;
+  }
+}

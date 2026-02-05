@@ -53,13 +53,31 @@
       height: 100%;
       pointer-events: none;
       z-index: 9999;
-      background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.03),
-        rgba(0, 0, 0, 0.03) 1px,
-        transparent 1px,
-        transparent 2px
-      );
+      background:
+        /* Scanline pattern */
+        repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.06),
+          rgba(0, 0, 0, 0.06) 1px,
+          transparent 1px,
+          transparent 2px
+        ),
+        /* RGB subpixel pattern */
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 0, 0, 0.02) 0px,
+          rgba(0, 255, 0, 0.02) 1px,
+          rgba(0, 0, 255, 0.02) 2px,
+          transparent 3px
+        ),
+        /* Radial vignette - scanlines more visible at edges */
+        radial-gradient(
+          ellipse at center,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0) 50%,
+          rgba(0, 0, 0, 0.08) 80%,
+          rgba(0, 0, 0, 0.15) 100%
+        );
       opacity: 0.5;
     }
 
@@ -90,6 +108,11 @@
       border: 1px dotted rgba(11, 97, 255, 0.8);
     }
 
+    .desktop-icon:focus {
+      outline: 1px dotted #000;
+      outline-offset: -1px;
+    }
+
     .desktop-icon:active {
       transform: scale(0.95);
     }
@@ -97,6 +120,11 @@
     .desktop-icon.selected {
       background: rgba(11, 97, 255, 0.4);
       border: 1px dotted #0b61ff;
+    }
+
+    .desktop-icon.selected img {
+      filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
+      opacity: 0.8;
     }
 
     .desktop-icon.bounce {
@@ -118,13 +146,23 @@
 
     .desktop-icon:hover img {
       transform: scale(1.1);
+      filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3)) brightness(0.9);
     }
 
     .desktop-icon span {
       color: white;
       font-size: 11px;
       text-align: center;
-      text-shadow: 1px 1px 1px black, 1px 1px 2px black, 0 0 3px black;
+      text-shadow:
+        1px 0px 1px black,
+        -1px 0px 1px black,
+        0px 1px 1px black,
+        0px -1px 1px black,
+        1px 1px 1px black,
+        -1px -1px 1px black,
+        1px -1px 1px black,
+        -1px 1px 1px black;
+      -webkit-text-stroke: 0.5px rgba(0,0,0,0.8);
       word-wrap: break-word;
       max-width: 70px;
       line-height: 1.2;
@@ -138,8 +176,14 @@
       min-width: 400px;
       display: none;
       z-index: 100;
-      box-shadow: 2px 2px 15px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.1);
+      border: 1px solid #0054e3;
+      box-shadow: 2px 2px 15px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.3);
       transform-origin: center center;
+    }
+
+    .window.inactive {
+      border-color: #7a96b8;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.15);
     }
 
     .window.active {
@@ -174,14 +218,40 @@
     .window-titlebar {
       height: 30px;
       background: linear-gradient(180deg,
-        #0058ee 0%, #3a93ff 4%, #288eff 6%, #127dff 8%,
+        #0068ff 0%, #3a93ff 4%, #288eff 6%, #127dff 8%,
         #036ffc 10%, #0262ee 14%, #0057e5 20%, #0054e3 24%,
         #0055eb 56%, #005bf5 66%, #026afe 76%, #0062ef 86%,
         #0052e1 92%, #0040c4 94%, #0040c5 100%);
       border-radius: 8px 8px 0 0;
+      border-top: 1px solid #4facff;
       display: flex;
       align-items: center;
       padding: 0 3px 0 5px;
+    }
+
+    /* Inactive window titlebar */
+    .window.inactive .window-titlebar {
+      background: linear-gradient(180deg,
+        #9db9d5 0%, #becede 4%, #b4c6d8 8%,
+        #9ab0c8 14%, #8fa5bc 24%, #8fa5bc 56%,
+        #96adc4 66%, #8fa5bc 76%, #8299b0 86%,
+        #7a92a8 92%, #748ca2 100%);
+      border-top: 1px solid #c4d4e4;
+    }
+
+    .window.inactive .window-title {
+      color: #d6dce6;
+    }
+
+    .window.inactive .window-btn.minimize,
+    .window.inactive .window-btn.maximize {
+      background: linear-gradient(180deg, #b0c0d0 0%, #8a9ab0 50%, #a0b0c4 100%);
+      border-color: #7a8a9e;
+    }
+
+    .window.inactive .window-btn.close {
+      background: linear-gradient(180deg, #c8a0a0 0%, #a07070 50%, #b89090 100%);
+      border-color: #987070;
     }
 
     .window-titlebar img {
@@ -616,6 +686,7 @@
       display: flex;
       align-items: center;
       z-index: 1000;
+      border-top: 1px solid #1a8cff;
     }
 
     /* XP Start Button */
@@ -727,8 +798,9 @@
 
     .taskbar-app.active {
       background: linear-gradient(180deg,
-        #fff 0%, #e8e9ed 6%, #dcdfe5 50%, #b9bcc4 51%, #c8cad0 100%);
+        #d1d5db 0%, #dcdfe5 6%, #e8e9ed 50%, #c8cad0 51%, #b9bcc4 100%);
       border: 1px solid #0c3d9d;
+      box-shadow: inset 1px 1px 2px rgba(0,0,0,0.15);
     }
 
     .taskbar-app.active span {
@@ -760,6 +832,7 @@
       padding: 0 12px 0 8px;
       gap: 5px;
       border-left: 1px solid #0b5bc2;
+      box-shadow: inset 1px 0 0 rgba(255,255,255,0.15), inset 2px 0 0 rgba(0,0,0,0.1);
     }
 
     .tray-btn {
@@ -1033,8 +1106,8 @@
 
     .start-header {
       background: linear-gradient(180deg,
-        #0058ee 0%, #3a93ff 4%, #288eff 8%,
-        #036ffc 12%, #0054e3 50%, #0055eb 80%, #0040c5 100%);
+        #1b5fc7 0%, #2268d0 4%, #2874da 8%,
+        #1e65ce 20%, #1a5ec6 50%, #1555bd 70%, #0d4aaf 90%, #0840a0 100%);
       padding: 10px 12px;
       display: flex;
       align-items: center;
@@ -1084,6 +1157,9 @@
       width: 200px;
       background: linear-gradient(180deg, #d3e5fa 0%, #b8d4f8 100%);
       padding: 6px 0;
+      position: relative;
+      border-left: 2px solid transparent;
+      border-image: linear-gradient(180deg, #da8a17 0%, #e8a735 30%, #f0c75e 60%, #e8a735 80%, #da8a17 100%) 1;
     }
 
     .start-item {
@@ -1132,6 +1208,10 @@
       margin: 6px 12px;
     }
 
+    .start-right .start-separator {
+      background: linear-gradient(90deg, transparent, #a4c4e8, transparent);
+    }
+
     .start-right .start-item span {
       font-weight: bold;
     }
@@ -1151,12 +1231,27 @@
       color: #215dc6;
     }
 
+    .all-programs::after {
+      content: '';
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 6px solid #215dc6;
+      margin-left: 8px;
+    }
+
     .all-programs:hover {
       background: #316ac5;
     }
 
     .all-programs:hover span {
       color: white;
+    }
+
+    .all-programs:hover::after {
+      border-left-color: white;
     }
 
     .start-footer {
@@ -1504,4 +1599,347 @@
       50% { transform: translate(calc(50vw - 100px), calc(100vh - 50px)); }
       75% { transform: translate(calc(80vw - 150px), calc(30vh - 20px)); }
       100% { transform: translate(0, 0); }
+    }
+
+    /* ============================================
+       Right-Click Context Menu
+       ============================================ */
+    .context-menu {
+      position: fixed;
+      background: #fff;
+      border: 1px solid #808080;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      padding: 2px 0;
+      min-width: 180px;
+      z-index: 10000;
+      font-size: 11px;
+      font-family: Tahoma, sans-serif;
+      display: none;
+    }
+
+    .context-menu.active {
+      display: block;
+    }
+
+    .context-menu-item {
+      padding: 4px 30px 4px 25px;
+      cursor: default;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .context-menu-item:hover {
+      background: #316ac5;
+      color: #fff;
+    }
+
+    .context-menu-item.disabled {
+      color: #808080;
+    }
+
+    .context-menu-item.disabled:hover {
+      background: transparent;
+      color: #808080;
+    }
+
+    .context-menu-separator {
+      height: 1px;
+      background: #d6d2c2;
+      margin: 3px 2px;
+    }
+
+    .context-menu-item .shortcut {
+      float: right;
+      color: #808080;
+      margin-left: 30px;
+    }
+
+    .context-menu-item:hover .shortcut {
+      color: #fff;
+    }
+
+    .context-menu-item .submenu-arrow::after {
+      content: '\25B6';
+      position: absolute;
+      right: 8px;
+      font-size: 8px;
+    }
+
+    /* ============================================
+       Window Resize Handles
+       ============================================ */
+    .window .resize-handle {
+      position: absolute;
+      z-index: 10;
+    }
+
+    .resize-handle-n { top: -3px; left: 8px; right: 8px; height: 6px; cursor: n-resize; }
+    .resize-handle-s { bottom: -3px; left: 8px; right: 8px; height: 6px; cursor: s-resize; }
+    .resize-handle-e { right: -3px; top: 8px; bottom: 8px; width: 6px; cursor: e-resize; }
+    .resize-handle-w { left: -3px; top: 8px; bottom: 8px; width: 6px; cursor: w-resize; }
+    .resize-handle-ne { top: -3px; right: -3px; width: 12px; height: 12px; cursor: ne-resize; }
+    .resize-handle-nw { top: -3px; left: -3px; width: 12px; height: 12px; cursor: nw-resize; }
+    .resize-handle-se { bottom: -3px; right: -3px; width: 12px; height: 12px; cursor: se-resize; }
+    .resize-handle-sw { bottom: -3px; left: -3px; width: 12px; height: 12px; cursor: sw-resize; }
+
+    /* ============================================
+       Notepad App Styles
+       ============================================ */
+    .notepad-textarea {
+      width: 100%;
+      height: calc(100% - 40px);
+      border: none;
+      resize: none;
+      outline: none;
+      font-family: 'Lucida Console', 'Courier New', monospace;
+      font-size: 13px;
+      padding: 4px;
+      background: #fff;
+    }
+
+    .notepad-status-bar {
+      height: 20px;
+      background: #ece9d8;
+      border-top: 1px solid #808080;
+      padding: 2px 8px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      color: #444;
+    }
+
+    /* ============================================
+       Calculator App Styles
+       ============================================ */
+    .calculator-display {
+      background: #ecf2eb;
+      border: 1px inset #808080;
+      text-align: right;
+      font-size: 24px;
+      padding: 4px 8px;
+      margin: 8px;
+      font-family: 'Lucida Console', monospace;
+      overflow: hidden;
+    }
+
+    .calc-btn {
+      width: 36px;
+      height: 28px;
+      background: linear-gradient(180deg, #f4f2ee 0%, #d6d2c2 100%);
+      border: 1px outset #d6d2c2;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: Tahoma, sans-serif;
+    }
+
+    .calc-btn:active {
+      border-style: inset;
+    }
+
+    .calc-btn.operator {
+      color: #cc0000;
+    }
+
+    .calc-btn.equals {
+      background: linear-gradient(180deg, #d6d2ee 0%, #b0afc2 100%);
+    }
+
+    /* ============================================
+       Paint App Styles
+       ============================================ */
+    .paint-toolbar {
+      display: flex;
+      gap: 2px;
+      padding: 2px;
+      background: #ece9d8;
+      border-bottom: 1px solid #808080;
+    }
+
+    .paint-tool {
+      width: 24px;
+      height: 24px;
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .paint-tool.active, .paint-tool:hover {
+      border: 1px inset #808080;
+      background: #b5d3ff;
+    }
+
+    .paint-canvas-container {
+      flex: 1;
+      background: #808080;
+      padding: 4px;
+      overflow: auto;
+    }
+
+    .paint-canvas {
+      background: #fff;
+      cursor: crosshair;
+      display: block;
+    }
+
+    .paint-color-palette {
+      display: flex;
+      gap: 1px;
+      padding: 4px;
+      background: #ece9d8;
+      border-top: 1px solid #808080;
+    }
+
+    .paint-color {
+      width: 16px;
+      height: 16px;
+      border: 1px solid #808080;
+      cursor: pointer;
+    }
+
+    .paint-color.active {
+      border: 2px solid #000;
+    }
+
+    /* ============================================
+       Minesweeper App Styles
+       ============================================ */
+    .minesweeper-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 8px;
+      background: #c0c0c0;
+      border: 2px inset #fff;
+      margin: 4px;
+    }
+
+    .mine-counter, .mine-timer {
+      background: #000;
+      color: #ff0000;
+      font-family: 'Lucida Console', monospace;
+      font-size: 20px;
+      padding: 2px 4px;
+      min-width: 45px;
+      text-align: right;
+      border: 1px inset #808080;
+    }
+
+    .mine-smiley {
+      width: 28px;
+      height: 28px;
+      border: 2px outset #d6d2c2;
+      background: #c0c0c0;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mine-smiley:active {
+      border-style: inset;
+    }
+
+    .mine-grid {
+      display: grid;
+      border: 3px inset #fff;
+      margin: 4px;
+      background: #c0c0c0;
+    }
+
+    .mine-cell {
+      width: 20px;
+      height: 20px;
+      border: 2px outset #fff;
+      background: #c0c0c0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: bold;
+      user-select: none;
+    }
+
+    .mine-cell.revealed {
+      border: 1px solid #808080;
+      background: #d6d2c2;
+    }
+
+    .mine-cell.mine {
+      background: #ff0000;
+    }
+
+    .mine-cell.flagged::after {
+      content: '\1F6A9';
+    }
+
+    .mine-1 { color: #0000ff; }
+    .mine-2 { color: #008000; }
+    .mine-3 { color: #ff0000; }
+    .mine-4 { color: #000080; }
+    .mine-5 { color: #800000; }
+    .mine-6 { color: #008080; }
+    .mine-7 { color: #000000; }
+    .mine-8 { color: #808080; }
+
+    /* ============================================
+       Alt+Tab Task Switcher Overlay
+       ============================================ */
+    .task-switcher {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ece9d8;
+      border: 2px outset #d6d2c2;
+      padding: 12px;
+      z-index: 10001;
+      display: none;
+      min-width: 300px;
+    }
+
+    .task-switcher.active {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .task-switcher-item {
+      width: 64px;
+      text-align: center;
+      padding: 4px;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .task-switcher-item.selected {
+      border: 2px solid #316ac5;
+      background: rgba(49, 106, 197, 0.15);
+    }
+
+    .task-switcher-item img {
+      width: 32px;
+      height: 32px;
+      display: block;
+      margin: 0 auto 4px;
+    }
+
+    .task-switcher-item span {
+      font-size: 10px;
+      word-break: break-all;
+    }
+
+    .task-switcher-title {
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      padding-top: 8px;
+      border-top: 1px solid #808080;
+      margin-top: 4px;
     }

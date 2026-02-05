@@ -11,49 +11,64 @@
   <link rel="stylesheet" href="https://unpkg.com/xp.css">
   <!-- Custom XP Styles -->
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="apps.css">
+  <link rel="stylesheet" href="context-menu.css">
 </head>
 <body>
   <!-- Boot Screen - Authentic Windows XP -->
   <div class="boot-screen" id="boot-screen" onclick="skipBoot()" title="Click to skip">
-    <div class="xp-flag">
-      <!-- Authentic Windows XP Wavy Flag -->
-      <svg width="60" height="52" viewBox="0 0 400 346">
-        <defs>
-          <linearGradient id="red" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#FF6B4A"/>
-            <stop offset="100%" stop-color="#D62B0E"/>
-          </linearGradient>
-          <linearGradient id="green" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#8ED629"/>
-            <stop offset="100%" stop-color="#5BA31B"/>
-          </linearGradient>
-          <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#46A4F7"/>
-            <stop offset="100%" stop-color="#0068D8"/>
-          </linearGradient>
-          <linearGradient id="yellow" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#FFDA2D"/>
-            <stop offset="100%" stop-color="#FFBA00"/>
-          </linearGradient>
-        </defs>
-        <path d="M0,55 Q50,20 100,35 Q150,50 185,25 L185,145 Q150,170 100,155 Q50,140 0,175 Z" fill="url(#red)"/>
-        <path d="M200,15 Q250,-5 300,10 Q350,25 400,0 L400,135 Q350,160 300,145 Q250,130 200,155 Z" fill="url(#green)"/>
-        <path d="M0,190 Q50,155 100,170 Q150,185 185,160 L185,290 Q150,315 100,300 Q50,285 0,320 Z" fill="url(#blue)"/>
-        <path d="M200,170 Q250,140 300,155 Q350,170 400,145 L400,290 Q350,315 300,300 Q250,285 200,310 Z" fill="url(#yellow)"/>
-      </svg>
-      <span class="xp-title">Windows<sup>XP</sup></span>
-    </div>
-    <div class="welcome-text">welcome</div>
-    <div class="xp-loader-container">
-      <div class="xp-loader-track">
-        <div class="xp-loader-blocks">
-          <div class="xp-block"></div>
-          <div class="xp-block"></div>
-          <div class="xp-block"></div>
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <!-- XP Flag Logo - Large, centered -->
+      <div style="margin-bottom: 20px;">
+        <svg width="80" height="70" viewBox="0 0 400 346">
+          <defs>
+            <linearGradient id="red" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FF6B4A"/>
+              <stop offset="100%" stop-color="#D62B0E"/>
+            </linearGradient>
+            <linearGradient id="green" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#8ED629"/>
+              <stop offset="100%" stop-color="#5BA31B"/>
+            </linearGradient>
+            <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#46A4F7"/>
+              <stop offset="100%" stop-color="#0068D8"/>
+            </linearGradient>
+            <linearGradient id="yellow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFDA2D"/>
+              <stop offset="100%" stop-color="#FFBA00"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,55 Q50,20 100,35 Q150,50 185,25 L185,145 Q150,170 100,155 Q50,140 0,175 Z" fill="url(#red)"/>
+          <path d="M200,15 Q250,-5 300,10 Q350,25 400,0 L400,135 Q350,160 300,145 Q250,130 200,155 Z" fill="url(#green)"/>
+          <path d="M0,190 Q50,155 100,170 Q150,185 185,160 L185,290 Q150,315 100,300 Q50,285 0,320 Z" fill="url(#blue)"/>
+          <path d="M200,170 Q250,140 300,155 Q350,170 400,145 L400,290 Q350,315 300,300 Q250,285 200,310 Z" fill="url(#yellow)"/>
+        </svg>
+      </div>
+      <!-- Windows XP Text -->
+      <div style="display: flex; align-items: baseline; margin-bottom: 30px;">
+        <span style="font-family: 'Franklin Gothic Medium', 'Trebuchet MS', sans-serif; font-size: 32px; color: #fff; font-weight: normal; letter-spacing: 2px;">Windows</span>
+        <span style="font-family: 'Franklin Gothic Medium', 'Trebuchet MS', sans-serif; font-size: 16px; color: #fff; font-weight: bold; vertical-align: super; margin-left: 2px;">XP</span>
+      </div>
+      <!-- Loading bar - the iconic 3 blue blocks sliding -->
+      <div style="width: 220px; height: 14px; background: #000; border: 1px solid #333; border-radius: 2px; overflow: hidden; position: relative;">
+        <div style="position: absolute; display: flex; gap: 3px; animation: xpBootSlide 1.5s ease-in-out infinite;">
+          <div style="width: 12px; height: 12px; background: linear-gradient(180deg, #5bb3f9 0%, #1a6dd8 50%, #0b4da2 100%); border-radius: 1px;"></div>
+          <div style="width: 12px; height: 12px; background: linear-gradient(180deg, #5bb3f9 0%, #1a6dd8 50%, #0b4da2 100%); border-radius: 1px;"></div>
+          <div style="width: 12px; height: 12px; background: linear-gradient(180deg, #5bb3f9 0%, #1a6dd8 50%, #0b4da2 100%); border-radius: 1px;"></div>
         </div>
       </div>
+      <!-- Bottom text -->
+      <div style="position: absolute; bottom: 30px; text-align: center; width: 100%;">
+        <div style="font-family: 'Franklin Gothic Medium', 'Trebuchet MS', sans-serif; font-size: 11px; color: #888; letter-spacing: 0.5px;">Copyright &copy; Microsoft Corporation</div>
+      </div>
     </div>
-    <div class="boot-footer">Copyright © Microsoft Corporation</div>
+    <style>
+      @keyframes xpBootSlide {
+        0% { left: -50px; }
+        100% { left: 220px; }
+      }
+    </style>
   </div>
 
   <!-- Three.js Background -->
@@ -98,6 +113,36 @@
       <div class="desktop-icon" data-window="pinball" ondblclick="openWindow('pinball')" onclick="selectIcon(this); playClick();">
         <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png">
         <span>3D Pinball</span>
+      </div>
+
+      <div class="desktop-icon" data-window="mycomputer" ondblclick="openWindow('mycomputer')" onclick="selectIcon(this); playClick();">
+        <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-0.png">
+        <span>My Computer</span>
+      </div>
+
+      <div class="desktop-icon" data-window="recyclebin" ondblclick="openWindow('recyclebin')" onclick="selectIcon(this); playClick();">
+        <img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_empty-4.png">
+        <span>Recycle Bin</span>
+      </div>
+
+      <div class="desktop-icon" data-window="notepad" ondblclick="openWindow('notepad')" onclick="selectIcon(this); playClick();">
+        <img src="https://win98icons.alexmeub.com/icons/png/notepad-2.png">
+        <span>Notepad</span>
+      </div>
+
+      <div class="desktop-icon" data-window="calculator" ondblclick="openWindow('calculator')" onclick="selectIcon(this); playClick();">
+        <img src="https://win98icons.alexmeub.com/icons/png/calculator-0.png">
+        <span>Calculator</span>
+      </div>
+
+      <div class="desktop-icon" data-window="paint" ondblclick="openWindow('paint')" onclick="selectIcon(this); playClick();">
+        <img src="https://win98icons.alexmeub.com/icons/png/paint_file-0.png">
+        <span>Paint</span>
+      </div>
+
+      <div class="desktop-icon" data-window="minesweeper" ondblclick="openWindow('minesweeper')" onclick="selectIcon(this); playClick();">
+        <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png">
+        <span>Minesweeper</span>
       </div>
 
     </div>
@@ -294,56 +339,84 @@
     <div class="window" id="window-about" style="top: 90px; left: 320px; width: 540px;">
       <div class="window-titlebar" onmousedown="startDrag(event, 'window-about')">
         <img src="https://win98icons.alexmeub.com/icons/png/user-0.png" style="width:16px;height:16px;">
-        <span class="window-title">About Kyle</span>
+        <span class="window-title">About Kyle - System Properties</span>
         <div class="window-controls">
           <button class="window-btn minimize" onclick="minimizeWindow('about')">_</button>
           <button class="window-btn maximize" onclick="maximizeWindow('about')">□</button>
           <button class="window-btn close" onclick="closeWindow('about')">✕</button>
         </div>
       </div>
-      <div class="window-menubar">
-        <span class="menu-item">File</span>
-        <span class="menu-item">Edit</span>
-        <span class="menu-item">View</span>
-        <span class="menu-item">Help</span>
-      </div>
-      <div class="window-content">
-        <div class="xp-sidebar">
-          <div class="sidebar-section">
-            <div class="sidebar-header">🔗 Connect</div>
-            <div class="sidebar-content">
-              <div class="sidebar-link" onclick="window.open('https://github.com/ergophobian', '_blank'); playClick();">🐙 GitHub</div>
-              <div class="sidebar-link" onclick="window.open('https://tiktok.com/@ergophobian', '_blank'); playClick();">🎵 TikTok</div>
-              <div class="sidebar-link" onclick="window.open('https://x.com/indefatigabile', '_blank'); playClick();">𝕏 Twitter</div>
-              <div class="sidebar-link" onclick="openWindow('upwork'); playClick();">💼 Upwork</div>
+      <div class="window-content" style="padding: 12px; display: block;">
+        <div style="border: 1px solid #808080; background: #fff;">
+          <!-- Tabs -->
+          <div style="display: flex; background: #ece9d8; padding: 4px 4px 0; gap: 2px;">
+            <button class="xp-button" id="about-tab-general" onclick="showAboutTab('general')" style="border-bottom: none; border-radius: 4px 4px 0 0; font-size: 11px; padding: 4px 12px; font-weight: bold; background: #fff;">General</button>
+            <button class="xp-button" id="about-tab-skills" onclick="showAboutTab('skills')" style="border-bottom: none; border-radius: 4px 4px 0 0; font-size: 11px; padding: 4px 12px;">Skills</button>
+            <button class="xp-button" id="about-tab-experience" onclick="showAboutTab('experience')" style="border-bottom: none; border-radius: 4px 4px 0 0; font-size: 11px; padding: 4px 12px;">Experience</button>
+          </div>
+          <!-- General Tab -->
+          <div id="about-panel-general" style="padding: 16px;">
+            <div style="display: flex; gap: 16px; align-items: flex-start;">
+              <div style="text-align: center;">
+                <svg width="64" height="64" viewBox="0 0 400 346"><defs><linearGradient id="abr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF6B4A"/><stop offset="100%" stop-color="#D62B0E"/></linearGradient><linearGradient id="abg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8ED629"/><stop offset="100%" stop-color="#5BA31B"/></linearGradient><linearGradient id="abb" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#46A4F7"/><stop offset="100%" stop-color="#0068D8"/></linearGradient><linearGradient id="aby" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFDA2D"/><stop offset="100%" stop-color="#FFBA00"/></linearGradient></defs><path d="M0,55 Q50,20 100,35 Q150,50 185,25 L185,145 Q150,170 100,155 Q50,140 0,175 Z" fill="url(#abr)"/><path d="M200,15 Q250,-5 300,10 Q350,25 400,0 L400,135 Q350,160 300,145 Q250,130 200,155 Z" fill="url(#abg)"/><path d="M0,190 Q50,155 100,170 Q150,185 185,160 L185,290 Q150,315 100,300 Q50,285 0,320 Z" fill="url(#abb)"/><path d="M200,170 Q250,140 300,155 Q350,170 400,145 L400,290 Q350,315 300,300 Q250,285 200,310 Z" fill="url(#aby)"/></svg>
+                <div style="font-size: 10px; color: #333; margin-top: 4px;">Microsoft<br>Windows XP<br>Professional</div>
+              </div>
+              <div style="flex: 1; font-size: 12px; line-height: 1.8;">
+                <div style="font-weight: bold; font-size: 14px; color: #0054e3;">Kyle Kumar</div>
+                <div style="color: #666;">Developer &bull; Builder &bull; Creator</div>
+                <hr style="border: none; border-top: 1px solid #d6d2c2; margin: 8px 0;">
+                <div><b>OS:</b> KyleOS Professional v2.0</div>
+                <div><b>Registered to:</b> Kyle Kumar</div>
+                <div><b>Handle:</b> @ergophobian</div>
+                <hr style="border: none; border-top: 1px solid #d6d2c2; margin: 8px 0;">
+                <div><b>Processor:</b> Creative Multi-Core</div>
+                <div><b>RAM:</b> Unlimited Caffeine</div>
+                <div><b>Education:</b> WGU Masters (CS)</div>
+              </div>
+            </div>
+          </div>
+          <!-- Skills Tab -->
+          <div id="about-panel-skills" style="padding: 16px; display: none;">
+            <div style="font-weight: bold; color: #0054e3; margin-bottom: 8px;">Technical Skills</div>
+            <div style="font-size: 12px; line-height: 2;">
+              <div style="display:flex; align-items:center; gap:8px;"><span style="width:140px;">React Native</span><div style="flex:1; height:12px; background:#e0e0e0; border:1px solid #808080;"><div style="width:90%; height:100%; background:linear-gradient(#3a9431,#237a1a);"></div></div></div>
+              <div style="display:flex; align-items:center; gap:8px;"><span style="width:140px;">JavaScript/TS</span><div style="flex:1; height:12px; background:#e0e0e0; border:1px solid #808080;"><div style="width:88%; height:100%; background:linear-gradient(#3a9431,#237a1a);"></div></div></div>
+              <div style="display:flex; align-items:center; gap:8px;"><span style="width:140px;">Python</span><div style="flex:1; height:12px; background:#e0e0e0; border:1px solid #808080;"><div style="width:82%; height:100%; background:linear-gradient(#3a9431,#237a1a);"></div></div></div>
+              <div style="display:flex; align-items:center; gap:8px;"><span style="width:140px;">Three.js / 3D</span><div style="flex:1; height:12px; background:#e0e0e0; border:1px solid #808080;"><div style="width:75%; height:100%; background:linear-gradient(#3a9431,#237a1a);"></div></div></div>
+              <div style="display:flex; align-items:center; gap:8px;"><span style="width:140px;">AI / LLMs</span><div style="flex:1; height:12px; background:#e0e0e0; border:1px solid #808080;"><div style="width:85%; height:100%; background:linear-gradient(#3a9431,#237a1a);"></div></div></div>
+              <div style="display:flex; align-items:center; gap:8px;"><span style="width:140px;">PostgreSQL</span><div style="flex:1; height:12px; background:#e0e0e0; border:1px solid #808080;"><div style="width:80%; height:100%; background:linear-gradient(#3a9431,#237a1a);"></div></div></div>
+              <div style="display:flex; align-items:center; gap:8px;"><span style="width:140px;">TikTok Marketing</span><div style="flex:1; height:12px; background:#e0e0e0; border:1px solid #808080;"><div style="width:92%; height:100%; background:linear-gradient(#3a9431,#237a1a);"></div></div></div>
+            </div>
+          </div>
+          <!-- Experience Tab -->
+          <div id="about-panel-experience" style="padding: 16px; display: none;">
+            <div style="font-weight: bold; color: #0054e3; margin-bottom: 8px;">Experience</div>
+            <div style="font-size: 12px; line-height: 1.6;">
+              <div style="margin-bottom: 12px; padding: 8px; background: #f5f5f0; border: 1px solid #d6d2c2;">
+                <div style="font-weight: bold;">PepMaxx - Founder & Developer</div>
+                <div style="color: #666; font-size: 11px;">2024 - Present</div>
+                <div>Premium peptide tracking iOS/Android app. 50+ peptide library, AI assistant, dose calculator.</div>
+              </div>
+              <div style="margin-bottom: 12px; padding: 8px; background: #f5f5f0; border: 1px solid #d6d2c2;">
+                <div style="font-weight: bold;">Peak Revival-X - E-Commerce</div>
+                <div style="color: #666; font-size: 11px;">2024 - Present</div>
+                <div>TikTok Shop supplements brand. 6 products, automated content pipeline.</div>
+              </div>
+              <div style="margin-bottom: 12px; padding: 8px; background: #f5f5f0; border: 1px solid #d6d2c2;">
+                <div style="font-weight: bold;">Upwork - Freelance Developer</div>
+                <div style="color: #666; font-size: 11px;">2023 - Present</div>
+                <div>Mobile apps, AI automation, social media marketing.</div>
+              </div>
+              <div style="padding: 8px; background: #f5f5f0; border: 1px solid #d6d2c2;">
+                <div style="font-weight: bold;">WGU - Masters in Computer Science</div>
+                <div style="color: #666; font-size: 11px;">2024 - Present</div>
+                <div>Data management, analytics programming, software engineering.</div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="main-content">
-          <div class="content-header">About Me</div>
-          <div class="project-info">
-            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; font-weight: bold;">K</div>
-            <div class="project-details">
-              <h2>Kyle</h2>
-              <p class="tagline">@ergophobian</p>
-            </div>
-          </div>
-          <p class="project-description">
-            App developer, social media marketer, and freelancer. Building PepMaxx, growing brands on TikTok, and taking on projects on Upwork.
-          </p>
-          <div class="features-box">
-            <h4>What I Do</h4>
-            <ul>
-              <li>Mobile App Development (React Native)</li>
-              <li>TikTok Marketing & Growth</li>
-              <li>UGC & AI Content Creation</li>
-              <li>Freelance Development</li>
-            </ul>
-          </div>
-          <div class="project-buttons">
-            <button class="xp-button primary" onclick="openWindow('socials'); playClick();">📱 My Socials</button>
-            <button class="xp-button" onclick="window.open('https://github.com/ergophobian', '_blank'); playClick();">🐙 GitHub</button>
-          </div>
+        <div style="text-align: right; margin-top: 10px;">
+          <button class="xp-button" onclick="closeWindow('about'); playClick();" style="padding: 4px 20px;">OK</button>
         </div>
       </div>
     </div>
@@ -365,6 +438,14 @@
         <span class="menu-item">View</span>
         <span class="menu-item">Favorites</span>
         <span class="menu-item">Help</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; padding: 3px 8px; background: #ece9d8; border-bottom: 1px solid #808080; font-size: 11px;">
+        <span>Address</span>
+        <div style="flex: 1; padding: 2px 4px; background: #fff; border: 1px solid #7f9db9; display: flex; align-items: center; gap: 4px;">
+          <img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs-4.png" style="width:14px;height:14px;">
+          <span>C:\Users\Kyle\My Socials\</span>
+        </div>
+        <button class="xp-button" style="font-size: 10px; padding: 2px 8px;">Go</button>
       </div>
       <div class="window-content" style="padding: 12px; max-height: 450px; overflow-y: auto;">
         <div style="background: #fff; border: 1px solid #808080; padding: 10px; margin-bottom: 12px;">
@@ -459,6 +540,142 @@
       </div>
     </div>
 
+    <!-- Notepad Window -->
+    <div class="window" id="window-notepad" data-app="notepad" style="top: 60px; left: 150px; width: 550px;">
+      <div class="window-titlebar" onmousedown="startDrag(event, 'window-notepad')">
+        <img src="https://win98icons.alexmeub.com/icons/png/notepad-2.png" style="width:16px;height:16px;">
+        <span class="window-title">Untitled - Notepad</span>
+        <div class="window-controls">
+          <button class="window-btn minimize" onclick="minimizeWindow('notepad')">_</button>
+          <button class="window-btn maximize" onclick="maximizeWindow('notepad')">□</button>
+          <button class="window-btn close" onclick="closeWindow('notepad')">✕</button>
+        </div>
+      </div>
+      <div class="window-content notepad-app" style="padding: 0; display: block; height: 400px;">
+        <!-- apps.js will populate this -->
+      </div>
+    </div>
+
+    <!-- Calculator Window -->
+    <div class="window" id="window-calculator" data-app="calculator" style="top: 80px; left: 400px; width: 260px;">
+      <div class="window-titlebar" onmousedown="startDrag(event, 'window-calculator')">
+        <img src="https://win98icons.alexmeub.com/icons/png/calculator-0.png" style="width:16px;height:16px;">
+        <span class="window-title">Calculator</span>
+        <div class="window-controls">
+          <button class="window-btn minimize" onclick="minimizeWindow('calculator')">_</button>
+          <button class="window-btn maximize" onclick="maximizeWindow('calculator')">□</button>
+          <button class="window-btn close" onclick="closeWindow('calculator')">✕</button>
+        </div>
+      </div>
+      <div class="window-content calculator-app" style="padding: 0; display: block;">
+        <!-- apps.js will populate this -->
+      </div>
+    </div>
+
+    <!-- Paint Window -->
+    <div class="window" id="window-paint" data-app="paint" style="top: 30px; left: 120px; width: 700px;">
+      <div class="window-titlebar" onmousedown="startDrag(event, 'window-paint')">
+        <img src="https://win98icons.alexmeub.com/icons/png/paint_file-0.png" style="width:16px;height:16px;">
+        <span class="window-title">untitled - Paint</span>
+        <div class="window-controls">
+          <button class="window-btn minimize" onclick="minimizeWindow('paint')">_</button>
+          <button class="window-btn maximize" onclick="maximizeWindow('paint')">□</button>
+          <button class="window-btn close" onclick="closeWindow('paint')">✕</button>
+        </div>
+      </div>
+      <div class="window-content paint-app" style="padding: 0; display: block; height: 500px;">
+        <!-- apps.js will populate this -->
+      </div>
+    </div>
+
+    <!-- Minesweeper Window -->
+    <div class="window" id="window-minesweeper" data-app="minesweeper" style="top: 100px; left: 350px; width: 300px;">
+      <div class="window-titlebar" onmousedown="startDrag(event, 'window-minesweeper')">
+        <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png" style="width:16px;height:16px;">
+        <span class="window-title">Minesweeper</span>
+        <div class="window-controls">
+          <button class="window-btn minimize" onclick="minimizeWindow('minesweeper')">_</button>
+          <button class="window-btn maximize" onclick="maximizeWindow('minesweeper')">□</button>
+          <button class="window-btn close" onclick="closeWindow('minesweeper')">✕</button>
+        </div>
+      </div>
+      <div class="window-content minesweeper-app" style="padding: 0; display: block;">
+        <!-- apps.js will populate this -->
+      </div>
+    </div>
+
+    <!-- My Computer Window -->
+    <div class="window" id="window-mycomputer" style="top: 50px; left: 200px; width: 550px;">
+      <div class="window-titlebar" onmousedown="startDrag(event, 'window-mycomputer')">
+        <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-0.png" style="width:16px;height:16px;">
+        <span class="window-title">My Computer</span>
+        <div class="window-controls">
+          <button class="window-btn minimize" onclick="minimizeWindow('mycomputer')">_</button>
+          <button class="window-btn maximize" onclick="maximizeWindow('mycomputer')">□</button>
+          <button class="window-btn close" onclick="closeWindow('mycomputer')">✕</button>
+        </div>
+      </div>
+      <div class="window-menubar">
+        <span class="menu-item">File</span>
+        <span class="menu-item">Edit</span>
+        <span class="menu-item">View</span>
+        <span class="menu-item">Favorites</span>
+        <span class="menu-item">Tools</span>
+        <span class="menu-item">Help</span>
+      </div>
+      <div class="window-content" style="padding: 16px;">
+        <div class="xp-sidebar">
+          <div class="sidebar-section">
+            <div class="sidebar-header">System Tasks</div>
+            <div class="sidebar-content">
+              <div class="sidebar-link" onclick="openWindow('about'); playClick();">View system information</div>
+              <div class="sidebar-link" onclick="playClick();">Add or remove programs</div>
+            </div>
+          </div>
+        </div>
+        <div class="main-content">
+          <div class="content-header">Files Stored on This Computer</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, 80px); gap: 12px; padding: 10px;">
+            <div class="desktop-icon" style="position:static" ondblclick="openWindow('pepmaxx'); playClick();" onclick="playClick();">
+              <img src="https://win98icons.alexmeub.com/icons/png/hard_disk_drive-0.png">
+              <span>Local Disk (C:)</span>
+            </div>
+            <div class="desktop-icon" style="position:static" ondblclick="openWindow('peakrevival'); playClick();" onclick="playClick();">
+              <img src="https://win98icons.alexmeub.com/icons/png/hard_disk_drive-0.png">
+              <span>Projects (D:)</span>
+            </div>
+            <div class="desktop-icon" style="position:static" onclick="playClick();">
+              <img src="https://win98icons.alexmeub.com/icons/png/cd_drive-0.png">
+              <span>CD Drive (E:)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recycle Bin Window -->
+    <div class="window" id="window-recyclebin" style="top: 70px; left: 250px; width: 480px;">
+      <div class="window-titlebar" onmousedown="startDrag(event, 'window-recyclebin')">
+        <img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_empty-4.png" style="width:16px;height:16px;">
+        <span class="window-title">Recycle Bin</span>
+        <div class="window-controls">
+          <button class="window-btn minimize" onclick="minimizeWindow('recyclebin')">_</button>
+          <button class="window-btn maximize" onclick="maximizeWindow('recyclebin')">□</button>
+          <button class="window-btn close" onclick="closeWindow('recyclebin')">✕</button>
+        </div>
+      </div>
+      <div class="window-menubar">
+        <span class="menu-item">File</span>
+        <span class="menu-item">Edit</span>
+        <span class="menu-item">View</span>
+        <span class="menu-item">Help</span>
+      </div>
+      <div class="window-content" style="padding: 40px; text-align: center; display: block; min-height: 200px;">
+        <img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_empty-4.png" style="width: 48px; height: 48px; opacity: 0.4; margin-bottom: 10px;">
+        <p style="color: #808080; font-size: 12px;">Recycle Bin is empty.</p>
+      </div>
+    </div>
+
     <!-- Taskbar -->
     <div class="taskbar">
       <button class="start-button" id="start-btn" onclick="toggleStartMenu(); playStartSound();">
@@ -520,9 +737,36 @@
             <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png">
             <span>3D Pinball</span>
           </div>
-          <div class="all-programs" onclick="playClick();">
+          <div class="all-programs" id="all-programs-btn" onclick="toggleAllPrograms(); playClick();">
             <span>All Programs</span>
-            <span>▶</span>
+            <span class="all-programs-arrow">▶</span>
+          </div>
+          <div class="all-programs-submenu" id="all-programs-submenu">
+            <div class="start-item small" onclick="openWindow('notepad'); toggleStartMenu(); playClick();">
+              <img src="https://win98icons.alexmeub.com/icons/png/notepad-2.png">
+              <span>Notepad</span>
+            </div>
+            <div class="start-item small" onclick="openWindow('calculator'); toggleStartMenu(); playClick();">
+              <img src="https://win98icons.alexmeub.com/icons/png/calculator-0.png">
+              <span>Calculator</span>
+            </div>
+            <div class="start-item small" onclick="openWindow('paint'); toggleStartMenu(); playClick();">
+              <img src="https://win98icons.alexmeub.com/icons/png/paint_file-0.png">
+              <span>Paint</span>
+            </div>
+            <div class="start-item small" onclick="openWindow('minesweeper'); toggleStartMenu(); playClick();">
+              <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png">
+              <span>Minesweeper</span>
+            </div>
+            <div class="start-separator"></div>
+            <div class="start-item small" onclick="openWindow('pinball'); toggleStartMenu(); playClick();">
+              <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png">
+              <span>3D Pinball</span>
+            </div>
+            <div class="start-item small" onclick="openWindow('mycomputer'); toggleStartMenu(); playClick();">
+              <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-0.png">
+              <span>My Computer</span>
+            </div>
           </div>
         </div>
         <div class="start-right">
@@ -537,6 +781,14 @@
           <div class="start-item small" onclick="window.open('https://github.com/ergophobian', '_blank'); playClick();">
             <img src="https://win98icons.alexmeub.com/icons/png/html-0.png">
             <span>GitHub</span>
+          </div>
+          <div class="start-item small" onclick="openWindow('mycomputer'); toggleStartMenu(); playClick();">
+            <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-0.png">
+            <span>My Computer</span>
+          </div>
+          <div class="start-item small" onclick="openWindow('recyclebin'); toggleStartMenu(); playClick();">
+            <img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_empty-4.png">
+            <span>Recycle Bin</span>
           </div>
           <div class="start-separator"></div>
           <div class="start-item small" onclick="playClick();">
@@ -622,8 +874,21 @@
 
   <!-- Custom XP Scripts -->
   <script src="script.js"></script>
+  <script src="apps.js"></script>
+  <script src="context-menu.js"></script>
 
   <!-- Hidden YouTube Player -->
   <div id="yt-player" style="position: absolute; left: -9999px; top: -9999px;"></div>
+
+  <script>
+  function showAboutTab(tab) {
+    ['general','skills','experience'].forEach(t => {
+      document.getElementById('about-panel-' + t).style.display = t === tab ? 'block' : 'none';
+      const btn = document.getElementById('about-tab-' + t);
+      btn.style.fontWeight = t === tab ? 'bold' : 'normal';
+      btn.style.background = t === tab ? '#fff' : '';
+    });
+  }
+  </script>
 </body>
 </html>

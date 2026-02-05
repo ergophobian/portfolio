@@ -7,6 +7,12 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='r' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff5f5f'/%3E%3Cstop offset='100%25' stop-color='%23cc0000'/%3E%3C/linearGradient%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2355ff55'/%3E%3Cstop offset='100%25' stop-color='%2300aa00'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235599ff'/%3E%3Cstop offset='100%25' stop-color='%230044cc'/%3E%3C/linearGradient%3E%3ClinearGradient id='y' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffee55'/%3E%3Cstop offset='100%25' stop-color='%23ccaa00'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2' y='2' width='13' height='13' rx='2' fill='url(%23r)'/%3E%3Crect x='17' y='2' width='13' height='13' rx='2' fill='url(%23g)'/%3E%3Crect x='2' y='17' width='13' height='13' rx='2' fill='url(%23b)'/%3E%3Crect x='17' y='17' width='13' height='13' rx='2' fill='url(%23y)'/%3E%3C/svg%3E">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/FXAAShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
   <style>
     * {
@@ -469,8 +475,10 @@
     }
 
     // Three.js Scene
-    let scene, camera, renderer, controls;
+    let scene, camera, renderer, controls, composer, fxaaPass;
     let screenMesh; // Reference to clickable screen
+    let screenLight; // Screen glow light (for flicker)
+    let steamParticles = []; // Coffee steam particles
     let isZooming = false;
     let isInDesktop = false;
 
@@ -520,10 +528,27 @@
       directionalLight.shadow.mapSize.height = 2048;
       scene.add(directionalLight);
 
+      // Hemisphere light (sky blue top, warm brown bottom)
+      const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x3B2507, 0.4);
+      scene.add(hemiLight);
+
       // Add slight point light on screen for glow effect
-      const screenLight = new THREE.PointLight(0x4488ff, 0.5, 3);
+      screenLight = new THREE.PointLight(0x4488ff, 0.5, 3);
       screenLight.position.set(0, 1.15, 0.5);
       scene.add(screenLight);
+
+      // Rim light behind monitor
+      const rimLight = new THREE.PointLight(0x4488ff, 0.8, 4);
+      rimLight.position.set(0, 1.5, -0.5);
+      scene.add(rimLight);
+
+      // Warm fill light
+      const warmFill = new THREE.PointLight(0xffaa44, 0.3, 5);
+      warmFill.position.set(-2, 2, 1);
+      scene.add(warmFill);
+
+      // Fog
+      scene.fog = new THREE.FogExp2(0x87CEEB, 0.02);
 
       // Create scene objects
       createRoom();
@@ -532,11 +557,29 @@
       createKeyboard();
       createMouse();
       createDecorations();
+      createSleepingCharacter();
       createCats();
 
       // Mouse/click events
       renderer.domElement.addEventListener('click', onMouseClick);
       renderer.domElement.addEventListener('mousemove', onMouseMove);
+
+      // Post-processing pipeline
+      composer = new THREE.EffectComposer(renderer);
+      composer.addPass(new THREE.RenderPass(scene, camera));
+
+      const bloomPass = new THREE.UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        0.3,  // strength (subtle)
+        0.4,  // radius
+        0.85  // threshold
+      );
+      composer.addPass(bloomPass);
+
+      // FXAA anti-aliasing
+      fxaaPass = new THREE.ShaderPass(THREE.FXAAShader);
+      fxaaPass.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
+      composer.addPass(fxaaPass);
 
       // Start animation
       animate();
@@ -944,7 +987,26 @@
     }
 
     function createDesk() {
+      // Procedural wood grain texture
+      const woodCanvas = document.createElement('canvas');
+      woodCanvas.width = 256; woodCanvas.height = 256;
+      const wCtx = woodCanvas.getContext('2d');
+      wCtx.fillStyle = '#5C4033';
+      wCtx.fillRect(0, 0, 256, 256);
+      // Add wood grain lines
+      for (let i = 0; i < 40; i++) {
+        wCtx.strokeStyle = `rgba(80, 50, 30, ${0.1 + Math.random() * 0.15})`;
+        wCtx.lineWidth = 1 + Math.random() * 2;
+        wCtx.beginPath();
+        const y = i * 6 + Math.random() * 4;
+        wCtx.moveTo(0, y);
+        wCtx.bezierCurveTo(64, y + Math.random()*4, 192, y - Math.random()*4, 256, y + Math.random()*3);
+        wCtx.stroke();
+      }
+      const woodTexture = new THREE.CanvasTexture(woodCanvas);
+
       const deskMaterial = new THREE.MeshStandardMaterial({
+        map: woodTexture,
         color: 0x5C4033,
         roughness: 0.7
       });
@@ -1223,11 +1285,12 @@
     function createMouse() {
       const mouseMaterial = new THREE.MeshStandardMaterial({ color: 0xD4C5A9, roughness: 0.5 });
 
-      const mouseGeometry = new THREE.BoxGeometry(0.06, 0.025, 0.1);
-      const mouseMesh = new THREE.Mesh(mouseGeometry, mouseMaterial);
-      mouseMesh.position.set(0.5, 0.55, 0.45);
-      mouseMesh.castShadow = true;
-      scene.add(mouseMesh);
+      const mouseGeometry = new THREE.SphereGeometry(0.04, 12, 8);
+      const mouseMeshObj = new THREE.Mesh(mouseGeometry, mouseMaterial);
+      mouseMeshObj.scale.set(0.8, 0.3, 1.2);
+      mouseMeshObj.position.set(0.5, 0.55, 0.45);
+      mouseMeshObj.castShadow = true;
+      scene.add(mouseMeshObj);
 
       // Cable
       const cableGeometry = new THREE.CylinderGeometry(0.005, 0.005, 0.3, 8);
@@ -1236,6 +1299,114 @@
       cable.position.set(0.5, 0.54, 0.25);
       cable.rotation.x = Math.PI / 2;
       scene.add(cable);
+    }
+
+    function createSleepingCharacter() {
+      // Sleeping person at the desk - Kyle asleep on the keyboard
+      const charGroup = new THREE.Group();
+
+      const skinMat = new THREE.MeshStandardMaterial({ color: 0xf4c5a0, roughness: 0.8 });
+      const hairMat = new THREE.MeshStandardMaterial({ color: 0x2a1a0a, roughness: 0.9 });
+      const shirtMat = new THREE.MeshStandardMaterial({ color: 0x1a1a2e, roughness: 0.7 });
+      const pantsMat = new THREE.MeshStandardMaterial({ color: 0x2a2a3a, roughness: 0.7 });
+
+      // Torso (leaning forward, chest resting near desk edge)
+      const torso = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.35, 0.22), shirtMat);
+      torso.position.set(0, 0.72, 0.7);
+      torso.rotation.x = 0.6; // Leaning forward onto desk
+      charGroup.add(torso);
+
+      // Head (face down on the desk, resting on arms)
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.1, 10, 10), skinMat);
+      head.scale.set(1, 0.9, 1);
+      head.position.set(0, 0.6, 0.42);
+      charGroup.add(head);
+
+      // Hair on top/back of head
+      const hair = new THREE.Mesh(new THREE.SphereGeometry(0.105, 10, 10, 0, Math.PI * 2, 0, Math.PI * 0.6), hairMat);
+      hair.position.set(0, 0.63, 0.42);
+      charGroup.add(hair);
+
+      // Left arm (stretched forward on desk)
+      const leftArm = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.06, 0.32), shirtMat);
+      leftArm.position.set(-0.18, 0.56, 0.45);
+      leftArm.rotation.x = 0.1;
+      charGroup.add(leftArm);
+
+      // Right arm (stretched forward on desk, slightly different angle)
+      const rightArm = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.06, 0.32), shirtMat);
+      rightArm.position.set(0.18, 0.56, 0.45);
+      rightArm.rotation.x = 0.1;
+      rightArm.rotation.y = -0.05;
+      charGroup.add(rightArm);
+
+      // Left hand
+      const leftHand = new THREE.Mesh(new THREE.SphereGeometry(0.035, 8, 8), skinMat);
+      leftHand.scale.set(1.2, 0.6, 1.3);
+      leftHand.position.set(-0.18, 0.56, 0.28);
+      charGroup.add(leftHand);
+
+      // Right hand
+      const rightHand = new THREE.Mesh(new THREE.SphereGeometry(0.035, 8, 8), skinMat);
+      rightHand.scale.set(1.2, 0.6, 1.3);
+      rightHand.position.set(0.18, 0.56, 0.28);
+      charGroup.add(rightHand);
+
+      // Upper legs (seated in chair, slightly visible)
+      const leftLeg = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, 0.35), pantsMat);
+      leftLeg.position.set(-0.1, 0.42, 0.85);
+      leftLeg.rotation.x = 0.1;
+      charGroup.add(leftLeg);
+
+      const rightLeg = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, 0.35), pantsMat);
+      rightLeg.position.set(0.1, 0.42, 0.85);
+      rightLeg.rotation.x = 0.1;
+      charGroup.add(rightLeg);
+
+      // Lower legs (hanging under desk)
+      const leftShin = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.3, 0.1), pantsMat);
+      leftShin.position.set(-0.1, 0.22, 0.95);
+      charGroup.add(leftShin);
+
+      const rightShin = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.3, 0.1), pantsMat);
+      rightShin.position.set(0.1, 0.22, 0.95);
+      charGroup.add(rightShin);
+
+      // Shoes
+      const shoeMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.5 });
+      const leftShoe = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.06, 0.15), shoeMat);
+      leftShoe.position.set(-0.1, 0.07, 0.98);
+      charGroup.add(leftShoe);
+
+      const rightShoe = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.06, 0.15), shoeMat);
+      rightShoe.position.set(0.1, 0.07, 0.98);
+      charGroup.add(rightShoe);
+
+      // Subtle breathing animation (slight rise/fall of torso)
+      charGroup.userData = { breathPhase: 0 };
+      charGroup.name = 'sleepingCharacter';
+
+      scene.add(charGroup);
+
+      // Floating "Z" particles for sleeping effect
+      const zCanvas = document.createElement('canvas');
+      zCanvas.width = 64; zCanvas.height = 64;
+      const zCtx = zCanvas.getContext('2d');
+      zCtx.fillStyle = '#ffffff';
+      zCtx.font = 'bold 48px Arial';
+      zCtx.textAlign = 'center';
+      zCtx.fillText('Z', 32, 50);
+      const zTexture = new THREE.CanvasTexture(zCanvas);
+
+      const zMat = new THREE.SpriteMaterial({ map: zTexture, transparent: true, opacity: 0.6 });
+      for (let i = 0; i < 3; i++) {
+        const z = new THREE.Sprite(zMat.clone());
+        z.scale.set(0.06 + i * 0.02, 0.06 + i * 0.02, 1);
+        z.position.set(0.15, 0.75 + i * 0.12, 0.35);
+        z.userData = { baseY: 0.75 + i * 0.12, phase: i * 1.2, idx: i };
+        z.name = 'zzz_' + i;
+        scene.add(z);
+      }
     }
 
     function createDecorations() {
@@ -1258,19 +1429,38 @@
         scene.add(leaf);
       }
 
-      // Coffee mug
+      // Coffee mug (rounder with handle)
       const mugMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.3 });
-      const mugGeometry = new THREE.CylinderGeometry(0.05, 0.04, 0.1, 16);
+      const mugGeometry = new THREE.CylinderGeometry(0.05, 0.04, 0.1, 24);
       const mug = new THREE.Mesh(mugGeometry, mugMaterial);
       mug.position.set(1.1, 0.59, 0.3);
       mug.castShadow = true;
       scene.add(mug);
 
-      const coffeeGeometry = new THREE.CylinderGeometry(0.04, 0.04, 0.02, 16);
+      // Mug handle (torus)
+      const handle = new THREE.Mesh(
+        new THREE.TorusGeometry(0.025, 0.006, 8, 12, Math.PI),
+        mugMaterial
+      );
+      handle.rotation.y = Math.PI / 2;
+      handle.position.set(1.15, 0.59, 0.3);
+      scene.add(handle);
+
+      const coffeeGeometry = new THREE.CylinderGeometry(0.04, 0.04, 0.02, 24);
       const coffeeMaterial = new THREE.MeshStandardMaterial({ color: 0x3C1810, roughness: 0.2 });
       const coffee = new THREE.Mesh(coffeeGeometry, coffeeMaterial);
       coffee.position.set(1.1, 0.63, 0.3);
       scene.add(coffee);
+
+      // Steam particles above coffee
+      const steamMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.15 });
+      for (let i = 0; i < 8; i++) {
+        const steam = new THREE.Mesh(new THREE.SphereGeometry(0.008, 6, 6), steamMat.clone());
+        steam.position.set(1.1 + (Math.random()-0.5)*0.03, 0.65 + Math.random()*0.1, 0.3 + (Math.random()-0.5)*0.03);
+        steam.userData = { baseY: steam.position.y, phase: Math.random() * Math.PI * 2, speed: 0.3 + Math.random() * 0.3 };
+        steamParticles.push(steam);
+        scene.add(steam);
+      }
 
       // Add workspace details (gaming chair, headphones, energy drinks, etc.)
       createWorkspaceDetails();
@@ -1281,9 +1471,9 @@
 
       // === GAMING CHAIR (empty, slightly pushed back) ===
       const chairGroup = new THREE.Group();
-      const chairMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.3 });
-      const chairRed = new THREE.MeshStandardMaterial({ color: 0xcc2222, roughness: 0.4 }); // Red accent
-      const metalMat = new THREE.MeshStandardMaterial({ color: 0x666666, metalness: 0.6, roughness: 0.3 });
+      const chairMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.2, metalness: 0.1 });
+      const chairRed = new THREE.MeshStandardMaterial({ color: 0xff2222, roughness: 0.3 }); // Vibrant red accent
+      const metalMat = new THREE.MeshStandardMaterial({ color: 0x666666, metalness: 0.7, roughness: 0.2 });
 
       // Seat cushion
       const seat = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.08, 0.45), chairMat);
@@ -1391,9 +1581,9 @@
       scene.add(hpGroup);
 
       // === ENERGY DRINK CANS ===
-      const canMat1 = new THREE.MeshStandardMaterial({ color: 0x00ff88, metalness: 0.4, roughness: 0.3 }); // Monster green
-      const canMat2 = new THREE.MeshStandardMaterial({ color: 0x0066ff, metalness: 0.4, roughness: 0.3 }); // Blue
-      const canTop = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.6, roughness: 0.2 });
+      const canMat1 = new THREE.MeshStandardMaterial({ color: 0x00ff88, metalness: 0.6, roughness: 0.15 }); // Monster green
+      const canMat2 = new THREE.MeshStandardMaterial({ color: 0x0066ff, metalness: 0.6, roughness: 0.15 }); // Blue
+      const canTop = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.7, roughness: 0.15 });
 
       // Can 1 (standing)
       const can1 = new THREE.Group();
@@ -1693,13 +1883,56 @@
         }
       });
 
-      renderer.render(scene, camera);
+      // Animate coffee steam
+      steamParticles.forEach(s => {
+        s.position.y += 0.001 * s.userData.speed;
+        s.material.opacity = 0.15 * (1 - (s.position.y - s.userData.baseY) / 0.15);
+        if (s.position.y > s.userData.baseY + 0.15) {
+          s.position.y = s.userData.baseY;
+          s.position.x = 1.1 + (Math.random()-0.5)*0.03;
+        }
+      });
+
+      // Animate floating Z's
+      for (let i = 0; i < 3; i++) {
+        const z = scene.getObjectByName('zzz_' + i);
+        if (z) {
+          z.position.y = z.userData.baseY + Math.sin(time * 0.8 + z.userData.phase) * 0.06;
+          z.position.x = 0.15 + Math.sin(time * 0.5 + z.userData.phase) * 0.04;
+          z.material.opacity = 0.3 + Math.sin(time + z.userData.phase) * 0.2;
+        }
+      }
+
+      // Animate sleeping character breathing
+      const sleeper = scene.getObjectByName('sleepingCharacter');
+      if (sleeper) {
+        sleeper.userData.breathPhase += 0.02;
+        // Subtle torso rise/fall
+        if (sleeper.children[0]) {
+          sleeper.children[0].position.y = 0.72 + Math.sin(sleeper.userData.breathPhase) * 0.008;
+        }
+        // Head bobs very slightly
+        if (sleeper.children[1]) {
+          sleeper.children[1].position.y = 0.6 + Math.sin(sleeper.userData.breathPhase) * 0.005;
+        }
+      }
+
+      // Subtle screen flicker
+      if (screenLight) {
+        screenLight.intensity = 0.5 + Math.sin(time * 3) * 0.02 + Math.random() * 0.01;
+      }
+
+      composer.render();
     }
 
     function onWindowResize() {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+      if (fxaaPass) {
+        fxaaPass.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
+      }
     }
 
     window.addEventListener('resize', onWindowResize);
@@ -1717,6 +1950,11 @@
         exitDesktop();
       }
     });
+
+    // Mobile redirect
+    if (/Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768) {
+      window.location.href = 'mobile.html';
+    }
 
     // Initialize
     init();
