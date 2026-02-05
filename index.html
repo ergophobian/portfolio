@@ -1070,12 +1070,6 @@
         ctx.fill();
       });
 
-      // Scan lines effect (subtle)
-      ctx.fillStyle = 'rgba(0,0,0,0.03)';
-      for (let y = 0; y < canvas.height; y += 2) {
-        ctx.fillRect(0, y, canvas.width, 1);
-      }
-
       // Slight screen curvature vignette
       const vignetteGrad = ctx.createRadialGradient(
         canvas.width/2, canvas.height/2, canvas.width * 0.3,
@@ -1714,4 +1708,4 @@
   </script>
 </body>
 </html>
-<!-- cache bust 1770289001 -->
+<!-- cache bust 1770290555 -->
