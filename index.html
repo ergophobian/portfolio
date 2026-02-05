@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kyle Kumar | Desktop</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
 
@@ -716,6 +717,19 @@
 
     .tray-btn:active {
       background: rgba(0,0,0,0.1);
+    }
+
+    .tray-btn.music-btn .tray-icon {
+      transition: transform 0.3s;
+    }
+
+    .tray-btn.music-btn.playing .tray-icon {
+      animation: musicPulse 0.5s ease infinite;
+    }
+
+    @keyframes musicPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
     }
 
     .tray-icon {
@@ -1803,6 +1817,9 @@
       </div>
       <div class="taskbar-apps" id="taskbar-apps"></div>
       <div class="system-tray">
+        <div class="tray-btn music-btn" id="music-btn" onclick="toggleMusic(); playClick();" title="Toggle Background Music">
+          <img class="tray-icon" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='50%' y='70%' text-anchor='middle' fill='white' font-size='10'>🎵</text></svg>">
+        </div>
         <div class="tray-btn" onclick="toggleVolume(); playClick();">
           <img class="tray-icon" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text x='50%' y='70%' text-anchor='middle' fill='white' font-size='10'>🔊</text></svg>">
         </div>
@@ -2409,6 +2426,66 @@
 
     // Start boot sequence
     window.onload = bootSequence;
+
+    // YouTube Music Player
+    let ytPlayer = null;
+    let isMusicPlaying = false;
+    let musicInitialized = false;
+
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('yt-player', {
+        height: '0',
+        width: '0',
+        videoId: 'RSFqIWudfq0',
+        playerVars: {
+          autoplay: 0,
+          loop: 1,
+          playlist: 'RSFqIWudfq0',
+          controls: 0,
+          disablekb: 1,
+          modestbranding: 1
+        },
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      ytPlayer.setVolume(30);
+      musicInitialized = true;
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.ENDED) {
+        ytPlayer.playVideo();
+      }
+    }
+
+    function toggleMusic() {
+      if (!musicInitialized || !ytPlayer) {
+        showNotification('Music', 'Music player is loading...');
+        return;
+      }
+
+      const musicBtn = document.getElementById('music-btn');
+
+      if (isMusicPlaying) {
+        ytPlayer.pauseVideo();
+        musicBtn.classList.remove('playing');
+        isMusicPlaying = false;
+        showNotification('Music', 'Music paused');
+      } else {
+        ytPlayer.playVideo();
+        musicBtn.classList.add('playing');
+        isMusicPlaying = true;
+        showNotification('Music', 'Now playing: Lofi beats 🎵');
+      }
+    }
   </script>
+
+  <!-- Hidden YouTube Player -->
+  <div id="yt-player" style="position: absolute; left: -9999px; top: -9999px;"></div>
 </body>
 </html>
