@@ -919,6 +919,103 @@
       coffee.position.set(1.1, 0.63, 0.3);
       scene.add(coffee);
 
+      // Add sleeping Kyle
+      createSleepingKyle();
+    }
+
+    // Zzz meshes for animation
+    let zzzMeshes = [];
+
+    function createSleepingKyle() {
+      const skinMaterial = new THREE.MeshStandardMaterial({ color: 0xD4A574, roughness: 0.8 }); // Lightskin
+      const hairMaterial = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.9 }); // Dark curly hair
+      const hoodieMaterial = new THREE.MeshStandardMaterial({ color: 0x2d3436, roughness: 0.7 }); // Dark hoodie
+
+      // Office Chair
+      const chairMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a });
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.08, 0.5), chairMat);
+      seat.position.set(0, -0.15, 1);
+      scene.add(seat);
+      const backRest = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.08), chairMat);
+      backRest.position.set(0, 0.1, 0.78);
+      scene.add(backRest);
+      const chairPole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.35), new THREE.MeshStandardMaterial({ color: 0x444444 }));
+      chairPole.position.set(0, -0.35, 1);
+      scene.add(chairPole);
+
+      // Torso (leaning forward on desk)
+      const torso = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.5, 0.25), hoodieMaterial);
+      torso.position.set(0, 0.25, 0.7);
+      torso.rotation.x = 1; // Leaning forward
+      scene.add(torso);
+
+      // Head resting on arms on desk
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 16), skinMaterial);
+      head.position.set(0.15, 0.68, 0.55);
+      head.scale.set(1, 0.9, 1);
+      scene.add(head);
+
+      // Curly hair (lots of small dark spheres)
+      for (let i = 0; i < 30; i++) {
+        const curl = new THREE.Mesh(new THREE.SphereGeometry(0.025 + Math.random() * 0.015, 6, 6), hairMaterial);
+        const theta = Math.random() * Math.PI * 0.8;
+        const phi = Math.random() * Math.PI * 2;
+        curl.position.set(
+          0.15 + Math.sin(theta) * Math.cos(phi) * 0.14,
+          0.68 + Math.cos(theta) * 0.11 + 0.04,
+          0.55 + Math.sin(theta) * Math.sin(phi) * 0.1
+        );
+        scene.add(curl);
+      }
+
+      // Arms resting on desk
+      const armGeo = new THREE.CapsuleGeometry ? new THREE.SphereGeometry(0.06, 8, 8) : new THREE.SphereGeometry(0.06, 8, 8);
+      const leftArm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.25), hoodieMaterial);
+      leftArm.position.set(-0.15, 0.58, 0.5);
+      scene.add(leftArm);
+      const rightArm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.25), hoodieMaterial);
+      rightArm.position.set(0.15, 0.58, 0.5);
+      scene.add(rightArm);
+
+      // Hands
+      const leftHand = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 8), skinMaterial);
+      leftHand.position.set(-0.15, 0.58, 0.38);
+      scene.add(leftHand);
+      const rightHand = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 8), skinMaterial);
+      rightHand.position.set(0.15, 0.58, 0.38);
+      scene.add(rightHand);
+
+      // Drool drop
+      const drool = new THREE.Mesh(
+        new THREE.SphereGeometry(0.02, 8, 8),
+        new THREE.MeshStandardMaterial({ color: 0xaaddff, transparent: true, opacity: 0.6, roughness: 0.1 })
+      );
+      drool.position.set(0.25, 0.58, 0.6);
+      scene.add(drool);
+
+      // Zzz floating
+      createZzz();
+    }
+
+    function createZzz() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 64;
+      canvas.height = 64;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 50px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Z', 32, 50);
+      const texture = new THREE.CanvasTexture(canvas);
+
+      for (let i = 0; i < 3; i++) {
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.7 }));
+        sprite.scale.set(0.12 + i * 0.06, 0.12 + i * 0.06, 1);
+        sprite.position.set(0.4 + i * 0.12, 0.9 + i * 0.18, 0.55);
+        sprite.userData = { baseY: 0.9 + i * 0.18, offset: i * 0.7, index: i };
+        zzzMeshes.push(sprite);
+        scene.add(sprite);
+      }
     }
 
     // Mouse move - check if hovering screen
@@ -1107,6 +1204,12 @@
           if (Math.abs(cat.position.x) > 5) cat.userData.direction = Math.PI - cat.userData.direction;
           if (cat.position.z < 0.5 || cat.position.z > 5) cat.userData.direction = -cat.userData.direction;
         }
+      });
+
+      // Animate Zzz floating up
+      zzzMeshes.forEach((z, i) => {
+        z.position.y = z.userData.baseY + Math.sin(time * 2 + z.userData.offset) * 0.1;
+        z.material.opacity = 0.4 + Math.sin(time * 3 + z.userData.offset) * 0.3;
       });
 
       renderer.render(scene, camera);
