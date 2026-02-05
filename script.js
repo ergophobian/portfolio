@@ -22,24 +22,23 @@
     function playSoftClick() {
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        // Create white noise burst for realistic click
-        const bufferSize = audioCtx.sampleRate * 0.03; // 30ms
+        const bufferSize = audioCtx.sampleRate * 0.025; // 25ms
         const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
         const data = buffer.getChannelData(0);
         for (let i = 0; i < bufferSize; i++) {
-          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 10);
+          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 6);
         }
         const source = audioCtx.createBufferSource();
         source.buffer = buffer;
 
         const filter = audioCtx.createBiquadFilter();
         filter.type = 'bandpass';
-        filter.frequency.value = 3500;
-        filter.Q.value = 0.7;
+        filter.frequency.value = 4000;
+        filter.Q.value = 1.0;
 
         const gain = audioCtx.createGain();
-        gain.gain.setValueAtTime(0.15 * globalVolume, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+        gain.gain.setValueAtTime(0.5 * globalVolume, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.025);
 
         source.connect(filter);
         filter.connect(gain);
@@ -907,8 +906,9 @@
 
     function switchToGamesDesktop() {
       const desktop = document.getElementById('desktop');
-      const normalIcons = document.querySelector('.icons-container');
+      const normalIcons = document.querySelector('.icons-container:not(#games-icons)');
       const gamesIcons = document.getElementById('games-icons');
+      const taskbar = document.querySelector('.taskbar');
       const loadingOverlay = document.getElementById('games-loading');
 
       if (!gamesIcons) return;
@@ -916,18 +916,20 @@
       // Show loading bar
       if (loadingOverlay) {
         loadingOverlay.style.display = 'flex';
-        loadingOverlay.querySelector('.games-load-bar-fill').style.width = '0%';
-        setTimeout(() => {
-          loadingOverlay.querySelector('.games-load-bar-fill').style.width = '100%';
-        }, 50);
+        const fill = loadingOverlay.querySelector('.games-load-bar-fill');
+        if (fill) {
+          fill.style.width = '0%';
+          setTimeout(() => { fill.style.width = '100%'; }, 50);
+        }
       }
 
       setTimeout(() => {
-        // Hide normal icons, show games icons
+        // Hide everything except games
         if (normalIcons) normalIcons.style.display = 'none';
+        if (taskbar) taskbar.style.display = 'none';
         if (gamesIcons) gamesIcons.style.display = 'flex';
 
-        // Switch wallpaper
+        // Switch wallpaper to classic XP blue
         desktop.classList.add('games-mode');
         isGamesMode = true;
 
@@ -940,11 +942,13 @@
 
     function switchToNormalDesktop() {
       const desktop = document.getElementById('desktop');
-      const normalIcons = document.querySelector('.icons-container');
+      const normalIcons = document.querySelector('.icons-container:not(#games-icons)');
       const gamesIcons = document.getElementById('games-icons');
+      const taskbar = document.querySelector('.taskbar');
 
       if (normalIcons) normalIcons.style.display = 'flex';
       if (gamesIcons) gamesIcons.style.display = 'none';
+      if (taskbar) taskbar.style.display = '';
 
       desktop.classList.remove('games-mode');
       isGamesMode = false;
@@ -977,8 +981,18 @@
         showNotification('Welcome!', 'Click Start to explore my portfolio.');
       }, 1500);
 
-      // Auto-start music after boot completes - keep trying until it works
+      // Auto-start music after boot - but not if parent already plays music
       function startMusic() {
+        // If in iframe and parent already has music playing, just sync state
+        if (inIframe) {
+          try {
+            if (window.parent.isMusicPlaying) {
+              isMusicPlaying = true;
+              document.getElementById('music-btn').classList.add('playing');
+              return;
+            }
+          } catch(e) {}
+        }
         if (musicInitialized && ytPlayer) {
           ytPlayer.playVideo();
           document.getElementById('music-btn').classList.add('playing');
@@ -1013,7 +1027,16 @@
     let isMusicPlaying = false;
     let musicInitialized = false;
 
+    // Check if parent (index.html) already has a YouTube player
+    const inIframe = window.self !== window.top;
+    let parentPlayer = null;
+
+    if (inIframe) {
+      try { parentPlayer = window.parent.ytPlayer; } catch(e) {}
+    }
+
     window.onYouTubeIframeAPIReady = function() {
+      if (musicInitialized) return; // Prevent duplicate players
       ytPlayer = new YT.Player('yt-player', {
         height: '0',
         width: '0',
@@ -1035,7 +1058,6 @@
 
     function onPlayerReady(event) {
       ytPlayer.setVolume(50);
-      // Don't autoplay here - let finishBoot() handle it after Windows intro
       musicInitialized = true;
       isMusicPlaying = false;
     }
@@ -1046,16 +1068,44 @@
       }
     }
 
-    // Retry YouTube player initialization if it hasn't loaded
-    setTimeout(function() {
-      if (!musicInitialized && typeof YT !== 'undefined' && YT.Player) {
-        console.log('Retrying YouTube player initialization...');
-        window.onYouTubeIframeAPIReady();
-      }
-    }, 8000);
+    // If in iframe and parent has music, use parent's player instead
+    if (inIframe) {
+      try {
+        if (window.parent.ytPlayer && window.parent.musicInitialized) {
+          // Parent already handles music - just sync our state
+          musicInitialized = true;
+          isMusicPlaying = window.parent.isMusicPlaying || false;
+          ytPlayer = window.parent.ytPlayer;
+        }
+      } catch(e) {}
+    }
 
     function toggleMusic() {
-      // If not initialized, try to create player on the spot
+      // Try to use parent's player if in iframe
+      if (inIframe) {
+        try {
+          const pp = window.parent.ytPlayer;
+          if (pp) {
+            const musicBtn = document.getElementById('music-btn');
+            if (window.parent.isMusicPlaying) {
+              pp.pauseVideo();
+              window.parent.isMusicPlaying = false;
+              isMusicPlaying = false;
+              if (musicBtn) musicBtn.classList.remove('playing');
+              showNotification('Music', 'Music paused');
+            } else {
+              pp.playVideo();
+              window.parent.isMusicPlaying = true;
+              isMusicPlaying = true;
+              if (musicBtn) musicBtn.classList.add('playing');
+              showNotification('Music', 'Now playing: Lofi beats');
+            }
+            return;
+          }
+        } catch(e) {}
+      }
+
+      // Fallback: use own player
       if (!musicInitialized || !ytPlayer) {
         if (typeof YT !== 'undefined' && YT.Player) {
           window.onYouTubeIframeAPIReady();
