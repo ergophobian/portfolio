@@ -135,6 +135,14 @@
           icon.classList.add('bounce');
           setTimeout(() => icon.classList.remove('bounce'), 300);
         }
+
+        // Load pinball only when opened (lazy load)
+        if (id === 'pinball') {
+          const frame = document.getElementById('pinball-frame');
+          if (frame && !frame.src && frame.dataset.src) {
+            frame.src = frame.dataset.src;
+          }
+        }
       }
     }
 
@@ -143,6 +151,13 @@
       if (win) {
         playWindowClose();
         win.classList.add('closing');
+
+        // Unload pinball to stop audio
+        if (id === 'pinball') {
+          const frame = document.getElementById('pinball-frame');
+          if (frame) frame.src = '';
+        }
+
         setTimeout(() => {
           win.classList.remove('active', 'closing');
           openWindows.delete(id);
