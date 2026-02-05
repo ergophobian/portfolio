@@ -123,11 +123,6 @@
         <span>Peak Revival-X</span>
       </div>
 
-      <div class="desktop-icon" data-window="upwork" ondblclick="openWindow('upwork')" onclick="selectIcon(this); playClick();">
-        <img src="https://win98icons.alexmeub.com/icons/png/briefcase-0.png">
-        <span>Upwork</span>
-      </div>
-
       <div class="desktop-icon" ondblclick="window.open('https://github.com/ergophobian', '_blank'); playClick();" onclick="selectIcon(this); playClick();">
         <img src="https://win98icons.alexmeub.com/icons/png/html-0.png">
         <span>GitHub</span>
@@ -136,6 +131,11 @@
       <div class="desktop-icon" data-window="socials" ondblclick="openWindow('socials')" onclick="selectIcon(this); playClick();">
         <img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png">
         <span>My Socials</span>
+      </div>
+
+      <div class="desktop-icon" data-window="donate" ondblclick="openWindow('donate')" onclick="selectIcon(this); playClick();">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='cg' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fbbf24'/%3E%3Cstop offset='100%25' stop-color='%23d97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cellipse cx='24' cy='38' rx='10' ry='4' fill='%23b45309'/%3E%3Crect x='14' y='22' width='20' height='16' rx='2' fill='url(%23cg)'/%3E%3Cellipse cx='24' cy='22' rx='10' ry='4' fill='%23fcd34d'/%3E%3Cellipse cx='24' cy='22' rx='7' ry='2.5' fill='%23b45309' opacity='0.3'/%3E%3Cpath d='M20 8 C20 8 18 12 18 15 C18 17.5 20.7 19.5 24 19.5 C27.3 19.5 30 17.5 30 15 C30 12 28 8 28 8' fill='none' stroke='%23999' stroke-width='1.5' opacity='0.5'/%3E%3Cpath d='M22 6 C22 6 20.5 10 20.5 13 C20.5 15 22 16.5 24 16.5 C26 16.5 27.5 15 27.5 13 C27.5 10 26 6 26 6' fill='%236b4226'/%3E%3C/svg%3E">
+        <span>Buy Me a Coffee</span>
       </div>
     </div>
 
@@ -320,63 +320,6 @@
     </div>
 
     <!-- Upwork Window -->
-    <div class="window" id="window-upwork" style="top: 50px; left: 260px; width: 580px;">
-      <div class="window-titlebar" onmousedown="startDrag(event, 'window-upwork')">
-        <img src="https://win98icons.alexmeub.com/icons/png/briefcase-0.png" style="width:16px;height:16px;">
-        <span class="window-title">Upwork - Freelance Profile</span>
-        <div class="window-controls">
-          <button class="window-btn minimize" onclick="minimizeWindow('upwork')">_</button>
-          <button class="window-btn maximize" onclick="maximizeWindow('upwork')">□</button>
-          <button class="window-btn close" onclick="closeWindow('upwork')">✕</button>
-        </div>
-      </div>
-      <div class="window-menubar">
-        <span class="menu-item">File</span>
-        <span class="menu-item">Edit</span>
-        <span class="menu-item">View</span>
-        <span class="menu-item">Help</span>
-      </div>
-      <div class="window-content">
-        <div class="xp-sidebar">
-          <div class="sidebar-section">
-            <div class="sidebar-header">💼 Services</div>
-            <div class="sidebar-content">
-              <div class="sidebar-link" onclick="playClick();">📱 App Development</div>
-              <div class="sidebar-link" onclick="playClick();">🎬 Content Creation</div>
-              <div class="sidebar-link" onclick="playClick();">📈 Social Media</div>
-              <div class="sidebar-link" onclick="playClick();">🤖 AI Automation</div>
-            </div>
-          </div>
-        </div>
-        <div class="main-content">
-          <div class="content-header">Freelance Services</div>
-          <div class="project-info">
-            <img class="project-icon" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='upw' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%2314a800'/><stop offset='100%' stop-color='%23108a00'/></linearGradient></defs><rect fill='url(%23upw)' rx='6' width='48' height='48'/><text x='50%' y='58%' text-anchor='middle' fill='white' font-size='20' font-weight='bold'>U</text></svg>">
-            <div class="project-details">
-              <h2>Upwork Freelancer</h2>
-              <p class="tagline">Top Rated Developer</p>
-              <span class="project-badge badge-live">Available</span>
-            </div>
-          </div>
-          <p class="project-description">
-            Experienced freelancer specializing in mobile app development, TikTok marketing, and AI-powered content automation.
-          </p>
-          <div class="features-box">
-            <h4>What I Offer</h4>
-            <ul>
-              <li>React Native / Expo Apps</li>
-              <li>TikTok Shop Management</li>
-              <li>UGC & AI Video Content</li>
-              <li>Social Media Growth</li>
-            </ul>
-          </div>
-          <div class="project-buttons">
-            <button class="xp-button primary" onclick="window.open('https://www.upwork.com/freelancers/~01234567890', '_blank'); playClick();">💼 Hire Me</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- About Window -->
     <div class="window" id="window-about" style="top: 90px; left: 320px; width: 540px;">
       <div class="window-titlebar" onmousedown="startDrag(event, 'window-about')">
@@ -533,6 +476,43 @@
             <a href="https://github.com/ergophobian" target="_blank" class="social-link github">@ergophobian</a>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Buy Me a Coffee Window -->
+    <div class="window" id="window-donate" style="top: 80px; left: 250px; width: 420px;">
+      <div class="window-titlebar" onmousedown="startDrag(event, 'window-donate')">
+        <img src="https://win98icons.alexmeub.com/icons/png/money_bag-0.png" style="width:16px;height:16px;">
+        <span class="window-title">Buy Me a Coffee</span>
+        <div class="window-controls">
+          <button class="window-btn minimize" onclick="minimizeWindow('donate')">_</button>
+          <button class="window-btn maximize" onclick="maximizeWindow('donate')">□</button>
+          <button class="window-btn close" onclick="closeWindow('donate')">✕</button>
+        </div>
+      </div>
+      <div class="window-content" style="padding: 16px;">
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div style="font-size: 28px; margin-bottom: 4px;">☕</div>
+          <div style="font-weight: bold; font-size: 14px; color: #333;">If you like what I do, buy me a coffee!</div>
+          <div style="font-size: 11px; color: #666; margin-top: 4px;">Every bit helps fuel late-night coding sessions</div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #808080; padding: 12px; margin-bottom: 10px;">
+          <div style="font-weight: bold; color: #0070ba; margin-bottom: 8px; font-size: 13px;">💳 PayPal</div>
+          <div style="text-align: center;">
+            <a href="https://www.paypal.com/paypalme/cheesygorditacrunch" target="_blank" onclick="playClick();" style="display: inline-block; background: #0070ba; color: #fff; padding: 8px 24px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold; border: 1px solid #005ea6; cursor: pointer;">Donate with PayPal</a>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #808080; padding: 12px;">
+          <div style="font-weight: bold; color: #9945FF; margin-bottom: 8px; font-size: 13px;">◎ Solana</div>
+          <div style="background: #f5f5f5; border: 1px solid #ccc; padding: 6px 8px; font-family: 'Courier New', monospace; font-size: 10px; word-break: break-all; margin-bottom: 8px; user-select: all; cursor: text;">C34xNtk32Ch3aP9Gb35DR4VHxvpJ7rMX5DdwsbVeqwJe</div>
+          <div style="text-align: center;">
+            <button class="xp-button" onclick="navigator.clipboard.writeText('C34xNtk32Ch3aP9Gb35DR4VHxvpJ7rMX5DdwsbVeqwJe').then(() => { this.textContent = 'Copied!'; setTimeout(() => this.textContent = 'Copy Address', 1500); }); playClick();" style="font-size: 11px; padding: 4px 16px; cursor: pointer;">Copy Address</button>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 12px; font-size: 10px; color: #999;">Thank you for the support 🙏</div>
       </div>
     </div>
 
@@ -772,10 +752,6 @@
           <div class="start-item" onclick="openWindow('pepmaxx'); toggleStartMenu(); playClick();">
             <img src="https://win98icons.alexmeub.com/icons/png/help_book_cool-0.png">
             <span>PepMaxx</span>
-          </div>
-          <div class="start-item" onclick="openWindow('upwork'); toggleStartMenu(); playClick();">
-            <img src="https://win98icons.alexmeub.com/icons/png/briefcase-0.png">
-            <span>Upwork</span>
           </div>
           <div class="start-item" onclick="openWindow('socials'); toggleStartMenu(); playClick();">
             <img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs-4.png">
