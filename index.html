@@ -2421,7 +2421,7 @@
       }
 
       chairGroup.position.set(0, 0.15, 1.1); // Pushed back from desk, raised well above terrain
-      chairGroup.rotation.y = 0.15; // Slightly angled
+      chairGroup.rotation.y = Math.PI + 0.15; // Backrest faces away from desk
       scene.add(chairGroup);
 
       // === HEADPHONES on desk ===
