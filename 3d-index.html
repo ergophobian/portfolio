@@ -16,7 +16,7 @@
 
     body {
       overflow: hidden;
-      background: #1a1a2e;
+      background: #000;
       font-family: 'Tahoma', sans-serif;
     }
 
@@ -27,6 +27,11 @@
       width: 100%;
       height: 100%;
       z-index: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    #scene-container.fade-out {
+      opacity: 0;
     }
 
     /* Info panel */
@@ -41,6 +46,12 @@
       padding: 15px 20px;
       border-radius: 5px;
       font-family: 'Courier New', monospace;
+      transition: opacity 0.3s;
+    }
+
+    .info-panel.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .info-panel h1 {
@@ -68,36 +79,28 @@
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
-      color: #888;
-      font-size: 12px;
-      background: rgba(0,0,0,0.5);
-      padding: 10px 20px;
-      border-radius: 5px;
-    }
-
-    /* Enter desktop button */
-    .enter-btn {
-      position: fixed;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
-      background: linear-gradient(180deg, #3a9431 0%, #2d7a28 100%);
       color: #fff;
-      border: 2px solid #1e5a1a;
-      padding: 15px 40px;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-      font-family: 'Tahoma', sans-serif;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-      transition: all 0.2s;
+      font-size: 14px;
+      background: rgba(0,0,0,0.7);
+      padding: 12px 25px;
+      border-radius: 8px;
+      transition: opacity 0.3s;
+      text-align: center;
     }
 
-    .enter-btn:hover {
-      background: linear-gradient(180deg, #4aab3e 0%, #3d9a35 100%);
-      transform: translateX(-50%) scale(1.05);
+    .controls-hint.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .controls-hint .main {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .controls-hint .sub {
+      font-size: 11px;
+      color: #888;
     }
 
     /* Fullscreen desktop mode */
@@ -108,11 +111,14 @@
       width: 100%;
       height: 100%;
       z-index: 1000;
-      display: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
     }
 
     .desktop-fullscreen.active {
-      display: block;
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .desktop-fullscreen iframe {
@@ -124,30 +130,70 @@
     /* Back button when in desktop mode */
     .back-btn {
       position: fixed;
-      top: 10px;
-      right: 10px;
+      top: 15px;
+      right: 15px;
       z-index: 1001;
-      background: rgba(0,0,0,0.8);
+      background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%);
       color: #fff;
-      border: 1px solid #444;
-      padding: 8px 15px;
-      font-size: 12px;
+      border: 2px solid #666;
+      padding: 10px 20px;
+      font-size: 13px;
       cursor: pointer;
-      border-radius: 3px;
-      display: none;
+      border-radius: 5px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.2s;
+      font-family: 'Tahoma', sans-serif;
+    }
+
+    .back-btn:hover {
+      background: linear-gradient(180deg, #5a5a5a 0%, #3a3a3a 100%);
+      transform: scale(1.05);
     }
 
     .back-btn.active {
-      display: block;
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    /* CRT screen glow effect */
-    .crt-glow {
-      position: absolute;
+    /* Screen glow overlay during transition */
+    .screen-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(100,180,255,0.3) 0%, transparent 70%);
+      z-index: 500;
+      opacity: 0;
       pointer-events: none;
-      box-shadow:
-        0 0 20px rgba(0, 255, 0, 0.1),
-        inset 0 0 60px rgba(0, 0, 0, 0.3);
+      transition: opacity 0.3s;
+    }
+
+    .screen-glow.active {
+      opacity: 1;
+    }
+
+    /* Monitor highlight on hover */
+    .click-hint {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 18px;
+      background: rgba(0,100,200,0.8);
+      padding: 15px 30px;
+      border-radius: 10px;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .click-hint.visible {
+      opacity: 1;
     }
   </style>
 </head>
@@ -156,19 +202,23 @@
   <div id="scene-container"></div>
 
   <!-- Info Panel -->
-  <div class="info-panel">
+  <div class="info-panel" id="info-panel">
     <h1>Kyle Kumar</h1>
     <p>Developer</p>
     <div class="time" id="clock">00:00:00</div>
   </div>
 
   <!-- Controls hint -->
-  <div class="controls-hint">
-    🖱️ Drag to rotate • Scroll to zoom • Click "Enter Desktop" to interact
+  <div class="controls-hint" id="controls-hint">
+    <div class="main">Click the monitor to enter</div>
+    <div class="sub">Drag to rotate • Scroll to zoom</div>
   </div>
 
-  <!-- Enter button -->
-  <button class="enter-btn" onclick="enterDesktop()">▶ Enter Desktop</button>
+  <!-- Click hint on monitor hover -->
+  <div class="click-hint" id="click-hint">Click to Enter Desktop</div>
+
+  <!-- Screen glow transition -->
+  <div class="screen-glow" id="screen-glow"></div>
 
   <!-- Fullscreen desktop overlay -->
   <div class="desktop-fullscreen" id="desktop-fullscreen">
@@ -190,16 +240,28 @@
 
     // Three.js Scene
     let scene, camera, renderer, controls;
-    let monitor, desk, keyboard;
+    let screenMesh; // Reference to clickable screen
+    let isZooming = false;
+    let isInDesktop = false;
+
+    // Camera animation
+    const startPos = { x: 0, y: 2, z: 4 };
+    const endPos = { x: 0, y: 1.15, z: 0.8 }; // Close to screen
+    const startTarget = { x: 0, y: 1, z: 0 };
+    const endTarget = { x: 0, y: 1.15, z: 0.36 }; // Screen position
+
+    // Raycaster for click detection
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
 
     function init() {
       // Scene
       scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x87CEEB); // Sky blue
+      scene.background = new THREE.Color(0x87CEEB);
 
       // Camera
       camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 2, 4);
+      camera.position.set(startPos.x, startPos.y, startPos.z);
 
       // Renderer
       renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -212,10 +274,10 @@
       controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
-      controls.minDistance = 2;
-      controls.maxDistance = 10;
+      controls.minDistance = 1.5;
+      controls.maxDistance = 8;
       controls.maxPolarAngle = Math.PI / 2;
-      controls.target.set(0, 1, 0);
+      controls.target.set(startTarget.x, startTarget.y, startTarget.z);
 
       // Lighting
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
@@ -228,30 +290,29 @@
       directionalLight.shadow.mapSize.height = 2048;
       scene.add(directionalLight);
 
-      // Create room/environment
+      // Add slight point light on screen for glow effect
+      const screenLight = new THREE.PointLight(0x4488ff, 0.5, 3);
+      screenLight.position.set(0, 1.15, 0.5);
+      scene.add(screenLight);
+
+      // Create scene objects
       createRoom();
-
-      // Create desk
       createDesk();
-
-      // Create CRT Monitor
       createMonitor();
-
-      // Create keyboard
       createKeyboard();
-
-      // Create mouse
       createMouse();
-
-      // Create decorations
       createDecorations();
+
+      // Mouse/click events
+      renderer.domElement.addEventListener('click', onMouseClick);
+      renderer.domElement.addEventListener('mousemove', onMouseMove);
 
       // Start animation
       animate();
     }
 
     function createRoom() {
-      // Floor
+      // Floor - wooden
       const floorGeometry = new THREE.PlaneGeometry(20, 20);
       const floorMaterial = new THREE.MeshStandardMaterial({
         color: 0x8B7355,
@@ -276,12 +337,13 @@
     }
 
     function createDesk() {
-      // Desk top
-      const deskTopGeometry = new THREE.BoxGeometry(3, 0.08, 1.5);
       const deskMaterial = new THREE.MeshStandardMaterial({
         color: 0x5C4033,
         roughness: 0.7
       });
+
+      // Desk top
+      const deskTopGeometry = new THREE.BoxGeometry(3, 0.08, 1.5);
       const deskTop = new THREE.Mesh(deskTopGeometry, deskMaterial);
       deskTop.position.set(0, 0.5, 0);
       deskTop.castShadow = true;
@@ -290,97 +352,104 @@
 
       // Desk legs
       const legGeometry = new THREE.BoxGeometry(0.1, 1, 0.1);
-      const legPositions = [
-        [-1.4, 0, -0.65],
-        [1.4, 0, -0.65],
-        [-1.4, 0, 0.65],
-        [1.4, 0, 0.65]
-      ];
-
-      legPositions.forEach(pos => {
+      [[-1.4, 0, -0.65], [1.4, 0, -0.65], [-1.4, 0, 0.65], [1.4, 0, 0.65]].forEach(pos => {
         const leg = new THREE.Mesh(legGeometry, deskMaterial);
-        leg.position.set(pos[0], pos[1], pos[2]);
+        leg.position.set(...pos);
         leg.castShadow = true;
         scene.add(leg);
       });
     }
 
     function createMonitor() {
-      // CRT Monitor body (beige/cream color like old computers)
       const monitorColor = 0xD4C5A9;
+      const bodyMaterial = new THREE.MeshStandardMaterial({ color: monitorColor, roughness: 0.6 });
 
-      // Main monitor body
+      // Main monitor body (CRT bulk)
       const bodyGeometry = new THREE.BoxGeometry(1.2, 1, 1);
-      const bodyMaterial = new THREE.MeshStandardMaterial({
-        color: monitorColor,
-        roughness: 0.6
-      });
       const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
       body.position.set(0, 1.1, -0.2);
       body.castShadow = true;
       scene.add(body);
 
-      // Screen bezel
+      // Screen bezel (dark frame)
       const bezelGeometry = new THREE.BoxGeometry(1.0, 0.8, 0.05);
-      const bezelMaterial = new THREE.MeshStandardMaterial({
-        color: 0x2a2a2a,
-        roughness: 0.3
-      });
+      const bezelMaterial = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.3 });
       const bezel = new THREE.Mesh(bezelGeometry, bezelMaterial);
       bezel.position.set(0, 1.15, 0.33);
       scene.add(bezel);
 
-      // Screen (will show XP desktop texture)
+      // Screen - THE CLICKABLE PART
       const screenGeometry = new THREE.PlaneGeometry(0.9, 0.68);
 
-      // Load XP desktop as texture (screenshot or render)
+      // Create XP desktop texture
       const canvas = document.createElement('canvas');
       canvas.width = 1024;
       canvas.height = 768;
       const ctx = canvas.getContext('2d');
 
-      // Draw XP-like background
+      // XP Bliss background
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
       gradient.addColorStop(0, '#245EDC');
-      gradient.addColorStop(0.5, '#3A7BD5');
-      gradient.addColorStop(1, '#1E90FF');
+      gradient.addColorStop(0.4, '#3A7BD5');
+      gradient.addColorStop(1, '#87CEEB');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Draw green hill
+      // Green rolling hills
       ctx.fillStyle = '#3CB043';
       ctx.beginPath();
       ctx.moveTo(0, canvas.height);
-      ctx.quadraticCurveTo(canvas.width/2, canvas.height * 0.4, canvas.width, canvas.height);
+      ctx.quadraticCurveTo(canvas.width * 0.3, canvas.height * 0.5, canvas.width * 0.5, canvas.height * 0.6);
+      ctx.quadraticCurveTo(canvas.width * 0.7, canvas.height * 0.7, canvas.width, canvas.height * 0.5);
+      ctx.lineTo(canvas.width, canvas.height);
       ctx.fill();
 
-      // Draw some white clouds
-      ctx.fillStyle = 'rgba(255,255,255,0.8)';
-      [[200, 150], [500, 100], [750, 180]].forEach(([x, y]) => {
+      // Lighter hill in front
+      ctx.fillStyle = '#4AE054';
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height);
+      ctx.quadraticCurveTo(canvas.width * 0.5, canvas.height * 0.65, canvas.width, canvas.height);
+      ctx.fill();
+
+      // Clouds
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      [[150, 120, 50], [400, 80, 60], [700, 140, 45], [900, 100, 55]].forEach(([x, y, r]) => {
         ctx.beginPath();
-        ctx.arc(x, y, 40, 0, Math.PI * 2);
-        ctx.arc(x + 30, y - 10, 35, 0, Math.PI * 2);
-        ctx.arc(x + 60, y, 40, 0, Math.PI * 2);
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.arc(x + r*0.7, y - r*0.3, r*0.8, 0, Math.PI * 2);
+        ctx.arc(x + r*1.3, y, r*0.9, 0, Math.PI * 2);
         ctx.fill();
       });
 
-      // Text
+      // Desktop icons (simplified)
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 48px Tahoma';
-      ctx.textAlign = 'center';
-      ctx.fillText('Kyle\'s Desktop', canvas.width/2, canvas.height/2);
-      ctx.font = '24px Tahoma';
-      ctx.fillText('Click "Enter Desktop" to interact', canvas.width/2, canvas.height/2 + 50);
+      ctx.font = '14px Tahoma';
+      const icons = ['My Computer', 'Recycle Bin', 'My Documents'];
+      icons.forEach((name, i) => {
+        ctx.fillRect(30, 30 + i * 80, 48, 48);
+        ctx.fillStyle = '#000';
+        ctx.fillText(name, 25, 95 + i * 80);
+        ctx.fillStyle = '#fff';
+      });
+
+      // Taskbar
+      ctx.fillStyle = '#245EDC';
+      ctx.fillRect(0, canvas.height - 40, canvas.width, 40);
+
+      // Start button
+      ctx.fillStyle = '#3CB043';
+      ctx.fillRect(5, canvas.height - 35, 80, 30);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 14px Tahoma';
+      ctx.fillText('start', 25, canvas.height - 15);
 
       const screenTexture = new THREE.CanvasTexture(canvas);
-      const screenMaterial = new THREE.MeshBasicMaterial({
-        map: screenTexture,
-        emissive: 0x111111,
-        emissiveIntensity: 0.2
-      });
-      const screen = new THREE.Mesh(screenGeometry, screenMaterial);
-      screen.position.set(0, 1.15, 0.36);
-      scene.add(screen);
+      const screenMaterial = new THREE.MeshBasicMaterial({ map: screenTexture });
+
+      screenMesh = new THREE.Mesh(screenGeometry, screenMaterial);
+      screenMesh.position.set(0, 1.15, 0.36);
+      screenMesh.name = 'screen';
+      scene.add(screenMesh);
 
       // Monitor stand
       const standGeometry = new THREE.BoxGeometry(0.4, 0.15, 0.5);
@@ -395,57 +464,46 @@
       base.position.set(0, 0.52, -0.1);
       base.castShadow = true;
       scene.add(base);
+
+      // Power LED
+      const ledGeometry = new THREE.CircleGeometry(0.015, 16);
+      const ledMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const led = new THREE.Mesh(ledGeometry, ledMaterial);
+      led.position.set(0.4, 0.75, 0.31);
+      scene.add(led);
     }
 
     function createKeyboard() {
-      const kbColor = 0xD4C5A9;
+      const kbMaterial = new THREE.MeshStandardMaterial({ color: 0xD4C5A9, roughness: 0.5 });
+      const keyMaterial = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.4 });
 
-      // Keyboard body
       const kbGeometry = new THREE.BoxGeometry(0.6, 0.03, 0.2);
-      const kbMaterial = new THREE.MeshStandardMaterial({
-        color: kbColor,
-        roughness: 0.5
-      });
       const kb = new THREE.Mesh(kbGeometry, kbMaterial);
       kb.position.set(0, 0.56, 0.45);
       kb.castShadow = true;
       scene.add(kb);
 
-      // Key rows (simplified)
-      const keyMaterial = new THREE.MeshStandardMaterial({
-        color: 0x888888,
-        roughness: 0.4
-      });
-
+      // Keys
       for (let row = 0; row < 4; row++) {
         for (let col = 0; col < 12; col++) {
           const keyGeometry = new THREE.BoxGeometry(0.04, 0.015, 0.04);
           const key = new THREE.Mesh(keyGeometry, keyMaterial);
-          key.position.set(
-            -0.25 + col * 0.045,
-            0.58,
-            0.38 + row * 0.045
-          );
+          key.position.set(-0.25 + col * 0.045, 0.58, 0.38 + row * 0.045);
           scene.add(key);
         }
       }
     }
 
     function createMouse() {
-      const mouseColor = 0xD4C5A9;
+      const mouseMaterial = new THREE.MeshStandardMaterial({ color: 0xD4C5A9, roughness: 0.5 });
 
-      // Mouse body
       const mouseGeometry = new THREE.BoxGeometry(0.06, 0.025, 0.1);
-      const mouseMaterial = new THREE.MeshStandardMaterial({
-        color: mouseColor,
-        roughness: 0.5
-      });
-      const mouse = new THREE.Mesh(mouseGeometry, mouseMaterial);
-      mouse.position.set(0.5, 0.55, 0.45);
-      mouse.castShadow = true;
-      scene.add(mouse);
+      const mouseMesh = new THREE.Mesh(mouseGeometry, mouseMaterial);
+      mouseMesh.position.set(0.5, 0.55, 0.45);
+      mouseMesh.castShadow = true;
+      scene.add(mouseMesh);
 
-      // Mouse cable
+      // Cable
       const cableGeometry = new THREE.CylinderGeometry(0.005, 0.005, 0.3, 8);
       const cableMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
       const cable = new THREE.Mesh(cableGeometry, cableMaterial);
@@ -455,62 +513,201 @@
     }
 
     function createDecorations() {
-      // Plant pot
+      // Plant
+      const potMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.8 });
       const potGeometry = new THREE.CylinderGeometry(0.1, 0.08, 0.15, 8);
-      const potMaterial = new THREE.MeshStandardMaterial({
-        color: 0x8B4513,
-        roughness: 0.8
-      });
       const pot = new THREE.Mesh(potGeometry, potMaterial);
       pot.position.set(-1.2, 0.62, 0);
       pot.castShadow = true;
       scene.add(pot);
 
-      // Plant leaves (simple cones)
-      const leafMaterial = new THREE.MeshStandardMaterial({
-        color: 0x228B22,
-        roughness: 0.7
-      });
-
+      const leafMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22, roughness: 0.7 });
       for (let i = 0; i < 5; i++) {
         const leafGeometry = new THREE.ConeGeometry(0.03, 0.2, 4);
         const leaf = new THREE.Mesh(leafGeometry, leafMaterial);
         const angle = (i / 5) * Math.PI * 2;
-        leaf.position.set(
-          -1.2 + Math.cos(angle) * 0.05,
-          0.8,
-          Math.sin(angle) * 0.05
-        );
+        leaf.position.set(-1.2 + Math.cos(angle) * 0.05, 0.8, Math.sin(angle) * 0.05);
         leaf.rotation.x = 0.3 * Math.cos(angle);
         leaf.rotation.z = 0.3 * Math.sin(angle);
         scene.add(leaf);
       }
 
       // Coffee mug
+      const mugMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.3 });
       const mugGeometry = new THREE.CylinderGeometry(0.05, 0.04, 0.1, 16);
-      const mugMaterial = new THREE.MeshStandardMaterial({
-        color: 0xFFFFFF,
-        roughness: 0.3
-      });
       const mug = new THREE.Mesh(mugGeometry, mugMaterial);
       mug.position.set(1.1, 0.59, 0.3);
       mug.castShadow = true;
       scene.add(mug);
 
-      // Coffee inside
       const coffeeGeometry = new THREE.CylinderGeometry(0.04, 0.04, 0.02, 16);
-      const coffeeMaterial = new THREE.MeshStandardMaterial({
-        color: 0x3C1810,
-        roughness: 0.2
-      });
+      const coffeeMaterial = new THREE.MeshStandardMaterial({ color: 0x3C1810, roughness: 0.2 });
       const coffee = new THREE.Mesh(coffeeGeometry, coffeeMaterial);
       coffee.position.set(1.1, 0.63, 0.3);
       scene.add(coffee);
+
+      // Picture frame on wall
+      const frameGeometry = new THREE.BoxGeometry(0.5, 0.4, 0.02);
+      const frameMaterial = new THREE.MeshStandardMaterial({ color: 0x4a3728 });
+      const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+      frame.position.set(-0.8, 2, -4.98);
+      scene.add(frame);
+
+      // Photo inside frame
+      const photoGeometry = new THREE.PlaneGeometry(0.4, 0.3);
+      const photoMaterial = new THREE.MeshBasicMaterial({ color: 0x87CEEB });
+      const photo = new THREE.Mesh(photoGeometry, photoMaterial);
+      photo.position.set(-0.8, 2, -4.96);
+      scene.add(photo);
+    }
+
+    // Mouse move - check if hovering screen
+    function onMouseMove(event) {
+      if (isZooming || isInDesktop) return;
+
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObject(screenMesh);
+
+      const hint = document.getElementById('click-hint');
+      if (intersects.length > 0) {
+        hint.classList.add('visible');
+        document.body.style.cursor = 'pointer';
+      } else {
+        hint.classList.remove('visible');
+        document.body.style.cursor = 'grab';
+      }
+    }
+
+    // Click - zoom into screen
+    function onMouseClick(event) {
+      if (isZooming || isInDesktop) return;
+
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObject(screenMesh);
+
+      if (intersects.length > 0) {
+        zoomIntoScreen();
+      }
+    }
+
+    // Smooth zoom animation into screen
+    function zoomIntoScreen() {
+      isZooming = true;
+      controls.enabled = false;
+
+      // Hide UI
+      document.getElementById('click-hint').classList.remove('visible');
+      document.getElementById('info-panel').classList.add('hidden');
+      document.getElementById('controls-hint').classList.add('hidden');
+      document.body.style.cursor = 'default';
+
+      // Get current camera state
+      const startCamPos = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+      const startTargetPos = { x: controls.target.x, y: controls.target.y, z: controls.target.z };
+
+      const duration = 1500; // ms
+      const startTime = Date.now();
+
+      function animateZoom() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing function (ease-in-out)
+        const eased = progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+        // Interpolate camera position
+        camera.position.x = startCamPos.x + (endPos.x - startCamPos.x) * eased;
+        camera.position.y = startCamPos.y + (endPos.y - startCamPos.y) * eased;
+        camera.position.z = startCamPos.z + (endPos.z - startCamPos.z) * eased;
+
+        // Interpolate target
+        controls.target.x = startTargetPos.x + (endTarget.x - startTargetPos.x) * eased;
+        controls.target.y = startTargetPos.y + (endTarget.y - startTargetPos.y) * eased;
+        controls.target.z = startTargetPos.z + (endTarget.z - startTargetPos.z) * eased;
+
+        camera.lookAt(controls.target);
+
+        // Fade in screen glow at 50%
+        if (progress > 0.5) {
+          document.getElementById('screen-glow').classList.add('active');
+        }
+
+        // Fade out 3D scene at 80%
+        if (progress > 0.8) {
+          document.getElementById('scene-container').classList.add('fade-out');
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(animateZoom);
+        } else {
+          // Complete - show desktop
+          setTimeout(() => {
+            document.getElementById('desktop-fullscreen').classList.add('active');
+            document.getElementById('back-btn').classList.add('active');
+            document.getElementById('screen-glow').classList.remove('active');
+            isZooming = false;
+            isInDesktop = true;
+          }, 300);
+        }
+      }
+
+      animateZoom();
+    }
+
+    // Exit desktop - zoom back out
+    function exitDesktop() {
+      document.getElementById('desktop-fullscreen').classList.remove('active');
+      document.getElementById('back-btn').classList.remove('active');
+      document.getElementById('scene-container').classList.remove('fade-out');
+
+      // Reset camera position
+      const startCamPos = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+      const duration = 800;
+      const startTime = Date.now();
+
+      function animateZoomOut() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // ease-out
+
+        camera.position.x = startCamPos.x + (startPos.x - startCamPos.x) * eased;
+        camera.position.y = startCamPos.y + (startPos.y - startCamPos.y) * eased;
+        camera.position.z = startCamPos.z + (startPos.z - startCamPos.z) * eased;
+
+        controls.target.x = endTarget.x + (startTarget.x - endTarget.x) * eased;
+        controls.target.y = endTarget.y + (startTarget.y - endTarget.y) * eased;
+        controls.target.z = endTarget.z + (startTarget.z - endTarget.z) * eased;
+
+        camera.lookAt(controls.target);
+
+        if (progress < 1) {
+          requestAnimationFrame(animateZoomOut);
+        } else {
+          controls.enabled = true;
+          isInDesktop = false;
+
+          // Show UI again
+          document.getElementById('info-panel').classList.remove('hidden');
+          document.getElementById('controls-hint').classList.remove('hidden');
+        }
+      }
+
+      animateZoomOut();
     }
 
     function animate() {
       requestAnimationFrame(animate);
-      controls.update();
+      if (!isZooming) {
+        controls.update();
+      }
       renderer.render(scene, camera);
     }
 
@@ -522,20 +719,9 @@
 
     window.addEventListener('resize', onWindowResize);
 
-    // Desktop interaction
-    function enterDesktop() {
-      document.getElementById('desktop-fullscreen').classList.add('active');
-      document.getElementById('back-btn').classList.add('active');
-    }
-
-    function exitDesktop() {
-      document.getElementById('desktop-fullscreen').classList.remove('active');
-      document.getElementById('back-btn').classList.remove('active');
-    }
-
     // ESC to exit desktop
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
+      if (e.key === 'Escape' && isInDesktop) {
         exitDesktop();
       }
     });
