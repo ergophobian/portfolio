@@ -41,7 +41,7 @@
       function PatchedAC() {
         realCtx = new OrigAC();
         masterGain = realCtx.createGain();
-        masterGain.gain.value = 0.15; // Default 15% volume
+        masterGain.gain.value = 0.064; // Default 40% (exponential curve: 0.4^3)
         origConnect.call(masterGain, realCtx.destination);
         window._masterGain = masterGain;
         window._audioCtx = realCtx;

@@ -188,7 +188,7 @@
     document.addEventListener('DOMContentLoaded', initVolumeSlider);
 
     // ========== PINBALL VOLUME ==========
-    let pinballVolume = 0.15; // 15% default
+    let pinballVolume = 0.40; // 40% default
 
     function setPinballVolume(val) {
       val = Math.round(val);
@@ -270,10 +270,8 @@
           // Keep applying volume as game loads audio dynamically
           setTimeout(() => setPinballVolume(pinballVolume * 100), 1500);
           setTimeout(() => setPinballVolume(pinballVolume * 100), 3000);
-          // Lower music volume while pinball is playing
-          if (ytPlayer && ytPlayer.setVolume) {
-            ytPlayer.setVolume(10);
-          }
+          // Muffle music like hearing it through a wall (bathroom at the club effect)
+          muffleMusic(true);
           // Also open the controls helper window
           openWindow('pinball-controls');
         }
@@ -304,10 +302,8 @@
             controlsWin.classList.remove('active');
             openWindows.delete('pinball-controls');
           }
-          // Restore music volume when pinball closes
-          if (ytPlayer && ytPlayer.setVolume) {
-            ytPlayer.setVolume(50);
-          }
+          // Restore music to normal (un-muffle)
+          muffleMusic(false);
         }
 
         // Destroy app if applicable
@@ -1155,5 +1151,20 @@
         musicBtn.classList.add('playing');
         isMusicPlaying = true;
         showNotification('Music', 'Now playing: Lofi beats');
+      }
+    }
+
+    // Muffle music like hearing it through a bathroom wall at the club
+    // Drops volume way down and applies low-pass filter effect via YouTube volume
+    let isMusicMuffled = false;
+    function muffleMusic(muffle) {
+      isMusicMuffled = muffle;
+      if (!ytPlayer || !ytPlayer.setVolume) return;
+      if (muffle) {
+        // Drop to ~8% volume - muffled through-the-wall sound
+        ytPlayer.setVolume(8);
+      } else {
+        // Restore to normal
+        ytPlayer.setVolume(50);
       }
     }
