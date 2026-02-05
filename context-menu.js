@@ -36,7 +36,7 @@
         ],
       },
       { type: 'separator' },
-      { label: 'Refresh', action: () => location.reload() },
+      { label: 'Refresh', action: () => toggleGamesDesktop() },
       { type: 'separator' },
       { label: 'Paste', action: () => {}, disabled: true },
       { label: 'Paste Shortcut', action: () => {}, disabled: true },

@@ -110,11 +110,6 @@
         <span>My Socials</span>
       </div>
 
-      <div class="desktop-icon" data-window="pinball" ondblclick="openWindow('pinball')" onclick="selectIcon(this); playClick();">
-        <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png">
-        <span>3D Pinball</span>
-      </div>
-
       <div class="desktop-icon" data-window="mycomputer" ondblclick="openWindow('mycomputer')" onclick="selectIcon(this); playClick();">
         <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-0.png">
         <span>My Computer</span>
@@ -145,6 +140,34 @@
         <span>Minesweeper</span>
       </div>
 
+    </div>
+
+    <!-- Secret Games Desktop Icons -->
+    <div id="games-icons" class="icons-container" style="display: none;">
+      <div class="desktop-icon" data-window="pinball" ondblclick="openWindow('pinball')" onclick="selectIcon(this); playClick();">
+        <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png">
+        <span>3D Pinball</span>
+      </div>
+      <div class="desktop-icon" data-window="minesweeper" ondblclick="openWindow('minesweeper')" onclick="selectIcon(this); playClick();">
+        <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png">
+        <span>Minesweeper</span>
+      </div>
+      <div class="desktop-icon" data-window="paint" ondblclick="openWindow('paint')" onclick="selectIcon(this); playClick();">
+        <img src="https://win98icons.alexmeub.com/icons/png/paint_file-0.png">
+        <span>Paint</span>
+      </div>
+      <div class="desktop-icon" onclick="switchToNormalDesktop(); playClick();">
+        <img src="https://win98icons.alexmeub.com/icons/png/back_arrow-0.png">
+        <span>Back</span>
+      </div>
+    </div>
+
+    <!-- Games Desktop Loading -->
+    <div id="games-loading" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 99999; justify-content: center; align-items: center; flex-direction: column;">
+      <div style="color: #fff; font-family: Tahoma, sans-serif; font-size: 14px; margin-bottom: 16px;">Loading Games...</div>
+      <div style="width: 220px; height: 20px; border: 2px solid #0055e5; border-radius: 2px; padding: 2px; background: #000;">
+        <div class="games-load-bar-fill" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0055e5, #00aaff, #0055e5); background-size: 40px 100%; border-radius: 1px; transition: width 1s ease-in-out;"></div>
+      </div>
     </div>
 
     <!-- PepMaxx Window -->
@@ -733,10 +756,6 @@
             <span>Peak Revival-X</span>
           </div>
           <div class="start-separator"></div>
-          <div class="start-item small" onclick="openWindow('pinball'); toggleStartMenu(); playClick();">
-            <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png">
-            <span>3D Pinball</span>
-          </div>
           <div class="all-programs" id="all-programs-btn" onclick="toggleAllPrograms(); playClick();">
             <span>All Programs</span>
             <span class="all-programs-arrow">▶</span>
@@ -759,10 +778,6 @@
               <span>Minesweeper</span>
             </div>
             <div class="start-separator"></div>
-            <div class="start-item small" onclick="openWindow('pinball'); toggleStartMenu(); playClick();">
-              <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png">
-              <span>3D Pinball</span>
-            </div>
             <div class="start-item small" onclick="openWindow('mycomputer'); toggleStartMenu(); playClick();">
               <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-0.png">
               <span>My Computer</span>
@@ -821,7 +836,7 @@
       <div class="wifi-network">📶 Home_WiFi_5G (Connected)</div>
       <div class="wifi-network">📶 Neighbor_Network</div>
       <div class="wifi-network">📶 FBI_Surveillance_Van</div>
-      <div class="wifi-network secret" onclick="openWindow('pinball'); toggleWifi(); playClick();">
+      <div class="wifi-network secret" onclick="openWindow('pinball'); toggleWifi(); playEasterEggSound();">
         ✨ CLICK_ME_FOR_A_SURPRISE ✨
       </div>
     </div>

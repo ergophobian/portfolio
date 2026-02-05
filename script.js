@@ -18,20 +18,33 @@
       } catch(e) {}
     }
 
-    // Simple soft click using Web Audio API
+    // Realistic mouse click using white noise burst
     function playSoftClick() {
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        oscillator.frequency.value = 1800;
-        oscillator.type = 'sine';
-        gainNode.gain.setValueAtTime(0.1 * globalVolume, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-        oscillator.start(audioCtx.currentTime);
-        oscillator.stop(audioCtx.currentTime + 0.05);
+        // Create white noise burst for realistic click
+        const bufferSize = audioCtx.sampleRate * 0.03; // 30ms
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 10);
+        }
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 3500;
+        filter.Q.value = 0.7;
+
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.15 * globalVolume, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+        source.start();
       } catch(e) {}
     }
 
@@ -44,11 +57,19 @@
     }
 
     function playWindowOpen() {
-      playXPSound(XPSounds.notify, 0.3);
+      try {
+        const audio = new Audio('sounds/open-window.ogg');
+        audio.volume = 0.25 * globalVolume;
+        audio.play().catch(() => {});
+      } catch(e) {}
     }
 
     function playWindowClose() {
-      playXPSound(XPSounds.click, 0.3);
+      try {
+        const audio = new Audio('sounds/enter.ogg');
+        audio.volume = 0.2 * globalVolume;
+        audio.play().catch(() => {});
+      } catch(e) {}
     }
 
     function playStartupSound() {
@@ -57,6 +78,29 @@
 
     function playErrorSound() {
       playXPSound(XPSounds.error, 0.4);
+    }
+
+    // Keyboard press sound
+    let keyAudio = null;
+    function playKeySound() {
+      try {
+        if (!keyAudio) {
+          keyAudio = new Audio('sounds/keypress.mp3');
+          keyAudio.volume = 0.08 * globalVolume;
+        }
+        const clone = keyAudio.cloneNode();
+        clone.volume = 0.08 * globalVolume;
+        clone.play().catch(() => {});
+      } catch(e) {}
+    }
+
+    // Easter egg sound
+    function playEasterEggSound() {
+      try {
+        const audio = new Audio('sounds/easter-egg.ogg');
+        audio.volume = 0.4 * globalVolume;
+        audio.play().catch(() => {});
+      } catch(e) {}
     }
 
     function updateVolume(val) {
@@ -850,6 +894,63 @@
       });
     }
 
+    // ========== SECRET GAMES DESKTOP ==========
+    let isGamesMode = false;
+
+    function toggleGamesDesktop() {
+      if (isGamesMode) {
+        switchToNormalDesktop();
+      } else {
+        switchToGamesDesktop();
+      }
+    }
+
+    function switchToGamesDesktop() {
+      const desktop = document.getElementById('desktop');
+      const normalIcons = document.querySelector('.icons-container');
+      const gamesIcons = document.getElementById('games-icons');
+      const loadingOverlay = document.getElementById('games-loading');
+
+      if (!gamesIcons) return;
+
+      // Show loading bar
+      if (loadingOverlay) {
+        loadingOverlay.style.display = 'flex';
+        loadingOverlay.querySelector('.games-load-bar-fill').style.width = '0%';
+        setTimeout(() => {
+          loadingOverlay.querySelector('.games-load-bar-fill').style.width = '100%';
+        }, 50);
+      }
+
+      setTimeout(() => {
+        // Hide normal icons, show games icons
+        if (normalIcons) normalIcons.style.display = 'none';
+        if (gamesIcons) gamesIcons.style.display = 'flex';
+
+        // Switch wallpaper
+        desktop.classList.add('games-mode');
+        isGamesMode = true;
+
+        // Hide loading
+        if (loadingOverlay) loadingOverlay.style.display = 'none';
+
+        playEasterEggSound();
+      }, 1200);
+    }
+
+    function switchToNormalDesktop() {
+      const desktop = document.getElementById('desktop');
+      const normalIcons = document.querySelector('.icons-container');
+      const gamesIcons = document.getElementById('games-icons');
+
+      if (normalIcons) normalIcons.style.display = 'flex';
+      if (gamesIcons) gamesIcons.style.display = 'none';
+
+      desktop.classList.remove('games-mode');
+      isGamesMode = false;
+      playSoftClick();
+    }
+
     // ========== BOOT SEQUENCE ==========
     let bootCompleted = false;
 
@@ -873,7 +974,7 @@
 
       // Show welcome notification
       setTimeout(() => {
-        showNotification('Welcome!', 'Click Start to explore my portfolio. Try the WiFi icon for a surprise!');
+        showNotification('Welcome!', 'Click Start to explore my portfolio.');
       }, 1500);
 
       // Auto-start music after boot completes - keep trying until it works
@@ -912,7 +1013,7 @@
     let isMusicPlaying = false;
     let musicInitialized = false;
 
-    function onYouTubeIframeAPIReady() {
+    window.onYouTubeIframeAPIReady = function() {
       ytPlayer = new YT.Player('yt-player', {
         height: '0',
         width: '0',
@@ -945,14 +1046,28 @@
       }
     }
 
+    // Retry YouTube player initialization if it hasn't loaded
+    setTimeout(function() {
+      if (!musicInitialized && typeof YT !== 'undefined' && YT.Player) {
+        console.log('Retrying YouTube player initialization...');
+        window.onYouTubeIframeAPIReady();
+      }
+    }, 8000);
+
     function toggleMusic() {
+      // If not initialized, try to create player on the spot
       if (!musicInitialized || !ytPlayer) {
-        showNotification('Music', 'Music player is loading...');
+        if (typeof YT !== 'undefined' && YT.Player) {
+          window.onYouTubeIframeAPIReady();
+          showNotification('Music', 'Starting music player...');
+          setTimeout(toggleMusic, 2000);
+        } else {
+          showNotification('Music', 'Music player unavailable');
+        }
         return;
       }
 
       const musicBtn = document.getElementById('music-btn');
-
       if (isMusicPlaying) {
         ytPlayer.pauseVideo();
         musicBtn.classList.remove('playing');

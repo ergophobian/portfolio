@@ -162,7 +162,10 @@ Try the other apps -- Calculator, Paint, and Minesweeper!</textarea>
       document.getElementById('notepad-status').textContent = `Ln ${ln}, Col ${col}`;
     };
     textarea.addEventListener('click', updateStatus);
-    textarea.addEventListener('keyup', updateStatus);
+    textarea.addEventListener('keyup', function(e) {
+      updateStatus();
+      if (typeof playKeySound === 'function') playKeySound();
+    });
     textarea.addEventListener('input', updateStatus);
 
     this._wordWrap = true;
@@ -320,6 +323,7 @@ XPApps['calculator'] = {
       if (!win || win.style.display === 'none') return;
 
       const key = e.key;
+      if (typeof playKeySound === 'function') playKeySound();
       if (key >= '0' && key <= '9') this.handleInput(key);
       else if (key === '.') this.handleInput('.');
       else if (key === '+') this.handleInput('+');
