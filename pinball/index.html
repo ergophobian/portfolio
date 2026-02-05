@@ -18,16 +18,16 @@
     }
 
     #game-container {
-      display: flex;
-      flex-direction: column;
+      width: 100%;
       height: 100vh;
     }
 
     canvas.emscripten {
       border: 0 none;
       background-color: #000;
-      flex: 1;
+      display: block;
       width: 100%;
+      height: calc(100vh - 28px);
     }
 
     #status {
@@ -41,11 +41,9 @@
       color: #fff;
       padding: 6px 10px;
       font-size: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      border-bottom: 1px solid #0a1020;
+      height: 28px;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     .controls-bar kbd {
@@ -55,17 +53,23 @@
       padding: 1px 4px;
       font-family: monospace;
       font-size: 9px;
+      margin: 0 2px;
     }
 
     .controls-bar .label {
       color: #4fc3f7;
       font-weight: bold;
+      margin-right: 8px;
+    }
+
+    .controls-bar span {
+      margin-right: 10px;
     }
 
     .controls-bar .tip {
-      margin-left: auto;
       color: #888;
       font-style: italic;
+      float: right;
     }
   </style>
 </head>
