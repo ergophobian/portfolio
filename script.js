@@ -155,6 +155,44 @@
     // Initialize volume slider when DOM ready
     document.addEventListener('DOMContentLoaded', initVolumeSlider);
 
+    // ========== PINBALL VOLUME ==========
+    let pinballVolume = 0.2; // 20% default
+
+    function setPinballVolume(val) {
+      pinballVolume = val / 100;
+      document.getElementById('pinball-vol-label').textContent = val + '%';
+      // Control audio inside the pinball iframe
+      try {
+        const frame = document.getElementById('pinball-frame');
+        if (frame && frame.contentWindow) {
+          const audios = frame.contentWindow.document.querySelectorAll('audio, video');
+          audios.forEach(a => { a.volume = pinballVolume; });
+          // Also try to set gain nodes if available
+          if (frame.contentWindow.gainNode) {
+            frame.contentWindow.gainNode.gain.value = pinballVolume;
+          }
+        }
+      } catch(e) {}
+    }
+
+    // Apply pinball volume periodically while pinball is open
+    setInterval(() => {
+      if (openWindows && openWindows.has('pinball')) {
+        setPinballVolume(pinballVolume * 100);
+      }
+    }, 2000);
+
+    // ========== GLOBAL CLICK & KEY SOUNDS ==========
+    document.addEventListener('mousedown', function(e) {
+      playSoftClick();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      // Don't play for modifier keys alone
+      if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) return;
+      playKeySound();
+    });
+
     // ========== WINDOW MANAGEMENT ==========
     let activeWindow = null;
     let dragOffset = { x: 0, y: 0 };
@@ -186,19 +224,23 @@
             // Always reload pinball src (fixes black screen on reopen)
             frame.src = frame.dataset.src;
           }
-          // Focus the iframe after a short delay to allow loading
+          // Focus the iframe and apply volume after loading
           setTimeout(() => {
             if (frame) {
               frame.focus();
-              // Also try to focus the canvas inside
               try {
                 frame.contentWindow.document.getElementById('canvas')?.focus();
               } catch(e) {}
+              // Apply pinball volume to iframe audio
+              setPinballVolume(pinballVolume * 100);
             }
           }, 500);
+          // Keep applying volume as game loads audio dynamically
+          setTimeout(() => setPinballVolume(pinballVolume * 100), 1500);
+          setTimeout(() => setPinballVolume(pinballVolume * 100), 3000);
           // Lower music volume while pinball is playing
           if (ytPlayer && ytPlayer.setVolume) {
-            ytPlayer.setVolume(15);
+            ytPlayer.setVolume(10);
           }
           // Also open the controls helper window
           openWindow('pinball-controls');

@@ -579,7 +579,18 @@
           <kbd style="background:#333; padding:2px 8px; border-radius:3px; text-align:center; font-family:monospace;">.</kbd><span>Nudge Right</span>
           <kbd style="background:#333; padding:2px 8px; border-radius:3px; text-align:center; font-family:monospace;">F2</kbd><span>New Game</span>
         </div>
-        <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #333; color: #888; font-size: 11px; font-style: italic;">
+        <div style="margin-top: 14px; padding-top: 10px; border-top: 1px solid #333;">
+          <div style="color: #4fc3f7; font-weight: bold; margin-bottom: 6px; font-size: 12px;">🔊 Game Volume</div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 10px; color: #888;">🔈</span>
+            <input type="range" id="pinball-volume" min="0" max="100" value="20"
+              style="flex: 1; height: 4px; accent-color: #4fc3f7; cursor: pointer;"
+              oninput="setPinballVolume(this.value)">
+            <span style="font-size: 10px; color: #888;">🔊</span>
+            <span id="pinball-vol-label" style="font-size: 10px; color: #aaa; min-width: 26px;">20%</span>
+          </div>
+        </div>
+        <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid #333; color: #888; font-size: 11px; font-style: italic;">
           Click game window first to focus!
         </div>
       </div>
