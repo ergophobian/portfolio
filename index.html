@@ -323,6 +323,73 @@
       padding-left: 3px;
     }
 
+    /* Social Links */
+    .social-link {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 3px;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: bold;
+      transition: all 0.15s;
+      border: 1px solid;
+    }
+
+    .social-link.tiktok {
+      background: linear-gradient(135deg, #000 0%, #333 100%);
+      color: #fff;
+      border-color: #000;
+    }
+
+    .social-link.tiktok:hover {
+      background: linear-gradient(135deg, #fe2c55 0%, #25f4ee 100%);
+      transform: scale(1.05);
+    }
+
+    .social-link.instagram {
+      background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+      color: #fff;
+      border-color: #833ab4;
+    }
+
+    .social-link.instagram:hover {
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(131, 58, 180, 0.4);
+    }
+
+    .social-link.youtube {
+      background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+      color: #fff;
+      border-color: #cc0000;
+    }
+
+    .social-link.youtube:hover {
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+    }
+
+    .social-link.twitter {
+      background: linear-gradient(135deg, #1DA1F2 0%, #0d8bd9 100%);
+      color: #fff;
+      border-color: #0d8bd9;
+    }
+
+    .social-link.twitter:hover {
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(29, 161, 242, 0.4);
+    }
+
+    .social-link.github {
+      background: linear-gradient(135deg, #333 0%, #24292e 100%);
+      color: #fff;
+      border-color: #24292e;
+    }
+
+    .social-link.github:hover {
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
     /* Main Content Area */
     .main-content {
       flex: 1;
@@ -1393,43 +1460,43 @@
     <!-- Desktop Icons -->
     <div class="icons-container">
       <div class="desktop-icon" data-window="pepmaxx" ondblclick="openWindow('pepmaxx')" onclick="selectIcon(this); playClick();">
-        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='g1' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%2334d058'/><stop offset='100%' stop-color='%23166534'/></linearGradient></defs><rect fill='url(%23g1)' rx='6' width='48' height='48'/><text x='50%' y='58%' text-anchor='middle' fill='white' font-size='22'>💊</text></svg>">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='doc1' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fff'/%3E%3Cstop offset='100%25' stop-color='%23c0c0c0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 4h22l10 10v30H8V4z' fill='url(%23doc1)' stroke='%23808080'/%3E%3Cpath d='M30 4v10h10' fill='none' stroke='%23808080'/%3E%3Cpath d='M30 4l10 10h-10V4z' fill='%23e0e0e0'/%3E%3Ccircle cx='24' cy='28' r='10' fill='%2322c55e'/%3E%3Ctext x='24' y='33' text-anchor='middle' fill='white' font-size='12' font-weight='bold'%3E💊%3C/text%3E%3C/svg%3E">
         <span>PepMaxx</span>
       </div>
 
       <div class="desktop-icon" data-window="peakrevival" ondblclick="openWindow('peakrevival')" onclick="selectIcon(this); playClick();">
-        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='g2' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%23fbbf24'/><stop offset='100%' stop-color='%23d97706'/></linearGradient></defs><rect fill='url(%23g2)' rx='6' width='48' height='48'/><text x='50%' y='58%' text-anchor='middle' fill='white' font-size='20'>🏪</text></svg>">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='doc2' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fff'/%3E%3Cstop offset='100%25' stop-color='%23c0c0c0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 4h22l10 10v30H8V4z' fill='url(%23doc2)' stroke='%23808080'/%3E%3Cpath d='M30 4v10h10' fill='none' stroke='%23808080'/%3E%3Cpath d='M30 4l10 10h-10V4z' fill='%23e0e0e0'/%3E%3Ccircle cx='24' cy='28' r='10' fill='%23f59e0b'/%3E%3Ctext x='24' y='33' text-anchor='middle' fill='white' font-size='12' font-weight='bold'%3E🏪%3C/text%3E%3C/svg%3E">
         <span>Peak Revival-X</span>
       </div>
 
       <div class="desktop-icon" data-window="autoflow" ondblclick="openWindow('autoflow')" onclick="selectIcon(this); playClick();">
-        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='g3' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%2300d4ff'/><stop offset='100%' stop-color='%230891b2'/></linearGradient></defs><rect fill='url(%23g3)' rx='6' width='48' height='48'/><text x='50%' y='58%' text-anchor='middle' fill='white' font-size='20'>🤖</text></svg>">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='doc3' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fff'/%3E%3Cstop offset='100%25' stop-color='%23c0c0c0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 4h22l10 10v30H8V4z' fill='url(%23doc3)' stroke='%23808080'/%3E%3Cpath d='M30 4v10h10' fill='none' stroke='%23808080'/%3E%3Cpath d='M30 4l10 10h-10V4z' fill='%23e0e0e0'/%3E%3Ccircle cx='24' cy='28' r='10' fill='%2306b6d4'/%3E%3Ctext x='24' y='33' text-anchor='middle' fill='white' font-size='12' font-weight='bold'%3E🤖%3C/text%3E%3C/svg%3E">
         <span>Auto Flow v8</span>
       </div>
 
       <div class="desktop-icon" data-window="sigmavideo" ondblclick="openWindow('sigmavideo')" onclick="selectIcon(this); playClick();">
-        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='g4' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%238b5cf6'/><stop offset='100%' stop-color='%236d28d9'/></linearGradient></defs><rect fill='url(%23g4)' rx='6' width='48' height='48'/><text x='50%' y='58%' text-anchor='middle' fill='white' font-size='20'>🎬</text></svg>">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='doc4' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fff'/%3E%3Cstop offset='100%25' stop-color='%23c0c0c0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 4h22l10 10v30H8V4z' fill='url(%23doc4)' stroke='%23808080'/%3E%3Cpath d='M30 4v10h10' fill='none' stroke='%23808080'/%3E%3Cpath d='M30 4l10 10h-10V4z' fill='%23e0e0e0'/%3E%3Ccircle cx='24' cy='28' r='10' fill='%238b5cf6'/%3E%3Ctext x='24' y='33' text-anchor='middle' fill='white' font-size='12' font-weight='bold'%3E🎬%3C/text%3E%3C/svg%3E">
         <span>Sigma Video</span>
       </div>
 
       <div class="desktop-icon" data-window="freemeals" ondblclick="openWindow('freemeals')" onclick="selectIcon(this); playClick();">
-        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='g5' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%23f472b6'/><stop offset='100%' stop-color='%23db2777'/></linearGradient></defs><rect fill='url(%23g5)' rx='6' width='48' height='48'/><text x='50%' y='58%' text-anchor='middle' fill='white' font-size='20'>❤️</text></svg>">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='doc5' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fff'/%3E%3Cstop offset='100%25' stop-color='%23c0c0c0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M8 4h22l10 10v30H8V4z' fill='url(%23doc5)' stroke='%23808080'/%3E%3Cpath d='M30 4v10h10' fill='none' stroke='%23808080'/%3E%3Cpath d='M30 4l10 10h-10V4z' fill='%23e0e0e0'/%3E%3Ccircle cx='24' cy='28' r='10' fill='%23ec4899'/%3E%3Ctext x='24' y='33' text-anchor='middle' fill='white' font-size='12' font-weight='bold'%3E❤️%3C/text%3E%3C/svg%3E">
         <span>Free Meals</span>
       </div>
 
       <div class="desktop-icon" data-window="about" ondblclick="openWindow('about')" onclick="selectIcon(this); playClick();">
-        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='g6' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%233b82f6'/><stop offset='100%' stop-color='%231d4ed8'/></linearGradient></defs><rect fill='url(%23g6)' rx='6' width='48' height='48'/><text x='50%' y='58%' text-anchor='middle' fill='white' font-size='20'>👤</text></svg>">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='card' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fff'/%3E%3Cstop offset='100%25' stop-color='%23ddd'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='4' y='8' width='40' height='32' rx='2' fill='url(%23card)' stroke='%23808080'/%3E%3Ccircle cx='24' cy='20' r='8' fill='%233b82f6'/%3E%3Ctext x='24' y='24' text-anchor='middle' fill='white' font-size='10'%3E👤%3C/text%3E%3Crect x='10' y='32' width='28' height='3' fill='%23ccc'/%3E%3C/svg%3E">
         <span>About Me</span>
       </div>
 
       <div class="desktop-icon" ondblclick="window.open('https://github.com/kylepng', '_blank'); playClick();" onclick="selectIcon(this); playClick();">
-        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23333' rx='6' width='48' height='48'/><text x='50%' y='58%' text-anchor='middle' fill='white' font-size='20'>🐙</text></svg>">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='ie' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300bfff'/%3E%3Cstop offset='100%25' stop-color='%230066cc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='24' cy='24' r='20' fill='url(%23ie)'/%3E%3Cellipse cx='24' cy='24' rx='18' ry='8' fill='none' stroke='%23fff' stroke-width='2' transform='rotate(-20 24 24)'/%3E%3Ctext x='24' y='30' text-anchor='middle' fill='white' font-size='18' font-weight='bold'%3Ee%3C/text%3E%3C/svg%3E">
         <span>GitHub</span>
       </div>
 
-      <div class="desktop-icon" ondblclick="window.open('https://tiktok.com/@somnicore', '_blank'); playClick();" onclick="selectIcon(this); playClick();">
-        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect fill='%23000' rx='6' width='48' height='48'/><text x='50%' y='58%' text-anchor='middle' fill='white' font-size='20'>🎵</text></svg>">
-        <span>TikTok</span>
+      <div class="desktop-icon" data-window="socials" ondblclick="openWindow('socials')" onclick="selectIcon(this); playClick();">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='folder' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffe566'/%3E%3Cstop offset='50%25' stop-color='%23ffd700'/%3E%3Cstop offset='100%25' stop-color='%23cc9900'/%3E%3C/linearGradient%3E%3ClinearGradient id='foldertop' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23fff5cc'/%3E%3Cstop offset='100%25' stop-color='%23ffe066'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M4 14h40v28H4z' fill='url(%23folder)' stroke='%23997a00'/%3E%3Cpath d='M4 10h16l4 4h20v4H4z' fill='url(%23foldertop)' stroke='%23997a00'/%3E%3Ccircle cx='16' cy='30' r='5' fill='%23000'/%3E%3Ccircle cx='26' cy='30' r='5' fill='%23E1306C'/%3E%3Ccircle cx='36' cy='30' r='5' fill='%231DA1F2'/%3E%3C/svg%3E">
+        <span>My Socials</span>
       </div>
     </div>
 
@@ -1801,6 +1868,71 @@
       </div>
     </div>
 
+    <!-- My Socials Window -->
+    <div class="window" id="window-socials" style="top: 50px; left: 200px; width: 580px;">
+      <div class="window-titlebar" onmousedown="startDrag(event, 'window-socials')">
+        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='%23ffd700' rx='2' width='16' height='16'/><text x='50%' y='70%' text-anchor='middle' font-size='9'>📁</text></svg>">
+        <span class="window-title">My Socials - Windows Explorer</span>
+        <div class="window-controls">
+          <button class="window-btn minimize" onclick="minimizeWindow('socials')">_</button>
+          <button class="window-btn maximize" onclick="maximizeWindow('socials')">□</button>
+          <button class="window-btn close" onclick="closeWindow('socials')">✕</button>
+        </div>
+      </div>
+      <div class="window-menubar">
+        <span class="menu-item">File</span>
+        <span class="menu-item">Edit</span>
+        <span class="menu-item">View</span>
+        <span class="menu-item">Favorites</span>
+        <span class="menu-item">Help</span>
+      </div>
+      <div class="window-content" style="padding: 12px; max-height: 450px; overflow-y: auto;">
+        <div style="background: #fff; border: 1px solid #808080; padding: 10px; margin-bottom: 12px;">
+          <div style="font-weight: bold; color: #0054e3; margin-bottom: 8px; font-size: 14px;">📱 TikTok</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <a href="https://tiktok.com/@ergophobian" target="_blank" class="social-link tiktok">@ergophobian</a>
+            <a href="https://tiktok.com/@somni.core" target="_blank" class="social-link tiktok">@somni.core</a>
+            <a href="https://tiktok.com/@ryangrowthdaily" target="_blank" class="social-link tiktok">@ryangrowthdaily</a>
+            <a href="https://tiktok.com/@pepmaxx" target="_blank" class="social-link tiktok">@pepmaxx</a>
+            <a href="https://tiktok.com/@lukemaxxin" target="_blank" class="social-link tiktok">@lukemaxxin</a>
+            <a href="https://tiktok.com/@insanedealss" target="_blank" class="social-link tiktok">@insanedealss</a>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #808080; padding: 10px; margin-bottom: 12px;">
+          <div style="font-weight: bold; color: #E1306C; margin-bottom: 8px; font-size: 14px;">📸 Instagram</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <a href="https://instagram.com/somnicore" target="_blank" class="social-link instagram">@somnicore</a>
+            <a href="https://instagram.com/pepmaxxing" target="_blank" class="social-link instagram">@pepmaxxing</a>
+            <a href="https://instagram.com/pepmaxxer" target="_blank" class="social-link instagram">@pepmaxxer</a>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #808080; padding: 10px; margin-bottom: 12px;">
+          <div style="font-weight: bold; color: #FF0000; margin-bottom: 8px; font-size: 14px;">▶️ YouTube</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <a href="https://youtube.com/@somnicoree" target="_blank" class="social-link youtube">@somnicoree</a>
+            <a href="https://youtube.com/@paliossystems" target="_blank" class="social-link youtube">@paliossystems</a>
+            <a href="https://youtube.com/@zafraharvestskincare" target="_blank" class="social-link youtube">@zafraharvestskincare</a>
+            <a href="https://youtube.com/@ergophobian2" target="_blank" class="social-link youtube">@ergophobian2</a>
+            <a href="https://youtube.com/@zafraskin" target="_blank" class="social-link youtube">@zafraskin</a>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #808080; padding: 10px; margin-bottom: 12px;">
+          <div style="font-weight: bold; color: #1DA1F2; margin-bottom: 8px; font-size: 14px;">𝕏 X / Twitter</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <a href="https://x.com/indefatigabile" target="_blank" class="social-link twitter">@indefatigabile</a>
+            <a href="https://x.com/somnicore" target="_blank" class="social-link twitter">@somnicore</a>
+            <a href="https://x.com/pepmaxx" target="_blank" class="social-link twitter">@pepmaxx</a>
+          </div>
+        </div>
+        <div style="background: #fff; border: 1px solid #808080; padding: 10px;">
+          <div style="font-weight: bold; color: #333; margin-bottom: 8px; font-size: 14px;">🐙 GitHub</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <a href="https://github.com/kylepng" target="_blank" class="social-link github">@kylepng</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Taskbar -->
     <div class="taskbar">
       <button class="start-button" id="start-btn" onclick="toggleStartMenu(); playStartSound();">
@@ -1811,8 +1943,8 @@
         <div class="quick-launch-btn" onclick="window.open('https://github.com/kylepng', '_blank'); playClick();">
           <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='%23333' rx='2' width='16' height='16'/><text x='50%' y='70%' text-anchor='middle' fill='white' font-size='8'>🐙</text></svg>">
         </div>
-        <div class="quick-launch-btn" onclick="window.open('https://tiktok.com/@somnicore', '_blank'); playClick();">
-          <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='%23000' rx='2' width='16' height='16'/><text x='50%' y='70%' text-anchor='middle' fill='white' font-size='8'>🎵</text></svg>">
+        <div class="quick-launch-btn" onclick="openWindow('socials'); playClick();">
+          <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect fill='%23ffd700' rx='2' width='16' height='16'/><text x='50%' y='70%' text-anchor='middle' font-size='8'>📁</text></svg>">
         </div>
       </div>
       <div class="taskbar-apps" id="taskbar-apps"></div>
