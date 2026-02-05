@@ -506,17 +506,18 @@
         showNotification('Welcome!', 'Click Start to explore my portfolio. Try the WiFi icon for a surprise!');
       }, 1500);
 
-      // Auto-start music after boot - keep trying until it works
+      // Auto-start music after boot completes - keep trying until it works
       function startMusic() {
         if (musicInitialized && ytPlayer) {
           ytPlayer.playVideo();
           document.getElementById('music-btn').classList.add('playing');
           isMusicPlaying = true;
         } else {
-          setTimeout(startMusic, 500);
+          setTimeout(startMusic, 1000);
         }
       }
-      setTimeout(startMusic, 1000);
+      // Delay music start to let startup sound finish
+      setTimeout(startMusic, 4000);
     }
 
     function skipBoot() {
@@ -524,13 +525,13 @@
     }
 
     function bootSequence() {
-      // Play the iconic Windows XP startup sound
+      // Play the iconic Windows XP startup sound FIRST
       playStartupSound();
 
-      // Show XP welcome screen for 3 seconds then transition to desktop
+      // Show XP welcome screen for 4 seconds (let startup sound play)
       setTimeout(() => {
         finishBoot();
-      }, 3000);
+      }, 4000);
     }
 
     // Start boot sequence
@@ -547,7 +548,7 @@
         width: '0',
         videoId: 'RSFqIWudfq0',
         playerVars: {
-          autoplay: 1,
+          autoplay: 0,
           loop: 1,
           playlist: 'RSFqIWudfq0',
           controls: 0,
@@ -563,10 +564,9 @@
 
     function onPlayerReady(event) {
       ytPlayer.setVolume(50);
-      ytPlayer.playVideo();
+      // Don't autoplay here - let finishBoot() handle it after Windows intro
       musicInitialized = true;
-      isMusicPlaying = true;
-      document.getElementById('music-btn').classList.add('playing');
+      isMusicPlaying = false;
     }
 
     function onPlayerStateChange(event) {
