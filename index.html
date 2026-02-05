@@ -7,6 +7,8 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='r' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff5f5f'/%3E%3Cstop offset='100%25' stop-color='%23cc0000'/%3E%3C/linearGradient%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2355ff55'/%3E%3Cstop offset='100%25' stop-color='%2300aa00'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235599ff'/%3E%3Cstop offset='100%25' stop-color='%230044cc'/%3E%3C/linearGradient%3E%3ClinearGradient id='y' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffee55'/%3E%3Cstop offset='100%25' stop-color='%23ccaa00'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2' y='2' width='13' height='13' rx='2' fill='url(%23r)'/%3E%3Crect x='17' y='2' width='13' height='13' rx='2' fill='url(%23g)'/%3E%3Crect x='2' y='17' width='13' height='13' rx='2' fill='url(%23b)'/%3E%3Crect x='17' y='17' width='13' height='13' rx='2' fill='url(%23y)'/%3E%3C/svg%3E">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- XP.css Framework for authentic Windows XP styling -->
+  <link rel="stylesheet" href="https://unpkg.com/xp.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
 
@@ -1529,17 +1531,17 @@
       </div>
 
       <div class="desktop-icon" data-window="sigmavideo" ondblclick="openWindow('sigmavideo')" onclick="selectIcon(this); playClick();">
-        <img src="https://win98icons.alexmeub.com/icons/png/mplayer-1.png">
+        <img src="https://win98icons.alexmeub.com/icons/png/media_player_stream_sun-0.png">
         <span>Sigma Video</span>
       </div>
 
       <div class="desktop-icon" data-window="freemeals" ondblclick="openWindow('freemeals')" onclick="selectIcon(this); playClick();">
-        <img src="https://win98icons.alexmeub.com/icons/png/network_users-0.png">
+        <img src="https://win98icons.alexmeub.com/icons/png/heart-0.png">
         <span>Free Meals</span>
       </div>
 
       <div class="desktop-icon" data-window="about" ondblclick="openWindow('about')" onclick="selectIcon(this); playClick();">
-        <img src="https://win98icons.alexmeub.com/icons/png/contact_card-0.png">
+        <img src="https://win98icons.alexmeub.com/icons/png/msagent-4.png">
         <span>About Me</span>
       </div>
 
@@ -1991,8 +1993,8 @@
       </div>
     </div>
 
-    <!-- 3D Pinball Window - Real Space Cadet -->
-    <div class="window" id="window-pinball" style="top: 30px; left: 100px; width: 640px;">
+    <!-- 3D Pinball Window -->
+    <div class="window" id="window-pinball" style="top: 30px; left: 100px; width: 650px;">
       <div class="window-titlebar" onmousedown="startDrag(event, 'window-pinball')">
         <img src="https://win98icons.alexmeub.com/icons/png/game_mine_1-0.png" style="width:16px;height:16px;">
         <span class="window-title">3D Pinball for Windows - Space Cadet</span>
@@ -2002,12 +2004,20 @@
           <button class="window-btn close" onclick="closeWindow('pinball');">✕</button>
         </div>
       </div>
-      <div class="window-content" style="padding: 0; background: #000;">
-        <iframe
-          src="https://alula.github.io/SpaceCadetPinball/"
-          style="width: 100%; height: 500px; border: none;"
-          allowfullscreen>
-        </iframe>
+      <div class="window-menubar">
+        <span class="menu-item">Game</span>
+        <span class="menu-item">Options</span>
+        <span class="menu-item">Help</span>
+      </div>
+      <div class="window-content" style="padding: 0; background: #1a1a2e; display: flex; flex-direction: column; align-items: center;">
+        <div style="background: linear-gradient(180deg, #16213e 0%, #0f0f23 100%); padding: 10px; width: 100%; text-align: center; border-bottom: 2px solid #e94560;">
+          <span style="color: #e94560; font-family: 'Courier New', monospace; font-size: 14px; font-weight: bold;">SCORE: <span id="pinball-score">0</span></span>
+          <span style="color: #ffd93d; font-family: 'Courier New', monospace; font-size: 14px; font-weight: bold; margin-left: 30px;">BALL: <span id="pinball-balls">3</span></span>
+        </div>
+        <canvas id="pinball-canvas" width="600" height="400" style="margin: 10px;"></canvas>
+        <div style="color: #aaa; font-size: 11px; padding: 8px; text-align: center; font-family: Tahoma, sans-serif;">
+          Press <span style="color: #ffd93d; font-weight: bold;">SPACE</span> to launch | <span style="color: #e94560; font-weight: bold;">Z</span> / <span style="color: #e94560; font-weight: bold;">←</span> Left Flipper | <span style="color: #e94560; font-weight: bold;">/</span> / <span style="color: #e94560; font-weight: bold;">→</span> Right Flipper | <span style="color: #ffd93d; font-weight: bold;">R</span> Reset
+        </div>
       </div>
     </div>
 
