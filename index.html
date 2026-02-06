@@ -1164,17 +1164,16 @@
       loader.load('hoodie-character.glb', function(gltf) {
         const model = gltf.scene;
 
-        // Scale to fit the scene — bigger to match chair/desk proportions
-        model.scale.set(0.55, 0.55, 0.55);
+        // Scale to properly fill the chair — character should look human-sized
+        model.scale.set(0.95, 0.95, 0.95);
 
-        // Position: seated in chair facing desk
-        // Chair seat at y=0.50, chair group at z=1.1
-        model.position.set(0, 0.48, 0.95);
+        // Position: butt on chair seat (y=0.50), centered in chair (z=1.1)
+        model.position.set(0, 0.48, 1.05);
 
         // Rotate to face the desk (desk is at z=0 direction)
         model.rotation.y = Math.PI;
 
-        // Slight forward lean (sleeping/relaxed)
+        // Slight forward lean (sleeping/relaxed at desk)
         model.rotation.x = 0.15;
 
         model.traverse(function(child) {
@@ -1187,12 +1186,17 @@
         // Set up animation if available
         if (gltf.animations && gltf.animations.length > 0) {
           personMixer = new THREE.AnimationMixer(model);
-          // Try to find an idle animation, otherwise use the first one
+          const animNames = gltf.animations.map(a => a.name);
+          console.log('Available animations:', animNames);
+          // Prefer idle for a relaxed sitting look
           let clip = gltf.animations.find(a => a.name.toLowerCase().includes('idle'));
+          if (!clip) clip = gltf.animations.find(a => a.name.toLowerCase().includes('sit'));
           if (!clip) clip = gltf.animations[0];
+          console.log('Playing animation:', clip.name);
           const action = personMixer.clipAction(clip);
           action.play();
           action.timeScale = 0.3; // Slow it down for sleeping effect
+          model.userData.animNames = animNames;
         }
 
         sleepingPerson = model;
@@ -2723,6 +2727,11 @@
         // Gentle breathing bob on the whole model
         const breathe = Math.sin(time * 1.2) * 0.003;
         sleepingPerson.position.y = 0.48 + breathe;
+        // Log animations on first frame for debugging
+        if (!sleepingPerson.userData.logged) {
+          sleepingPerson.userData.logged = true;
+          console.log('Person animations:', sleepingPerson.userData.animNames);
+        }
       }
 
       // Animate dog (tail wag + gentle breathing)
