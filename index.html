@@ -1131,10 +1131,10 @@
           catGroup.add(legGroup);
         });
 
-        // Position cats — orange cat near sleeping person, others roam
+        // Position cats — orange cat near person, others roam
         if (i === 0) {
-          // Orange cat sits near sleeping person's head
-          catGroup.position.set(2.0, getTerrainHeight(2.0, 2.3), 2.3);
+          // Orange cat near standing person
+          catGroup.position.set(2.3, getTerrainHeight(2.3, 1.8), 1.8);
           catGroup.rotation.y = -1.5; // Facing the person
         } else {
           catGroup.position.set(
@@ -1163,7 +1163,7 @@
       });
     }
 
-    var blanket; // global ref for blanket animation
+    var personMixer; // animation mixer for character
 
     function createSleepingPerson() {
       const loader = new THREE.GLTFLoader();
@@ -1179,74 +1179,28 @@
           }
         });
 
-        // Lying on BACK — rotation.x = PI/2 tips backward
-        // Model origin is at feet, so body extends along +Z when tipped
-        model.rotation.set(Math.PI / 2, 0, 0.15);
+        // Standing next to the desk, facing the camera
+        const groundY = getTerrainHeight(1.8, 1.6);
+        model.position.set(1.8, groundY, 1.6);
+        model.rotation.y = -0.4; // Angled slightly toward camera
 
-        // Position on ground — raised enough to not clip through terrain
-        const groundY = getTerrainHeight(1.5, 2.0);
-        model.position.set(1.5, groundY + 0.15, 2.0);
-
-        // Minimal bone tweaks — avoid axes that stick limbs up
-        const bones = {};
-        model.traverse(function(child) {
-          if (child.isBone) bones[child.name] = child;
-        });
-
-        // Legs: splay outward slightly (Z axis in model space = sideways)
-        if (bones.UpperLegL) bones.UpperLegL.rotation.z = 0.15;
-        if (bones.UpperLegR) bones.UpperLegR.rotation.z = -0.15;
-
-        // Arms: relax outward to sides (natural sleeping)
-        if (bones.UpperArmR) bones.UpperArmR.rotation.z = -0.8;
-        if (bones.UpperArmL) bones.UpperArmL.rotation.z = 0.5;
-
-        // Head tilted to side (sleeping)
-        if (bones.Head) bones.Head.rotation.z = 0.25;
+        // Play Wave animation
+        personMixer = new THREE.AnimationMixer(model);
+        const waveClip = gltf.animations.find(a => a.name === 'Wave');
+        if (waveClip) {
+          const action = personMixer.clipAction(waveClip);
+          action.play();
+        } else if (gltf.animations.length > 0) {
+          // Fallback to Idle
+          const idleClip = gltf.animations.find(a => a.name === 'Idle_Neutral' || a.name === 'Idle');
+          if (idleClip) {
+            personMixer.clipAction(idleClip).play();
+          }
+        }
 
         sleepingPerson = model;
         scene.add(model);
-
-        // Create blanket draped over torso
-        createBlanket(groundY);
       });
-    }
-
-    function createBlanket(groundY) {
-      // Person lies along Z axis: feet at z~2.0, head at z~3.6
-      // Blanket covers from shins to neck (~1.3 units along Z, ~0.8 wide)
-      const blanketGeo = new THREE.PlaneGeometry(0.85, 1.4, 14, 20);
-      const pos = blanketGeo.attributes.position;
-      for (let i = 0; i < pos.count; i++) {
-        const x = pos.getX(i); // side-to-side (-0.425 to 0.425)
-        const y = pos.getY(i); // along body (-0.7 to 0.7)
-        // Body-shaped hump: raised in center, droops at edges
-        const bodyHump = Math.max(0, 0.12 - Math.abs(x) * 0.4) * Math.cos(x * 3);
-        // Wrinkles for realism
-        const wrinkles = Math.sin(x * 8 + y * 3) * 0.01 + Math.sin(y * 6) * 0.015;
-        // Edges droop down to ground
-        const edgeFallX = Math.max(0, (Math.abs(x) - 0.25)) * -0.15;
-        const edgeFallZ = Math.max(0, (Math.abs(y) - 0.5)) * -0.05;
-        pos.setZ(i, bodyHump + wrinkles + edgeFallX + edgeFallZ);
-      }
-      blanketGeo.computeVertexNormals();
-
-      const blanketMat = new THREE.MeshStandardMaterial({
-        color: 0x4466AA,
-        roughness: 0.95,
-        side: THREE.DoubleSide
-      });
-      blanket = new THREE.Mesh(blanketGeo, blanketMat);
-      blanket.castShadow = true;
-      blanket.receiveShadow = true;
-
-      // Position: centered on body torso area
-      // Person pivot at (1.5, y, 2.0), body extends to z~3.6
-      // Blanket center at z~2.8 covers from z~2.1 (shins) to z~3.5 (neck)
-      blanket.position.set(1.5, groundY + 0.22, 2.8);
-      blanket.rotation.x = -Math.PI / 2;
-      blanket.rotation.z = 0.15; // Match person's slight body tilt
-      scene.add(blanket);
     }
 
     function createDog() {
@@ -1395,11 +1349,10 @@
       pawBL.position.set(-0.2, 0.02, -0.15);
       dogGroup.add(pawBL);
 
-      // Position: on top of sleeping person (jumping on them)
-      // Person is at (1.5, groundY, 2.0) lying down
-      const personGroundY = getTerrainHeight(1.5, 2.0);
-      dogGroup.position.set(1.5, personGroundY + 0.45, 1.8);
-      dogGroup.rotation.y = 0.3; // Facing along the person
+      // Position: near the standing person
+      const personGroundY = getTerrainHeight(1.8, 1.6);
+      dogGroup.position.set(2.2, personGroundY, 1.8);
+      dogGroup.rotation.y = -0.5; // Facing toward person
 
       dogGroup.userData = {
         tailSegments: tailSegments,
@@ -2694,7 +2647,7 @@
 
         // Orange cat (index 0) walks around and sits near sleeping person
         if (catIndex === 0) {
-          const personX = 1.5, personZ = 2.0;
+          const personX = 1.8, personZ = 1.6;
           // State machine init
           if (ud.catState === undefined) {
             ud.catState = 'walking'; // 'walking' or 'sitting'
@@ -2836,22 +2789,19 @@
         }
       });
 
-      // Animate sleeping person (gentle breathing) + blanket
-      if (sleepingPerson) {
-        const breathe = Math.sin(time * 1.2) * 0.004;
-        const baseY = getTerrainHeight(1.5, 2.0) + 0.15;
-        sleepingPerson.position.y = baseY + breathe;
+      // Update character animation mixer
+      if (personMixer) {
+        personMixer.update(0.016);
       }
-      // Blanket breathes with person
-      if (blanket) {
-        const blanketBreathe = Math.sin(time * 1.2) * 0.005;
-        blanket.position.y = getTerrainHeight(1.5, 2.0) + 0.22 + blanketBreathe;
+      // Keep person on terrain
+      if (sleepingPerson) {
+        sleepingPerson.position.y = getTerrainHeight(1.8, 1.6);
       }
 
       // Animate dog — alternates between jumping on person and walking around
       if (dog) {
         const dd = dog.userData;
-        const personX = 1.5, personZ = 2.0;
+        const personX = 1.8, personZ = 1.6;
         const personGY = getTerrainHeight(personX, personZ);
 
         // State machine: init once
@@ -2865,13 +2815,14 @@
         dd.stateTimer += 0.016;
 
         if (dd.dogState === 'jumping') {
-          // Bounce on the person
-          const jumpBounce = Math.abs(Math.sin(time * 2.5)) * 0.15;
-          dog.position.y = personGY + 0.35 + jumpBounce;
-          dog.position.x = personX + Math.sin(time * 1.8) * 0.1;
-          dog.position.z = personZ + Math.cos(time * 1.3) * 0.08;
+          // Excited jumping near person's feet
+          const jumpBounce = Math.abs(Math.sin(time * 3)) * 0.12;
+          const groundHere = getTerrainHeight(dog.position.x, dog.position.z);
+          dog.position.y = groundHere + jumpBounce;
+          dog.position.x = personX + 0.4 + Math.sin(time * 1.8) * 0.15;
+          dog.position.z = personZ + Math.cos(time * 1.3) * 0.15;
           // Face person
-          dog.rotation.y = Math.sin(time * 2) * 0.4;
+          dog.rotation.y = Math.atan2(personX - dog.position.x, personZ - dog.position.z);
           // Fast excited tail
           if (dd.tailSegments) {
             dd.tailSegments.forEach((seg, t) => {
