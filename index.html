@@ -1201,17 +1201,19 @@
         }
 
         // Start walking
-        if (walkAction) walkAction.play();
+        if (idleAction) idleAction.play();
 
         // Store actions and state for animation loop
         model.userData.walkAction = walkAction;
         model.userData.waveAction = waveAction;
         model.userData.idleAction = idleAction;
-        model.userData.charState = 'walking';
+        model.userData.charState = 'idle';
         model.userData.stateTimer = 0;
         model.userData.walkAngle = 0;
-        model.userData.walkDuration = 8 + Math.random() * 5;
+        model.userData.walkDuration = 3 + Math.random() * 3; // walk 3-6s
+        model.userData.idleDuration = 5 + Math.random() * 5; // idle 5-10s
         model.userData.waveDuration = 2.5;
+        model.userData.cycleCount = 0; // wave every 2-3 idle cycles
 
         sleepingPerson = model;
         scene.add(model);
@@ -2812,13 +2814,31 @@
         const ud = sleepingPerson.userData;
         ud.stateTimer += 0.016;
 
-        if (ud.charState === 'walking') {
+        if (ud.charState === 'idle') {
+          // Stand still with idle animation
+          sleepingPerson.position.y = getTerrainHeight(sleepingPerson.position.x, sleepingPerson.position.z);
+          if (ud.stateTimer > ud.idleDuration) {
+            ud.cycleCount++;
+            // Wave every 2-3 idle cycles, otherwise walk
+            if (ud.cycleCount >= 2 + Math.floor(Math.random() * 2)) {
+              ud.charState = 'waving';
+              ud.stateTimer = 0;
+              ud.cycleCount = 0;
+              if (ud.idleAction) ud.idleAction.fadeOut(0.3);
+              if (ud.waveAction) { ud.waveAction.reset(); ud.waveAction.fadeIn(0.3); ud.waveAction.play(); }
+              sleepingPerson.rotation.y = Math.PI; // face camera
+            } else {
+              ud.charState = 'walking';
+              ud.stateTimer = 0;
+              ud.walkDuration = 3 + Math.random() * 3;
+              if (ud.idleAction) ud.idleAction.fadeOut(0.3);
+              if (ud.walkAction) { ud.walkAction.reset(); ud.walkAction.fadeIn(0.3); ud.walkAction.play(); }
+            }
+          }
+        } else if (ud.charState === 'walking') {
           // Walk around desk without clipping through it
-          // Desk is at (0, 0) spanning x=-1.5..1.5, z=-0.75..0.75
-          // Path uses waypoints to navigate around the desk
           ud.walkAngle += 0.006;
           var angle = ud.walkAngle % (Math.PI * 2);
-          // Rectangular-ish path around the desk with margin
           var waypoints = [
             { x: 2.2, z: 0 },    // right side of desk
             { x: 2.2, z: 1.8 },  // right-back
@@ -2836,42 +2856,27 @@
           sleepingPerson.position.x += (targetX - sleepingPerson.position.x) * 0.03;
           sleepingPerson.position.z += (targetZ - sleepingPerson.position.z) * 0.03;
           sleepingPerson.position.y = getTerrainHeight(sleepingPerson.position.x, sleepingPerson.position.z);
-          // Face walking direction
           var dx = targetX - sleepingPerson.position.x;
           var dz = targetZ - sleepingPerson.position.z;
           if (Math.abs(dx) > 0.01 || Math.abs(dz) > 0.01) {
             sleepingPerson.rotation.y = Math.atan2(dx, dz);
           }
-
-          // After walking a while, stop and wave
+          // After short walk, stop and idle
           if (ud.stateTimer > ud.walkDuration) {
-            ud.charState = 'waving';
+            ud.charState = 'idle';
             ud.stateTimer = 0;
-            // Crossfade to wave
+            ud.idleDuration = 5 + Math.random() * 5;
             if (ud.walkAction) ud.walkAction.fadeOut(0.3);
-            if (ud.waveAction) {
-              ud.waveAction.reset();
-              ud.waveAction.fadeIn(0.3);
-              ud.waveAction.play();
-            }
-            // Face camera direction (toward z=0)
-            sleepingPerson.rotation.y = Math.PI;
+            if (ud.idleAction) { ud.idleAction.reset(); ud.idleAction.fadeIn(0.3); ud.idleAction.play(); }
           }
         } else if (ud.charState === 'waving') {
-          // Stand still and wave
           sleepingPerson.position.y = getTerrainHeight(sleepingPerson.position.x, sleepingPerson.position.z);
-
           if (ud.stateTimer > ud.waveDuration) {
-            ud.charState = 'walking';
+            ud.charState = 'idle';
             ud.stateTimer = 0;
-            ud.walkDuration = 6 + Math.random() * 5;
-            // Crossfade back to walk
+            ud.idleDuration = 5 + Math.random() * 5;
             if (ud.waveAction) ud.waveAction.fadeOut(0.3);
-            if (ud.walkAction) {
-              ud.walkAction.reset();
-              ud.walkAction.fadeIn(0.3);
-              ud.walkAction.play();
-            }
+            if (ud.idleAction) { ud.idleAction.reset(); ud.idleAction.fadeIn(0.3); ud.idleAction.play(); }
           }
         }
       }
