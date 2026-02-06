@@ -1184,19 +1184,34 @@
         model.position.set(1.8, groundY, 1.6);
         model.rotation.y = -0.4; // Angled slightly toward camera
 
-        // Play Wave animation (names are prefixed with "CharacterArmature|")
+        // Set up animation mixer with Walk + Wave state machine
         personMixer = new THREE.AnimationMixer(model);
+        const walkClip = gltf.animations.find(a => a.name.includes('Walk'));
         const waveClip = gltf.animations.find(a => a.name.includes('Wave'));
-        if (waveClip) {
-          const action = personMixer.clipAction(waveClip);
-          action.play();
-        } else if (gltf.animations.length > 0) {
-          // Fallback to Idle
-          const idleClip = gltf.animations.find(a => a.name.includes('Idle_Neutral') || a.name.includes('Idle'));
-          if (idleClip) {
-            personMixer.clipAction(idleClip).play();
-          }
+        const idleClip = gltf.animations.find(a => a.name.includes('Idle_Neutral'));
+
+        const walkAction = walkClip ? personMixer.clipAction(walkClip) : null;
+        const waveAction = waveClip ? personMixer.clipAction(waveClip) : null;
+        const idleAction = idleClip ? personMixer.clipAction(idleClip) : null;
+
+        // Wave plays once then stops
+        if (waveAction) {
+          waveAction.setLoop(THREE.LoopOnce);
+          waveAction.clampWhenFinished = true;
         }
+
+        // Start walking
+        if (walkAction) walkAction.play();
+
+        // Store actions and state for animation loop
+        model.userData.walkAction = walkAction;
+        model.userData.waveAction = waveAction;
+        model.userData.idleAction = idleAction;
+        model.userData.charState = 'walking';
+        model.userData.stateTimer = 0;
+        model.userData.walkAngle = 0;
+        model.userData.walkDuration = 8 + Math.random() * 5;
+        model.userData.waveDuration = 2.5;
 
         sleepingPerson = model;
         scene.add(model);
@@ -2647,7 +2662,7 @@
 
         // Orange cat (index 0) walks around and sits near sleeping person
         if (catIndex === 0) {
-          const personX = 1.8, personZ = 1.6;
+          const personX = sleepingPerson ? sleepingPerson.position.x : 1.8, personZ = sleepingPerson ? sleepingPerson.position.z : 1.6;
           // State machine init
           if (ud.catState === undefined) {
             ud.catState = 'walking'; // 'walking' or 'sitting'
@@ -2789,19 +2804,64 @@
         }
       });
 
-      // Update character animation mixer
+      // Update character animation + movement
       if (personMixer) {
         personMixer.update(0.016);
       }
-      // Keep person on terrain
       if (sleepingPerson) {
-        sleepingPerson.position.y = getTerrainHeight(1.8, 1.6);
+        const ud = sleepingPerson.userData;
+        ud.stateTimer += 0.016;
+
+        if (ud.charState === 'walking') {
+          // Walk in a gentle path around the desk area
+          ud.walkAngle += 0.006;
+          const cx = 0.5, cz = 1.2; // center of walk path
+          const rx = 1.8, rz = 1.5; // oval radius
+          const targetX = cx + Math.cos(ud.walkAngle) * rx;
+          const targetZ = cz + Math.sin(ud.walkAngle) * rz;
+          sleepingPerson.position.x += (targetX - sleepingPerson.position.x) * 0.03;
+          sleepingPerson.position.z += (targetZ - sleepingPerson.position.z) * 0.03;
+          sleepingPerson.position.y = getTerrainHeight(sleepingPerson.position.x, sleepingPerson.position.z);
+          // Face walking direction
+          sleepingPerson.rotation.y = -ud.walkAngle + Math.PI / 2;
+
+          // After walking a while, stop and wave
+          if (ud.stateTimer > ud.walkDuration) {
+            ud.charState = 'waving';
+            ud.stateTimer = 0;
+            // Crossfade to wave
+            if (ud.walkAction) ud.walkAction.fadeOut(0.3);
+            if (ud.waveAction) {
+              ud.waveAction.reset();
+              ud.waveAction.fadeIn(0.3);
+              ud.waveAction.play();
+            }
+            // Face camera direction (toward z=0)
+            sleepingPerson.rotation.y = Math.PI;
+          }
+        } else if (ud.charState === 'waving') {
+          // Stand still and wave
+          sleepingPerson.position.y = getTerrainHeight(sleepingPerson.position.x, sleepingPerson.position.z);
+
+          if (ud.stateTimer > ud.waveDuration) {
+            ud.charState = 'walking';
+            ud.stateTimer = 0;
+            ud.walkDuration = 6 + Math.random() * 5;
+            // Crossfade back to walk
+            if (ud.waveAction) ud.waveAction.fadeOut(0.3);
+            if (ud.walkAction) {
+              ud.walkAction.reset();
+              ud.walkAction.fadeIn(0.3);
+              ud.walkAction.play();
+            }
+          }
+        }
       }
 
       // Animate dog — alternates between jumping on person and walking around
       if (dog) {
         const dd = dog.userData;
-        const personX = 1.8, personZ = 1.6;
+        const personX = sleepingPerson ? sleepingPerson.position.x : 1.8, personZ = sleepingPerson ? sleepingPerson.position.z : 1.6;
         const personGY = getTerrainHeight(personX, personZ);
 
         // State machine: init once
