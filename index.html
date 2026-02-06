@@ -1175,50 +1175,44 @@
           }
         });
 
-        // NO animation — manually pose the bones for a seated sleeping position
+        // Manually pose bones for seated sleeping position
+        // Bone names have NO dots (UpperLegL not UpperLeg.L)
         const bones = {};
         model.traverse(function(child) {
-          if (child.isBone) {
-            bones[child.name] = child;
-          }
+          if (child.isBone) bones[child.name] = child;
         });
 
-        // Bend upper legs forward ~90° to sit
-        if (bones['UpperLeg.L']) bones['UpperLeg.L'].rotation.x = -1.4;
-        if (bones['UpperLeg.R']) bones['UpperLeg.R'].rotation.x = -1.4;
+        // Lower model so hips/butt rest on chair seat (y≈0.50)
+        // Model origin at feet, hips ~0.8 units up at 0.95 scale
+        model.position.set(0, -0.25, 1.05);
 
-        // Bend knees ~90° so shins hang down
-        if (bones['LowerLeg.L']) bones['LowerLeg.L'].rotation.x = 1.4;
-        if (bones['LowerLeg.R']) bones['LowerLeg.R'].rotation.x = 1.4;
+        // Lean upper body forward (sleeping hunched over desk)
+        if (bones.Hips) bones.Hips.rotation.x = -0.7;
+        if (bones.Abdomen) bones.Abdomen.rotation.x = -0.3;
+        if (bones.Torso) bones.Torso.rotation.x = -0.3;
+        if (bones.Chest) bones.Chest.rotation.x = -0.15;
 
-        // Feet flat
-        if (bones['Foot.L']) bones['Foot.L'].rotation.x = 0.2;
-        if (bones['Foot.R']) bones['Foot.R'].rotation.x = 0.2;
+        // Head drooped down (sleeping)
+        if (bones.Neck) bones.Neck.rotation.x = -0.4;
+        if (bones.Head) bones.Head.rotation.x = -0.5;
 
-        // Lean torso/spine forward (sleeping on desk)
-        if (bones['Torso']) bones['Torso'].rotation.x = -0.4;
-        if (bones['Chest']) bones['Chest'].rotation.x = -0.2;
+        // Bend upper legs forward for sitting
+        if (bones.UpperLegL) bones.UpperLegL.rotation.x = -1.3;
+        if (bones.UpperLegR) bones.UpperLegR.rotation.x = -1.3;
 
-        // Head drooped forward/down (sleeping)
-        if (bones['Neck']) bones['Neck'].rotation.x = -0.3;
-        if (bones['Head']) bones['Head'].rotation.x = -0.4;
+        // Bend knees so shins go down
+        if (bones.LowerLegL) bones.LowerLegL.rotation.x = 2.2;
+        if (bones.LowerLegR) bones.LowerLegR.rotation.x = 2.2;
 
-        // Arms resting forward on desk
-        if (bones['UpperArm.L']) {
-          bones['UpperArm.L'].rotation.x = -0.6;
-          bones['UpperArm.L'].rotation.z = -0.3;
-        }
-        if (bones['UpperArm.R']) {
-          bones['UpperArm.R'].rotation.x = -0.6;
-          bones['UpperArm.R'].rotation.z = 0.3;
-        }
-        if (bones['LowerArm.L']) bones['LowerArm.L'].rotation.x = -0.8;
-        if (bones['LowerArm.R']) bones['LowerArm.R'].rotation.x = -0.8;
+        // Feet
+        if (bones.FootL) bones.FootL.rotation.x = 0.3;
+        if (bones.FootR) bones.FootR.rotation.x = 0.3;
 
-        // Position: hips at chair seat level
-        // Chair seat at y=0.50, chair at z=1.1
-        // With legs bent, model origin shifts — place so butt is on seat
-        model.position.set(0, 0.50, 1.05);
+        // Arms resting forward
+        if (bones.UpperArmL) bones.UpperArmL.rotation.x = -0.8;
+        if (bones.UpperArmR) bones.UpperArmR.rotation.x = -0.8;
+        if (bones.LowerArmL) bones.LowerArmL.rotation.x = -0.6;
+        if (bones.LowerArmR) bones.LowerArmR.rotation.x = -0.6;
 
         sleepingPerson = model;
         scene.add(model);
@@ -2743,7 +2737,7 @@
       // Animate sleeping person (gentle breathing bob)
       if (sleepingPerson) {
         const breathe = Math.sin(time * 1.2) * 0.004;
-        sleepingPerson.position.y = 0.50 + breathe;
+        sleepingPerson.position.y = -0.25 + breathe;
       }
 
       // Animate dog (tail wag + gentle breathing)
