@@ -2728,7 +2728,7 @@
       // Animate sleeping person (gentle breathing bob)
       if (sleepingPerson) {
         const breathe = Math.sin(time * 1.2) * 0.004;
-        const baseY = getTerrainHeight(1.5, 2.0) + 0.25;
+        const baseY = getTerrainHeight(1.5, 2.0) + 0.45;
         sleepingPerson.position.y = baseY + breathe;
       }
 
