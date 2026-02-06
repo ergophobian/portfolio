@@ -1164,19 +1164,18 @@
       loader.load('hoodie-character.glb', function(gltf) {
         const model = gltf.scene;
 
-        // Scale to fit the scene (character is ~1.7 units tall, we want ~0.7)
-        model.scale.set(0.4, 0.4, 0.4);
+        // Scale to fit the scene — bigger to match chair/desk proportions
+        model.scale.set(0.55, 0.55, 0.55);
 
-        // Position: seated in chair, leaning forward onto desk
-        // Chair seat is at y=0.50, chair at z=1.1
-        // Desk surface at y=0.54, desk edge at z=0.75
-        model.position.set(0, 0.50, 0.85);
+        // Position: seated in chair facing desk
+        // Chair seat at y=0.50, chair group at z=1.1
+        model.position.set(0, 0.48, 0.95);
 
         // Rotate to face the desk (desk is at z=0 direction)
         model.rotation.y = Math.PI;
 
-        // Tilt forward (sleeping/hunched over desk)
-        model.rotation.x = 0.4;
+        // Slight forward lean (sleeping/relaxed)
+        model.rotation.x = 0.15;
 
         model.traverse(function(child) {
           if (child.isMesh) {
@@ -2723,7 +2722,7 @@
       if (sleepingPerson) {
         // Gentle breathing bob on the whole model
         const breathe = Math.sin(time * 1.2) * 0.003;
-        sleepingPerson.position.y = 0.50 + breathe;
+        sleepingPerson.position.y = 0.48 + breathe;
       }
 
       // Animate dog (tail wag + gentle breathing)
