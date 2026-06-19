@@ -30,7 +30,12 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .docs-hero-inner,
+    .docs-hero-inner {
+      width: 100%;
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+
     .docs-main {
       width: min(var(--content-max), calc(100% - 32px));
       margin: 0 auto;
@@ -171,7 +176,8 @@
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
       font-size: 12.5px;
       line-height: 1.65;
-      white-space: pre;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
     .docs-code code {
@@ -268,7 +274,6 @@
         grid-template-columns: 1fr;
       }
 
-      .docs-hero-inner,
       .docs-main {
         width: min(100% - 24px, var(--content-max));
       }
