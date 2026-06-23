@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="dark">
   <meta name="darkreader-lock">
   <title>Auto Flow — Bulk AI Video & Image Generation</title>
-  <meta name="description" content="Automate bulk AI video and image generation on Google Flow. 4 generation modes, smart gallery, queue system, 14+ languages.">
+  <meta name="description" content="Automate bulk AI video and image generation on Google Flow. 4 generation modes, smart gallery, queue system, Agent Mode (MCP/CLI), 14+ languages.">
   <meta property="og:title" content="Auto Flow — Bulk AI Video & Image Generation">
-  <meta property="og:description" content="Automate bulk AI video & image generation on Google Flow.">
+  <meta property="og:description" content="Automate bulk AI video and image generation on Google Flow. 4 generation modes, smart gallery, queue system, Agent Mode (MCP/CLI), 14+ languages.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ergophobia.info/autoflow">
   <link rel="icon" href="data:image/svg+xml,%3Csvg viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23f59e0b'/%3E%3Cellipse cx='20' cy='22' rx='13' ry='11' fill='%23fbbf24'/%3E%3Ccircle cx='15' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Ccircle cx='25' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Cellipse cx='20' cy='21' rx='5' ry='3' fill='%23f97316'/%3E%3C/svg%3E">
@@ -17,26 +17,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="home">
 
   <!-- ====== CHANGELOG MODAL ====== -->
   <div class="modal-overlay" id="changelogModal">
     <div class="modal-card">
       <div class="modal-glow"></div>
       <div class="modal-header">
-        <div class="modal-version-badge">v10.7.56</div>
-        <span class="modal-date">Mar 7, 2026</span>
+        <div class="modal-version-badge">v10.8.13</div>
+        <span class="modal-date">Jun 20, 2026</span>
       </div>
       <h2 class="modal-title">What's New</h2>
       <ul class="modal-changelog">
-        <li><span class="tag tag-fixed">Fixed</span> Frame-to-Video working again</li>
-        <li><span class="tag tag-fixed">Fixed</span> Ingredients-to-Video working again</li>
-        <li><span class="tag tag-fixed">Fixed</span> Auto-downloads restored on fresh installs</li>
-        <li><span class="tag tag-improved">Improved</span> API-first generation with Gallery sync</li>
-        <li><span class="tag tag-improved">Improved</span> More reliable video completion + downloads</li>
-        <li><span class="tag tag-improved">Improved</span> Better scene-based file naming and sorting</li>
+        <li><span class="tag tag-new">New</span> Agent Mode workflow for faster Flow batch generation</li>
+        <li><span class="tag tag-new">New</span> CLI and MCP package for Claude, Codex, and local agents</li>
+        <li><span class="tag tag-improved">Improved</span> Reference image attach, context checks, and run targeting</li>
+        <li><span class="tag tag-improved">Improved</span> Organized image/video downloads for generated batches</li>
+        <li><span class="tag tag-fixed">Fixed</span> Version drift between the extension, docs, and website</li>
       </ul>
-      <p class="modal-note"><span class="tag tag-new">Soon</span> Scene Builder integration</p>
+      <p class="modal-note"><span class="tag tag-new">Beta</span> MCP/CLI workflows are available for live testing</p>
       <div class="modal-actions">
         <a href="https://discord.gg/WK2qVXCrHE" target="_blank" class="btn btn-discord">
           <svg width="20" height="15" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0045.4.2a.2.2 0 00-.2.1 40.8 40.8 0 00-1.8 3.7 54 54 0 00-16.2 0A37.3 37.3 0 0025.4.3a.2.2 0 00-.2-.1A58.4 58.4 0 0010.5 5 59.6 59.6 0 00.4 45a.3.3 0 00.1.2A58.9 58.9 0 0018.1 55a.2.2 0 00.3-.1 42.1 42.1 0 003.6-5.9.2.2 0 00-.1-.3 38.8 38.8 0 01-5.5-2.6.2.2 0 01 0-.4c.4-.3.7-.6 1.1-.8a.2.2 0 01.3 0 42 42 0 0035.8 0 .2.2 0 01.2 0l1.1.9a.2.2 0 010 .3 36.4 36.4 0 01-5.5 2.6.2.2 0 00-.1.4 47.2 47.2 0 003.6 5.8.2.2 0 00.3.1A58.7 58.7 0 0071 45.2a.2.2 0 00.1-.2c1.6-16.6-2.7-31-11.4-43.8a.2.2 0 00-.1-.1zM23.7 37c-3.8 0-6.9-3.5-6.9-7.7s3-7.7 6.9-7.7c3.9 0 7 3.5 6.9 7.7 0 4.3-3 7.7-6.9 7.7zm25.5 0c-3.8 0-6.9-3.5-6.9-7.7s3-7.7 6.9-7.7c3.9 0 7 3.5 6.9 7.7 0 4.3-3 7.7-6.9 7.7z"/></svg>
@@ -50,18 +49,19 @@
   <!-- ====== HEADER ====== -->
   <header class="header" id="header">
     <div class="header-inner">
-      <a href="#hero" class="header-brand">
+      <a href="index.html" class="header-brand">
         <div class="logo-ring">
           <img src="data:image/svg+xml,%3Csvg viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23f59e0b'/%3E%3Cellipse cx='20' cy='22' rx='13' ry='11' fill='%23fbbf24'/%3E%3Ccircle cx='15' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Ccircle cx='25' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Cellipse cx='20' cy='21' rx='5' ry='3' fill='%23f97316'/%3E%3Ccircle cx='14' cy='15' r='.8' fill='%23fff'/%3E%3Ccircle cx='24' cy='15' r='.8' fill='%23fff'/%3E%3C/svg%3E" alt="Auto Flow" width="32" height="32">
         </div>
         <span class="header-title">Auto Flow</span>
-        <span class="version-pill">v10.7.56</span>
+        <span class="version-pill">v10.8.13</span>
       </a>
       <nav class="header-nav" id="headerNav">
-        <a href="#features" class="nav-link">Features</a>
-        <a href="#guide" class="nav-link">Guide</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guide.html" class="nav-link">Guide</a>
         <a href="mcp-cli.html" class="nav-link">MCP/CLI</a>
-        <a href="#faq" class="nav-link">FAQ</a>
+        <a href="changelog.html" class="nav-link">Changelog</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
       </nav>
       <div class="header-actions">
         <a href="https://discord.gg/WK2qVXCrHE" target="_blank" class="btn-icon" title="Discord">
@@ -118,651 +118,68 @@
       </div>
     </section>
 
-    <!-- ====== GUIDE ====== -->
-    <section class="guide" id="guide">
-      <div class="section-header">
-        <h2 class="section-title">Complete Guide</h2>
-        <p class="section-subtitle">Everything you need to know about Auto Flow.</p>
-      </div>
-
-      <!-- Guide Index -->
-      <nav class="guide-index">
-        <h4 class="guide-index-title">Jump to section</h4>
-        <div class="guide-index-grid">
-          <a href="#feat-control" class="guide-index-item">Control Panel</a>
-          <a href="#feat-gallery" class="guide-index-item">Smart Gallery</a>
-          <a href="#feat-settings" class="guide-index-item">Settings</a>
-          <a href="#feat-queue" class="guide-index-item">Queue &amp; Progress</a>
-          <a href="#exp-uploads" class="guide-index-item">Upload Controls</a>
-          <a href="#exp-mapping" class="guide-index-item">Reference Mapping</a>
-          <a href="#exp-gallery" class="guide-index-item">Gallery Actions</a>
-          <a href="#exp-settings" class="guide-index-item">Settings Panels</a>
-          <a href="#exp-help" class="guide-index-item">Help Center</a>
+    <!-- ====== AGENT MODE BAND ====== -->
+    <section class="agent-band" id="agent-mode">
+      <div class="agent-band-inner">
+        <div class="agent-band-text">
+          <div class="agent-band-kicker">New &middot; Agent Mode</div>
+          <h2 class="agent-band-title">Hand the whole batch to your AI agent</h2>
+          <p class="agent-band-desc">Auto Flow now speaks <strong>MCP</strong> and <strong>CLI</strong>. Let Claude, Codex, or any local agent run generations, target the right Flow project, reconcile outputs, retry failed rows, and download verified media &mdash; guarded, with you in control.</p>
+          <ul class="agent-band-list">
+            <li>Drive runs from Claude, Codex, or your own scripts</li>
+            <li>Reconcile, retry, and download without babysitting the tab</li>
+            <li>Preflight checks before anything spends credits</li>
+          </ul>
+          <div class="agent-band-ctas">
+            <a href="mcp-cli.html" class="btn btn-primary btn-lg">Explore Agent Mode</a>
+            <a href="guide.html" class="btn btn-outline btn-lg">Read the Guide</a>
+          </div>
         </div>
-      </nav>
-
-      <div class="accordion-list">
-
-        <!-- Create Image -->
-        <details class="accordion" id="guide-create-image" open>
-          <summary class="accordion-trigger">
-            <span class="accordion-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
-            </span>
-            Create Image (Nano Banana)
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <ol>
-              <li>Select <strong>Create Image</strong> mode in the Control tab</li>
-              <li>Paste one prompt per line in the Prompt List, or click <strong>Import file (.txt)</strong></li>
-              <li>Click <strong>Add to Queue</strong></li>
-              <li>Click <strong>Start</strong> — choose New Project or Current Project</li>
-              <li>Monitor progress in the Task Progress table</li>
-              <li>When done, switch to Gallery &rarr; <strong>Scan All</strong> to find your images</li>
-            </ol>
-            <div class="guide-screenshot">
-              <img src="images/input-full.png" alt="Input section showing Prompt List field, Queue Images with Shared Ref Upload and 1:1 Batch Upload buttons, bulk mode and repeat toggles, and Reference Library" loading="lazy">
-              <span class="screenshot-caption">Input Section — Prompt List & Upload Options</span>
-            </div>
-          </div>
-        </details>
-
-        <!-- Text-to-Video -->
-        <details class="accordion" id="guide-text-to-video">
-          <summary class="accordion-trigger">
-            <span class="accordion-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><polygon points="10 8 16 12 10 16"/></svg>
-            </span>
-            Text-to-Video
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <ol>
-              <li>Select <strong>Text-to-Video</strong> mode</li>
-              <li>Paste one prompt per line — each line is one scene with a clear camera direction</li>
-              <li>Click <strong>Add to Queue</strong></li>
-              <li>Click <strong>Start</strong> and choose Create New Project or Run on This Page</li>
-              <li>Watch Task Progress for Waiting &rarr; Generating &rarr; Done status</li>
-            </ol>
-            <p class="guide-tip">Best practices: keep one scene per line, put action + camera movement in the same line, use tags like [V1-S1] for stable sorting.</p>
-          </div>
-        </details>
-
-        <!-- Frame-to-Video -->
-        <details class="accordion" id="guide-frame-to-video">
-          <summary class="accordion-trigger">
-            <span class="accordion-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M14.5 4h5.5v5.5M14 10l7-7M9.5 20H4v-5.5M10 14l-7 7"/></svg>
-            </span>
-            Frame-to-Video (Image-to-Video)
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <ol>
-              <li>Select <strong>Frame-to-Video</strong> mode</li>
-              <li>Upload reference images using <strong>Shared Ref Upload</strong> or <strong>1:1 Batch Upload</strong></li>
-              <li>Write video prompts in the Prompt List</li>
-              <li>Optionally enable <strong>Map references by prompt</strong> to assign specific images to specific prompts</li>
-              <li>Click <strong>Add to Queue</strong> &rarr; <strong>Start</strong></li>
-            </ol>
-            <div class="guide-screenshot">
-              <img src="images/control-lower.png" alt="Lower section of Control panel showing Reference Library, prompt mapping, Add to Queue and Manage buttons" loading="lazy">
-              <span class="screenshot-caption">Reference Library, Prompt Mapping & Queue</span>
-            </div>
-          </div>
-        </details>
-
-        <!-- Ingredients -->
-        <details class="accordion" id="guide-ingredients">
-          <summary class="accordion-trigger">
-            <span class="accordion-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            </span>
-            Ingredients Mode
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <ol>
-              <li>Select <strong>Ingredients</strong> mode</li>
-              <li>Upload product/ingredient images</li>
-              <li>Write video prompts describing the product showcase</li>
-              <li>Add to Queue &rarr; Start</li>
-            </ol>
-            <p class="guide-tip">Ingredients mode is designed for product showcase videos where you want to highlight specific visual elements.</p>
-          </div>
-        </details>
-
-        <!-- Upload & References -->
-        <details class="accordion" id="guide-uploads">
-          <summary class="accordion-trigger">
-            <span class="accordion-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            </span>
-            Uploads & Reference Library
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>There are three ways to upload images in Auto Flow. Understanding the difference is important — <strong>only Add to Library saves images permanently</strong>.</p>
-
-            <div class="guide-screenshot">
-              <img src="images/input-upload.png" alt="Upload controls showing Shared Ref Upload, 1:1 Batch Upload, bulk mode toggle, and Reference Library" loading="lazy">
-              <span class="screenshot-caption">Upload Controls & Reference Library</span>
-            </div>
-
-            <div class="button-explainer-list">
-              <div class="btn-explain">
-                <strong>Shared Ref Upload</strong>
-                <p>Upload reference images that are <strong>shared across all prompts</strong> in the current job. Every prompt in your list will use these images as visual references when generating.</p>
-                <p class="explain-warning">These images are temporary — they are only used for the current job and are <strong>not saved</strong> to the Reference Library. If you clear the queue or start a new job, they're gone.</p>
-              </div>
-              <div class="btn-explain">
-                <strong>1:1 Batch Upload</strong>
-                <p>Upload images that are <strong>paired 1-to-1 with prompts</strong> by line order. The first uploaded image goes with the first prompt, second image with second prompt, and so on.</p>
-                <p class="explain-warning">Also temporary — these images are <strong>not saved</strong> to the Reference Library. They only apply to the current job.</p>
-              </div>
-              <div class="btn-explain">
-                <strong>Add to Library</strong> <span class="btn-tag blue">Persistent</span>
-                <p>Saves images to your <strong>Reference Library</strong>, which persists across sessions. Images saved here stay until you manually delete them. Use the library for images you reuse frequently — brand assets, character references, style guides, etc.</p>
-                <p>You can then assign library images to specific prompts using <strong>Map references by prompt</strong>.</p>
-              </div>
-            </div>
-
-            <h4 class="guide-subheading">Toggles</h4>
-            <div class="button-explainer-list">
-              <div class="btn-explain">
-                <strong>Bulk mode: 1 image per prompt (line order)</strong>
-                <p>When ON, each uploaded image is assigned to exactly one prompt in order. Image 1 &rarr; Prompt 1, Image 2 &rarr; Prompt 2. When OFF, all images are used for every prompt.</p>
-              </div>
-              <div class="btn-explain">
-                <strong>Repeat first prompt for all uploaded images</strong>
-                <p>When ON, the first prompt text is reused for every uploaded image. Useful when you have many reference images but want the same prompt applied to all of them.</p>
-              </div>
-            </div>
-
-            <p class="guide-tip"><strong>Quick rule:</strong> Use <em>Shared Ref</em> or <em>1:1 Batch</em> for one-off jobs. Use <em>Add to Library</em> for images you want to keep and reuse across multiple jobs.</p>
-          </div>
-        </details>
-
-        <!-- Gallery & Buttons -->
-        <details class="accordion" id="guide-gallery">
-          <summary class="accordion-trigger">
-            <span class="accordion-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            </span>
-            Gallery — Every Button Explained
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>The Gallery tab has two sub-tabs: <strong>Images</strong> and <strong>Videos</strong>. Each has its own set of controls.</p>
-
-            <div class="guide-screenshot">
-              <img src="images/gallery-images-full.png" alt="Images gallery showing all controls: 1K resolution dropdown, Scan All button, Import Images, sort dropdown, Random Pick, Pick Matched, Deselect All, Download, and Animate Images" loading="lazy">
-              <span class="screenshot-caption">Images Gallery — All Controls</span>
-            </div>
-
-            <h4 class="guide-subheading">Image Gallery Buttons</h4>
-            <div class="button-explainer-list">
-              <div class="btn-explain"><strong>Scan All</strong> <span class="btn-tag gold">Gold Button</span><p>Scans the Google Flow page to find all generated images. Click this after generation completes to populate the gallery. It detects images from all prompt groups.</p></div>
-              <div class="btn-explain"><strong>Import Images</strong><p>Manually import local images into the gallery. Useful if you want to bring in images from outside Google Flow.</p></div>
-              <div class="btn-explain"><strong>Random Pick</strong><p>Randomly selects <strong>1 image per prompt group</strong>. If you generated 4 images per prompt, it picks 1 random winner from each group. Great for quickly curating the best outputs.</p></div>
-              <div class="btn-explain"><strong>Pick Matched</strong><p>Selects <strong>matched image + video pairs</strong>. If you generated images and then animated them into videos, this finds the pairs that go together — so you can download both the source image and its video. Works best with the <a href="#guide-formatting">prompt formatting guide</a> below.</p></div>
-              <div class="btn-explain"><strong>Deselect All</strong><p>Clears all current selections in the gallery.</p></div>
-              <div class="btn-explain"><strong>Download (N)</strong><p>Downloads all selected images at the chosen resolution. The number shows how many are selected. See <a href="#guide-resolution">Download Resolution</a> for details on 1K/2K/4K.</p></div>
-              <div class="btn-explain"><strong>Animate Images</strong><p>Sends all selected images to the <strong>Frame-to-Video</strong> queue. This creates a new job that will animate each selected image into a video using your video prompts.</p></div>
-            </div>
-
-            <div class="guide-screenshot">
-              <img src="images/gallery-videos.png" alt="Videos gallery showing 1080p resolution dropdown, Scan All button, sort dropdown, Speed and Volume controls, Random Pick and Download buttons" loading="lazy">
-              <span class="screenshot-caption">Videos Gallery — Playback & Download Controls</span>
-            </div>
-
-            <h4 class="guide-subheading">Video Gallery Buttons</h4>
-            <div class="button-explainer-list">
-              <div class="btn-explain"><strong>Scan All</strong> <span class="btn-tag gold">Gold Button</span><p>Same as images — scans the page for all generated videos.</p></div>
-              <div class="btn-explain"><strong>Random Pick</strong><p>Randomly selects 1 video per prompt group.</p></div>
-              <div class="btn-explain"><strong>Speed / Vol</strong><p>Control video playback speed (0.5x to 6x) and volume directly in the gallery preview. Useful for quickly reviewing outputs.</p></div>
-              <div class="btn-explain"><strong>Download (N)</strong><p>Downloads selected videos at the chosen resolution (720p, 1080p, or 4K).</p></div>
-            </div>
-
-            <h4 class="guide-subheading">Layout Options</h4>
-            <div class="button-explainer-list">
-              <div class="btn-explain"><strong>Default</strong><p>4-column grid layout. Good for browsing many images at once.</p></div>
-              <div class="btn-explain"><strong>Large</strong><p>2-column layout with bigger thumbnails. Better for comparing details.</p></div>
-            </div>
-          </div>
-        </details>
-
-        <!-- Prompt Formatting -->
-        <details class="accordion" id="guide-formatting">
-          <summary class="accordion-trigger">
-            <span class="accordion-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            </span>
-            Prompt Formatting Guide
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>How you format your prompts determines how Auto Flow processes them and how the gallery sorts your results.</p>
-
-            <h4 class="guide-subheading">Basic Format</h4>
-            <p>One prompt per line. Each line = one generation task.</p>
-            <div class="code-example">a golden retriever running on the beach, slow motion, cinematic<br>a cat sleeping in a sunbeam on a window sill<br>a hummingbird hovering near red flowers, macro shot</div>
-
-            <h4 class="guide-subheading">Tagged Format (Recommended)</h4>
-            <p>Use tags like <code>[V1-S1]</code> to organize by video and scene. This enables proper sorting and <strong>Pick Matched</strong> functionality.</p>
-            <div class="code-example">[V1-S1] a character walks into a dark laboratory, wide shot<br>[V1-S2] close-up of the character's face as they see the experiment<br>[V1-S3] the experiment glows bright blue, camera pulls back<br>[V2-S1] a chef prepares a meal in a busy restaurant kitchen<br>[V2-S2] close-up of the dish being plated with garnish</div>
-            <p class="guide-tip"><strong>V</strong> = Video number, <strong>S</strong> = Scene number. This tells Auto Flow which prompts belong together. The gallery will group them and <strong>Pick Matched</strong> will pair images with their animated videos by matching these tags.</p>
-
-            <h4 class="guide-subheading">Multi-line Prompts</h4>
-            <p>Separate prompts with a blank line if a single prompt spans multiple lines:</p>
-            <div class="code-example">A detailed scene of a medieval castle at sunrise,<br>with fog rolling through the valley below.<br><br>A close-up of a knight's armor reflecting firelight,<br>cinematic depth of field.</div>
-
-            <h4 class="guide-subheading">Image-to-Video Format</h4>
-            <p>When using Frame-to-Video with the <code>|||</code> delimiter (for Auto Flow paste):</p>
-            <div class="code-example">[V#-S#] image prompt ||| [V#-S#] video prompt</div>
-            <p>The left side generates the image, the right side animates it. Tags must match on both sides.</p>
-
-            <h4 class="guide-subheading">Full Example (2 videos, 5 scenes each)</h4>
-            <p>Here's a complete real-world example showing how to structure a multi-video project:</p>
-            <div class="code-example">[V1-S1] Neon city skyline in rain, reflective rooftops, dramatic clouds ||| [V1-S1] Cinematic tilt from skyline to street with rainfall streaking across lens.<br>[V1-S2] Courier under glowing signage, wet jacket, intense expression ||| [V1-S2] Slow dolly-in while steam drifts and signs pulse.<br>[V1-S3] Close-up data chip in gloved hand, water droplets, amber glow ||| [V1-S3] Macro rack-focus from droplets to glowing chip core.<br>[V1-S4] Narrow alley with hologram ads and mist, long perspective lines ||| [V1-S4] Handheld forward move through alley with subtle parallax.<br>[V1-S5] Rooftop dawn reveal, storm clearing over city skyline ||| [V1-S5] Crane-up shot as sunlight breaks through clouds.<br><br>[V2-S1] Desert outpost at sunset, dust haze, long warm shadows ||| [V2-S1] Slow panorama establishing outpost and surrounding dunes.<br>[V2-S2] Pilot inspecting drone wing by hangar, toolkit on ground ||| [V2-S2] Medium orbit around pilot with drifting dust particles.<br>[V2-S3] Cracked visor close-up reflecting lightning from distant storm ||| [V2-S3] Push-in close-up with subtle head turn and light flicker.<br>[V2-S4] Convoy vehicles driving into dunes, headlights cutting dust ||| [V2-S4] Side tracking shot matching convoy speed with motion blur.<br>[V2-S5] Night camp under stars, blue emergency lamps, quiet atmosphere ||| [V2-S5] Slow pullback to wide aerial while camp lights dim.</div>
-            <p><a href="sample-prompts.txt" download class="btn btn-outline" style="margin-top:8px; display:inline-flex;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download sample-prompts.txt
-            </a></p>
-
-            <h4 class="guide-subheading">AI Prompting Guide</h4>
-            <p>Use this prompt with <strong>ChatGPT, Claude, Gemini, or any AI</strong> to generate Auto Flow-compatible prompts. Save it as a custom instruction or paste it at the start of your conversation:</p>
-            <div class="code-example" style="white-space: pre-wrap;">You are an Auto Flow prompt generator. You create prompts for bulk AI video and image generation.
-
-FORMAT RULES:
-- Each line is one prompt. One line = one generation.
-- Use [V#-S#] tags: V = video number, S = scene number.
-- For image-to-video: [V#-S#] image prompt ||| [V#-S#] video prompt
-- Image prompts describe the STILL FRAME (composition, lighting, subject).
-- Video prompts describe the CAMERA MOTION and ANIMATION (dolly, pan, tilt, zoom, tracking).
-- Keep each prompt on a SINGLE LINE (no line breaks within a prompt).
-- Be specific about: camera angle, lighting, mood, color palette, movement.
-- DO NOT add headers, comments, or blank lines between prompts.
-
-CAMERA VOCABULARY FOR VIDEO PROMPTS:
-Dolly-in/out, Pan left/right, Tilt up/down, Crane up/down,
-Tracking shot, Orbit/arc, Push-in, Pull-back, Handheld,
-Rack-focus, Slow zoom, Whip pan, Parallax, Aerial/drone.
-
-When I describe a concept, generate prompts in Auto Flow format.
-Output ONLY the prompts, no explanations.</div>
-            <p class="guide-tip">Copy the prompt above and paste it into your AI of choice. Then just describe what kind of video you want and it will output ready-to-paste Auto Flow prompts.</p>
-          </div>
-        </details>
-
-        <!-- Gallery Sorting -->
-        <details class="accordion" id="guide-sorting">
-          <summary class="accordion-trigger">
-            <span class="accordion-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-            </span>
-            Gallery Sorting Options
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>The sort dropdown controls how images and videos are ordered in the gallery:</p>
-            <div class="button-explainer-list">
-              <div class="btn-explain"><strong>Newest First</strong> <span class="btn-tag blue">Default</span><p>Most recently generated content appears at the top. Best for reviewing your latest batch.</p></div>
-              <div class="btn-explain"><strong>1 &rarr; 99</strong><p>Sort by prompt index ascending. Prompt 1 first, then 2, 3, etc. Follows the order you wrote your prompts.</p></div>
-              <div class="btn-explain"><strong>99 &rarr; 1</strong><p>Sort by prompt index descending. Last prompt first. Useful when your latest prompts are at the bottom.</p></div>
-              <div class="btn-explain"><strong>A &rarr; Z</strong><p>Alphabetical sort. If you used tags like <code>[V1-S1]</code>, this groups all scenes of each video together in order — V1-S1, V1-S2, V1-S3, then V2-S1, etc.</p></div>
-              <div class="btn-explain"><strong>Z &rarr; A</strong><p>Reverse alphabetical. Last video/scene first.</p></div>
-            </div>
-            <p class="guide-tip">Use <strong>A &rarr; Z</strong> sorting with tagged prompts like <code>[V1-S1]</code> for the cleanest gallery organization. All scenes from Video 1 will group together, then Video 2, etc.</p>
-          </div>
-        </details>
-
-        <!-- Download Resolution -->
-        <details class="accordion" id="guide-resolution">
-          <summary class="accordion-trigger">
-            <span class="accordion-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            </span>
-            Download Resolution (1K / 2K / 4K)
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>The resolution dropdown in the Gallery controls the quality of downloaded files.</p>
-
-            <h4 class="guide-subheading">Image Resolution</h4>
-            <div class="button-explainer-list">
-              <div class="btn-explain"><strong>1K</strong> <span class="btn-tag blue">Default</span><p>Standard resolution (~1024px). Fast downloads, smaller file size. Good for previews, social media, or high-volume workflows where speed matters.</p></div>
-              <div class="btn-explain"><strong>2K</strong><p>High resolution (~2048px). Good balance of quality and file size. Suitable for most final outputs including prints and high-quality posts.</p></div>
-              <div class="btn-explain"><strong>4K</strong> <span class="btn-tag gold">Pro</span><p>Maximum resolution (~4096px). Largest file size but highest quality. Best for large format prints, zoom-in detail, or archival quality. Requires Pro subscription.</p></div>
-            </div>
-
-            <h4 class="guide-subheading">Video Resolution</h4>
-            <div class="button-explainer-list">
-              <div class="btn-explain"><strong>720p</strong><p>Standard definition. Smaller files, faster downloads. Fine for social media where platforms compress anyway.</p></div>
-              <div class="btn-explain"><strong>1080p (Upscaled)</strong> <span class="btn-tag blue">Default</span><p>Full HD. Upscaled from native resolution. Good quality for most uses.</p></div>
-              <div class="btn-explain"><strong>4K</strong> <span class="btn-tag gold">Pro</span><p>Ultra HD. Maximum quality. Requires Pro subscription. Best for professional work and highest quality exports.</p></div>
-            </div>
-
-            <p class="guide-tip">Higher resolution = larger file size = longer download time. For batch workflows with many images, start with 1K to preview, then re-download your picks at 2K or 4K.</p>
-          </div>
-        </details>
-
-        <!-- Queue Management -->
-        <details class="accordion" id="guide-queue">
-          <summary class="accordion-trigger">
-            <span class="accordion-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            </span>
-            Queue Management
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <ol>
-              <li>Build up multiple jobs by clicking <strong>Add to Queue</strong> multiple times</li>
-              <li>Click <strong>Manage</strong> to view/edit queued jobs</li>
-              <li>Set a custom <strong>Job Download Folder</strong> name</li>
-              <li>Enable <strong>Auto-start next job in queue</strong> to chain them</li>
-              <li>Click <strong>Start</strong> — Auto Flow runs each job sequentially</li>
-              <li>Monitor progress with the live Task Progress table</li>
-            </ol>
-            <div class="guide-screenshot">
-              <img src="images/progress-tracking.png" alt="Queue and progress tracking section" loading="lazy">
-              <span class="screenshot-caption">Progress Tracking & Task Status Table</span>
-            </div>
-          </div>
-        </details>
-
+        <div class="agent-band-badge">
+          <span class="agent-band-badge-pill">MCP &middot; CLI</span>
+          <span class="agent-band-badge-note">Beta &middot; available for live testing</span>
+        </div>
       </div>
     </section>
 
-    <!-- ====== FEATURES ====== -->
-    <section class="features" id="features">
+    <!-- ====== FEATURE TEASER ====== -->
+    <section class="teaser" id="teaser">
       <div class="section-header">
         <h2 class="section-title">Everything you need</h2>
-        <p class="section-subtitle">Four powerful tabs. One seamless workflow.</p>
+        <p class="section-subtitle">Four generation modes. One seamless panel.</p>
       </div>
-
-      <!-- Feature 1: Control Panel -->
-      <div class="feature-row" id="feat-control">
-        <div class="feature-text">
+      <div class="teaser-grid">
+        <div class="teaser-card">
           <div class="feature-icon feature-icon--control">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
           </div>
-          <h3 class="feature-name">Control Panel</h3>
-          <p class="feature-desc">Four generation modes in one interface. Switch between Create Image, Text-to-Video, Frame-to-Video, and Ingredients mode instantly. Import prompts from text files, manage reference images, and map them to individual prompts.</p>
-          <ul class="feature-list">
-            <li>4 generation modes with one-click switching</li>
-            <li>Bulk prompt import from .txt files</li>
-            <li>Shared Ref Upload or 1:1 Batch Upload</li>
-            <li>Per-prompt reference image mapping</li>
-            <li>Reference Library with persistent storage</li>
-          </ul>
+          <h3 class="teaser-name">Control Panel</h3>
+          <p class="teaser-desc">Create Image, Text-to-Video, Frame-to-Video, and Ingredients &mdash; switch instantly.</p>
         </div>
-        <div class="feature-screenshots">
-          <div class="screenshot-card">
-            <img src="images/control-modes.png" alt="Control Panel header with 4 generation mode buttons: Create Image, Text-to-Video, Frame-to-Video, and Ingredients" loading="lazy">
-            <span class="screenshot-caption">4 Generation Modes</span>
-          </div>
-          <div class="screenshot-card">
-            <img src="images/input-upload.png" alt="Input section showing Prompt List with Import file button, Queue Images with Shared Ref Upload and 1:1 Batch Upload buttons, Bulk mode toggle, and Reference Library" loading="lazy">
-            <span class="screenshot-caption">Prompt Input & Upload Options</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Feature 2: Gallery -->
-      <div class="feature-row feature-row--reverse" id="feat-gallery">
-        <div class="feature-text">
+        <div class="teaser-card">
           <div class="feature-icon feature-icon--gallery">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           </div>
-          <h3 class="feature-name">Smart Gallery</h3>
-          <p class="feature-desc">Scan, browse, and manage all your generated content. Golden "Scan All" button finds every image and video. Smart selection tools let you pick randoms, matched pairs, or custom selections — then download at up to 4K resolution or send images directly to the video queue.</p>
-          <ul class="feature-list">
-            <li>Scan All with one-click golden button</li>
-            <li>Random Pick & Pick Matched for curation</li>
-            <li>Default or Large grid layout</li>
-            <li>Download at 1K, 2K, or 4K resolution</li>
-            <li>Animate Images — send to Frame-to-Video queue</li>
-          </ul>
+          <h3 class="teaser-name">Smart Gallery</h3>
+          <p class="teaser-desc">Scan everything, pick winners or matched pairs, download up to 4K.</p>
         </div>
-        <div class="feature-screenshots">
-          <div class="screenshot-card screenshot-card--wide">
-            <img src="images/gallery-overview.png" alt="Gallery tab showing Images/Videos toggle, layout options (Default/Large), Scan All button with gold glow, Import Images, sort dropdown, Random Pick, Pick Matched, Deselect All, Download, and Animate Images buttons" loading="lazy">
-            <span class="screenshot-caption">Gallery — Images Tab with All Controls</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Feature 3: Settings -->
-      <div class="feature-row" id="feat-settings">
-        <div class="feature-text">
+        <div class="teaser-card">
           <div class="feature-icon feature-icon--settings">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
           </div>
-          <h3 class="feature-name">Full Configuration</h3>
-          <p class="feature-desc">Fine-tune every aspect of generation. Choose video models (Veo 3.1 Fast/Quality), set aspect ratios, configure timing with humanized mode, auto-download in your preferred resolution, and pick from 14+ interface languages.</p>
-          <ul class="feature-list">
-            <li>Video Model: Veo 3.1 Fast or Quality</li>
-            <li>Image Model: Nano Banana 2</li>
-            <li>Aspect Ratios: 16:9, 9:16, 1:1</li>
-            <li>Humanized mode with speed control</li>
-            <li>Auto-download at up to 4K</li>
-            <li>14+ language interface</li>
-          </ul>
+          <h3 class="teaser-name">Full Configuration</h3>
+          <p class="teaser-desc">Veo 3.1 + Nano Banana 2, aspect ratios, humanized timing, 14+ languages.</p>
         </div>
-        <div class="feature-screenshots">
-          <div class="screenshot-card">
-            <img src="images/settings-full.png" alt="Settings tab showing General Settings: Videos per task, Video Model (Veo 3.1 Fast), Video Ratio (Portrait 9:16), Images per task, Image Model (Nano Banana 2), Image Ratio, Start from index, and Timing section" loading="lazy">
-            <span class="screenshot-caption">General Settings & Model Selection</span>
-          </div>
-          <div class="screenshot-card">
-            <img src="images/settings-download.png" alt="Download Settings showing Auto-download videos toggle, Video Resolution (Upscaled 1080p), Auto-download images toggle with 1K resolution, and tip about browser download settings" loading="lazy">
-            <span class="screenshot-caption">Download Settings</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Feature 4: Queue & Progress -->
-      <div class="feature-row feature-row--reverse" id="feat-queue">
-        <div class="feature-text">
+        <div class="teaser-card">
           <div class="feature-icon feature-icon--queue">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
           </div>
-          <h3 class="feature-name">Queue & Progress Tracking</h3>
-          <p class="feature-desc">Stack multiple jobs and let Auto Flow run them sequentially. Monitor every prompt with live status updates — Waiting, Generating, Done, or Error. Failed prompts are captured separately for easy retry.</p>
-          <ul class="feature-list">
-            <li>Multi-job queue with auto-start</li>
-            <li>Custom download folder per job</li>
-            <li>Live task progress table</li>
-            <li>Per-prompt status: Waiting → Generating → Done</li>
-            <li>Failed prompt capture with one-click retry</li>
-          </ul>
-        </div>
-        <div class="feature-screenshots">
-          <div class="screenshot-card">
-            <img src="images/progress-tracking.png" alt="Queue section showing Job Download Folder name, auto-start toggle, progress bar at Job 2/3, and Task Progress table with prompt statuses showing GENERATING state" loading="lazy">
-            <span class="screenshot-caption">Progress Tracking & Task Table</span>
-          </div>
-          <div class="screenshot-card">
-            <img src="images/queue-config.png" alt="Queue configuration showing Job Download Folder field, clear queue button, and Auto-start next job toggle enabled" loading="lazy">
-            <span class="screenshot-caption">Queue Configuration</span>
-          </div>
+          <h3 class="teaser-name">Queue &amp; Progress</h3>
+          <p class="teaser-desc">Stack jobs, auto-start the next, watch live status, retry failures.</p>
         </div>
       </div>
-    </section>
-
-    <!-- ====== BUTTON EXPLAINER ====== -->
-    <section class="explainer" id="explainer">
-      <div class="section-header">
-        <h2 class="section-title">Every button, explained</h2>
-        <p class="section-subtitle">A visual guide to every control in Auto Flow.</p>
-      </div>
-
-      <div class="explainer-grid">
-        <div class="explainer-group" id="exp-uploads">
-          <h4 class="explainer-group-title">Upload Controls</h4>
-          <div class="explainer-items">
-            <div class="explainer-item">
-              <div class="explainer-img"><img src="images/btn-shared-ref.png" alt="Shared Ref Upload button with upload icon" loading="lazy"></div>
-              <div class="explainer-info">
-                <strong>Shared Ref Upload</strong>
-                <p>Upload reference images shared across all prompts. Every prompt in your list uses these images as visual references.</p>
-              </div>
-            </div>
-            <div class="explainer-item">
-              <div class="explainer-img"><img src="images/btn-batch-upload.png" alt="1:1 Batch Upload button with lightning icon" loading="lazy"></div>
-              <div class="explainer-info">
-                <strong>1:1 Batch Upload</strong>
-                <p>Pair images 1-to-1 with prompts. First image goes with first prompt, second with second, and so on.</p>
-              </div>
-            </div>
-            <div class="explainer-item">
-              <div class="explainer-img"><img src="images/btn-toggles.png" alt="Bulk mode toggle (off) and Repeat first prompt toggle (on) with help buttons" loading="lazy"></div>
-              <div class="explainer-info">
-                <strong>Bulk Mode & Repeat</strong>
-                <p><em>Bulk mode:</em> 1 image per prompt in line order. <em>Repeat first prompt:</em> reuses the first prompt text for all uploaded images.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="explainer-group" id="exp-mapping">
-          <h4 class="explainer-group-title">Reference Mapping</h4>
-          <div class="explainer-items">
-            <div class="explainer-item">
-              <div class="explainer-img"><img src="images/ref-mapping-table.png" alt="Map references by prompt panel showing 3 prompts with 2 refs active and 3 custom mapped, Select all/Apply/Clear buttons, and prompt list with MAPPED status badges" loading="lazy"></div>
-              <div class="explainer-info">
-                <strong>Prompt Mapping Table</strong>
-                <p>Assign specific reference images to individual prompts. Select All, Apply Active Refs, or Clear Selected. Each prompt shows MAPPED or UNMAPPED status.</p>
-              </div>
-            </div>
-            <div class="explainer-item">
-              <div class="explainer-img"><img src="images/ref-mapping-images.png" alt="Reference mapping showing UNMAPPED and MAPPED prompts with image thumbnails assigned to each prompt row" loading="lazy"></div>
-              <div class="explainer-info">
-                <strong>Image Thumbnails per Prompt</strong>
-                <p>See exactly which reference images are assigned to each prompt. Unmapped prompts use default refs, mapped ones use your custom selection.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="explainer-group" id="exp-gallery">
-          <h4 class="explainer-group-title">Gallery Actions</h4>
-          <div class="explainer-items">
-            <div class="explainer-item">
-              <div class="explainer-img"><img src="images/gallery-full.png" alt="Gallery tab full view showing Images/Videos toggle, Default/Large layout buttons, Scan All golden button, Import Images, sort by Newest First, Random Pick, Pick Matched, Deselect All, Download, and Animate Images buttons" loading="lazy"></div>
-              <div class="explainer-info">
-                <strong>Full Gallery Controls</strong>
-                <p><em>Scan All</em> (gold button) finds all generated content. <em>Random Pick</em> selects 1 per prompt group. <em>Pick Matched</em> selects paired image+video sets. <em>Animate Images</em> sends selected to Frame-to-Video.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="explainer-group" id="exp-settings">
-          <h4 class="explainer-group-title">Settings Panels</h4>
-          <div class="explainer-items">
-            <div class="explainer-item">
-              <div class="explainer-img"><img src="images/settings-timing.png" alt="Timing settings showing Video creation wait time slider (10 to 20 seconds), Humanized mode toggle (experimental), and Typing speed humanized slider at 1.00x" loading="lazy"></div>
-              <div class="explainer-info">
-                <strong>Timing Controls</strong>
-                <p>Set video creation wait times. Enable <em>Humanized mode</em> to add natural typing speed variation — makes automation less detectable.</p>
-              </div>
-            </div>
-            <div class="explainer-item">
-              <div class="explainer-img"><img src="images/settings-interface.png" alt="Interface section showing Language dropdown with 14+ options including English, Vietnamese, Turkish, Arabic, German, French, Japanese, Indonesian, Korean, Italian, Russian. Subscription status and Maintenance section visible" loading="lazy"></div>
-              <div class="explainer-info">
-                <strong>Interface & Language</strong>
-                <p>14+ languages including Vietnamese, Turkish, Arabic, German, French, Japanese, Korean, and more. Full UI translation.</p>
-              </div>
-            </div>
-            <div class="explainer-item">
-              <div class="explainer-img"><img src="images/settings-maintenance.png" alt="Maintenance section with red Clear Flow Cache button, description text, and User Guide links for Vietnamese and English plus Discord button" loading="lazy"></div>
-              <div class="explainer-info">
-                <strong>Maintenance & Help</strong>
-                <p><em>Clear Flow Cache</em> resets the page when generation stops working. User guide links and Discord access directly from settings.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="explainer-group" id="exp-help">
-          <h4 class="explainer-group-title">Help Center</h4>
-          <div class="explainer-items">
-            <div class="explainer-item">
-              <div class="explainer-img"><img src="images/help-center.png" alt="Duck Auto Flow Help Center overlay with Video Tutorial and Discord buttons, guide sections for Text to Video, Create Image, Image to Video pipeline, Gallery usage, and guided walkthrough button" loading="lazy"></div>
-              <div class="explainer-info">
-                <strong>Built-in Help Center</strong>
-                <p>Click the <strong>?</strong> button for instant help. Guides for every mode, video tutorials, and a guided walkthrough. Direct links to Discord support.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ====== FAQ ====== -->
-    <section class="faq" id="faq">
-      <div class="section-header">
-        <h2 class="section-title">FAQ</h2>
-      </div>
-      <div class="accordion-list">
-        <details class="accordion">
-          <summary class="accordion-trigger">
-            What is Auto Flow?
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>Auto Flow is a Chrome extension that automates bulk AI video and image generation on Google Flow (formerly Google Vids/ImageFX). It lets you queue up hundreds of prompts and run them automatically.</p>
-          </div>
-        </details>
-        <details class="accordion">
-          <summary class="accordion-trigger">
-            Is it free?
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>Auto Flow has a free tier with limited daily prompts, and a Pro tier that unlocks unlimited generation, priority features, and 4K downloads.</p>
-          </div>
-        </details>
-        <details class="accordion">
-          <summary class="accordion-trigger">
-            What models does it support?
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>Video generation uses <strong>Veo 3.1</strong> (Fast or Quality mode). Image generation uses <strong>Nano Banana 2</strong>. Both are Google's latest models available through Google Flow.</p>
-          </div>
-        </details>
-        <details class="accordion">
-          <summary class="accordion-trigger">
-            The extension stopped working / page is slow
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>Go to Settings → Maintenance → <strong>Clear Flow Cache</strong>. This resets cached data on the Flow page without affecting your downloads. If that doesn't help, try reloading the page or restarting Chrome.</p>
-          </div>
-        </details>
-        <details class="accordion">
-          <summary class="accordion-trigger">
-            How do I update the extension?
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>Chrome auto-updates extensions, but it can take hours. To force an update: go to <code>chrome://extensions</code>, enable Developer mode, then click the <strong>Update</strong> button at the top.</p>
-          </div>
-        </details>
-        <details class="accordion">
-          <summary class="accordion-trigger">
-            Where can I get help?
-            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </summary>
-          <div class="accordion-content">
-            <p>Join the <a href="https://discord.gg/WK2qVXCrHE" target="_blank">Auto Flow Discord</a> or <a href="https://t.me/+2caK2vnkw8IwODFl" target="_blank">Telegram</a> for community support, bug reports, and feature requests. You can also use the built-in Help Center by clicking the <strong>?</strong> button in the extension.</p>
-          </div>
-        </details>
+      <div class="teaser-cta">
+        <a href="features.html" class="btn btn-outline btn-lg">See all features &rarr;</a>
       </div>
     </section>
 
@@ -780,14 +197,14 @@ Output ONLY the prompts, no explanations.</div>
       </div>
     </section>
 
-  </main>
 
+  </main>
   <!-- ====== FOOTER ====== -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-brand">
         <span class="footer-name">Auto Flow</span>
-        <span class="footer-version">v10.7.56</span>
+        <span class="footer-version">v10.8.13</span>
       </div>
       <div class="footer-links">
         <span class="footer-credit">by <a href="#">@duckmartians</a> &amp; <a href="https://ergophobia.info">@ergophobian</a></span>

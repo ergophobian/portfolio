@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="darkreader-lock">
+  <title>Auto Flow — Guide</title>
+  <meta name="description" content="The complete Auto Flow guide: generation modes, uploads and references, gallery, queue, plus the Format Guide for prompt tokens and character references.">
+  <meta property="og:title" content="Auto Flow — Guide">
+  <meta property="og:description" content="The complete Auto Flow guide: generation modes, uploads and references, gallery, queue, plus the Format Guide for prompt tokens and character references.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ergophobia.info/autoflow/guide.html">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23f59e0b'/%3E%3Cellipse cx='20' cy='22' rx='13' ry='11' fill='%23fbbf24'/%3E%3Ccircle cx='15' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Ccircle cx='25' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Cellipse cx='20' cy='21' rx='5' ry='3' fill='%23f97316'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ====== HEADER ====== -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="index.html" class="header-brand">
+        <div class="logo-ring">
+          <img src="data:image/svg+xml,%3Csvg viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23f59e0b'/%3E%3Cellipse cx='20' cy='22' rx='13' ry='11' fill='%23fbbf24'/%3E%3Ccircle cx='15' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Ccircle cx='25' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Cellipse cx='20' cy='21' rx='5' ry='3' fill='%23f97316'/%3E%3Ccircle cx='14' cy='15' r='.8' fill='%23fff'/%3E%3Ccircle cx='24' cy='15' r='.8' fill='%23fff'/%3E%3C/svg%3E" alt="Auto Flow" width="32" height="32">
+        </div>
+        <span class="header-title">Auto Flow</span>
+        <span class="version-pill">v10.8.13</span>
+      </a>
+      <nav class="header-nav" id="headerNav">
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guide.html" class="nav-link">Guide</a>
+        <a href="mcp-cli.html" class="nav-link">MCP/CLI</a>
+        <a href="changelog.html" class="nav-link">Changelog</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+      </nav>
+      <div class="header-actions">
+        <a href="https://discord.gg/WK2qVXCrHE" target="_blank" class="btn-icon" title="Discord">
+          <svg width="20" height="15" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0045.4.2a.2.2 0 00-.2.1 40.8 40.8 0 00-1.8 3.7 54 54 0 00-16.2 0A37.3 37.3 0 0025.4.3a.2.2 0 00-.2-.1A58.4 58.4 0 0010.5 5 59.6 59.6 0 00.4 45a.3.3 0 00.1.2A58.9 58.9 0 0018.1 55a.2.2 0 00.3-.1 42.1 42.1 0 003.6-5.9.2.2 0 00-.1-.3 38.8 38.8 0 01-5.5-2.6.2.2 0 01 0-.4c.4-.3.7-.6 1.1-.8a.2.2 0 01.3 0 42 42 0 0035.8 0 .2.2 0 01.2 0l1.1.9a.2.2 0 010 .3 36.4 36.4 0 01-5.5 2.6.2.2 0 00-.1.4 47.2 47.2 0 003.6 5.8.2.2 0 00.3.1A58.7 58.7 0 0071 45.2a.2.2 0 00.1-.2c1.6-16.6-2.7-31-11.4-43.8a.2.2 0 00-.1-.1zM23.7 37c-3.8 0-6.9-3.5-6.9-7.7s3-7.7 6.9-7.7c3.9 0 7 3.5 6.9 7.7 0 4.3-3 7.7-6.9 7.7zm25.5 0c-3.8 0-6.9-3.5-6.9-7.7s3-7.7 6.9-7.7c3.9 0 7 3.5 6.9 7.7 0 4.3-3 7.7-6.9 7.7z"/></svg>
+        </a>
+        <a href="https://t.me/+2caK2vnkw8IwODFl" target="_blank" class="btn-icon" title="Telegram">
+          <svg width="20" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </a>
+        <a href="https://chromewebstore.google.com/detail/auto-flow-auto-veo-nano-b/lhcmnhdbddgagibbbgppakocflbnknoa" target="_blank" class="btn btn-install" id="installBtn">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 12.5a5.5 5.5 0 110-11 5.5 5.5 0 010 11zM7.25 5v3.44L5.53 6.72l-1.06 1.06L8 11.31l3.53-3.53-1.06-1.06-1.72 1.72V5h-1.5z"/></svg>
+          Install Extension
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ====== GUIDE ====== -->
+    <section class="guide" id="guide">
+      <div class="section-header">
+        <h2 class="section-title">Complete Guide</h2>
+        <p class="section-subtitle">Everything you need to know about Auto Flow.</p>
+      </div>
+
+      <!-- Guide Index -->
+      <nav class="guide-index">
+        <h4 class="guide-index-title">Jump to section</h4>
+        <div class="guide-index-grid">
+          <a href="features.html#feat-control" class="guide-index-item">Control Panel</a>
+          <a href="features.html#feat-gallery" class="guide-index-item">Smart Gallery</a>
+          <a href="features.html#feat-settings" class="guide-index-item">Settings</a>
+          <a href="features.html#feat-queue" class="guide-index-item">Queue &amp; Progress</a>
+          <a href="features.html#exp-uploads" class="guide-index-item">Upload Controls</a>
+          <a href="features.html#exp-mapping" class="guide-index-item">Reference Mapping</a>
+          <a href="features.html#exp-gallery" class="guide-index-item">Gallery Actions</a>
+          <a href="features.html#exp-settings" class="guide-index-item">Settings Panels</a>
+          <a href="features.html#exp-help" class="guide-index-item">Help Center</a>
+        </div>
+      </nav>
+
+      <div class="accordion-list">
+
+        <!-- Create Image -->
+        <details class="accordion" id="guide-create-image" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+            </span>
+            Create Image (Nano Banana)
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <ol>
+              <li>Select <strong>Create Image</strong> mode in the Control tab</li>
+              <li>Paste one prompt per line in the Prompt List, or click <strong>Import file (.txt)</strong></li>
+              <li>Click <strong>Add to Queue</strong></li>
+              <li>Click <strong>Start</strong> — choose New Project or Current Project</li>
+              <li>Monitor progress in the Task Progress table</li>
+              <li>When done, switch to Gallery &rarr; <strong>Scan All</strong> to find your images</li>
+            </ol>
+            <div class="guide-screenshot">
+              <img src="images/input-full.png" alt="Input section showing Prompt List field, Queue Images with Shared Ref Upload and 1:1 Batch Upload buttons, bulk mode and repeat toggles, and Reference Library" loading="lazy">
+              <span class="screenshot-caption">Input Section — Prompt List & Upload Options</span>
+            </div>
+          </div>
+        </details>
+
+        <!-- Text-to-Video -->
+        <details class="accordion" id="guide-text-to-video">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><polygon points="10 8 16 12 10 16"/></svg>
+            </span>
+            Text-to-Video
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <ol>
+              <li>Select <strong>Text-to-Video</strong> mode</li>
+              <li>Paste one prompt per line — each line is one scene with a clear camera direction</li>
+              <li>Click <strong>Add to Queue</strong></li>
+              <li>Click <strong>Start</strong> and choose Create New Project or Run on This Page</li>
+              <li>Watch Task Progress for Waiting &rarr; Generating &rarr; Done status</li>
+            </ol>
+            <p class="guide-tip">Best practices: keep one scene per line, put action + camera movement in the same line, use tags like [V1-S1] for stable sorting.</p>
+          </div>
+        </details>
+
+        <!-- Frame-to-Video -->
+        <details class="accordion" id="guide-frame-to-video">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M14.5 4h5.5v5.5M14 10l7-7M9.5 20H4v-5.5M10 14l-7 7"/></svg>
+            </span>
+            Frame-to-Video (Image-to-Video)
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <ol>
+              <li>Select <strong>Frame-to-Video</strong> mode</li>
+              <li>Upload reference images using <strong>Shared Ref Upload</strong> or <strong>1:1 Batch Upload</strong></li>
+              <li>Write video prompts in the Prompt List</li>
+              <li>Optionally enable <strong>Map references by prompt</strong> to assign specific images to specific prompts</li>
+              <li>Click <strong>Add to Queue</strong> &rarr; <strong>Start</strong></li>
+            </ol>
+            <div class="guide-screenshot">
+              <img src="images/control-lower.png" alt="Lower section of Control panel showing Reference Library, prompt mapping, Add to Queue and Manage buttons" loading="lazy">
+              <span class="screenshot-caption">Reference Library, Prompt Mapping & Queue</span>
+            </div>
+          </div>
+        </details>
+
+        <!-- Ingredients -->
+        <details class="accordion" id="guide-ingredients">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </span>
+            Ingredients Mode
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <ol>
+              <li>Select <strong>Ingredients</strong> mode</li>
+              <li>Upload product/ingredient images</li>
+              <li>Write video prompts describing the product showcase</li>
+              <li>Add to Queue &rarr; Start</li>
+            </ol>
+            <p class="guide-tip">Ingredients mode is designed for product showcase videos where you want to highlight specific visual elements.</p>
+          </div>
+        </details>
+
+        <!-- Upload & References -->
+        <details class="accordion" id="guide-uploads">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </span>
+            Uploads & Reference Library
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <p>There are three ways to upload images in Auto Flow. Understanding the difference is important — <strong>only Add to Library saves images permanently</strong>.</p>
+
+            <div class="guide-screenshot">
+              <img src="images/input-upload.png" alt="Upload controls showing Shared Ref Upload, 1:1 Batch Upload, bulk mode toggle, and Reference Library" loading="lazy">
+              <span class="screenshot-caption">Upload Controls & Reference Library</span>
+            </div>
+
+            <div class="button-explainer-list">
+              <div class="btn-explain">
+                <strong>Shared Ref Upload</strong>
+                <p>Upload reference images that are <strong>shared across all prompts</strong> in the current job. Every prompt in your list will use these images as visual references when generating.</p>
+                <p class="explain-warning">These images are temporary — they are only used for the current job and are <strong>not saved</strong> to the Reference Library. If you clear the queue or start a new job, they're gone.</p>
+              </div>
+              <div class="btn-explain">
+                <strong>1:1 Batch Upload</strong>
+                <p>Upload images that are <strong>paired 1-to-1 with prompts</strong> by line order. The first uploaded image goes with the first prompt, second image with second prompt, and so on.</p>
+                <p class="explain-warning">Also temporary — these images are <strong>not saved</strong> to the Reference Library. They only apply to the current job.</p>
+              </div>
+              <div class="btn-explain">
+                <strong>Add to Library</strong> <span class="btn-tag blue">Persistent</span>
+                <p>Saves images to your <strong>Reference Library</strong>, which persists across sessions. Images saved here stay until you manually delete them. Use the library for images you reuse frequently — brand assets, character references, style guides, etc.</p>
+                <p>You can then assign library images to specific prompts using <strong>Map references by prompt</strong>.</p>
+              </div>
+            </div>
+
+            <h4 class="guide-subheading">Toggles</h4>
+            <div class="button-explainer-list">
+              <div class="btn-explain">
+                <strong>Bulk mode: 1 image per prompt (line order)</strong>
+                <p>When ON, each uploaded image is assigned to exactly one prompt in order. Image 1 &rarr; Prompt 1, Image 2 &rarr; Prompt 2. When OFF, all images are used for every prompt.</p>
+              </div>
+              <div class="btn-explain">
+                <strong>Repeat first prompt for all uploaded images</strong>
+                <p>When ON, the first prompt text is reused for every uploaded image. Useful when you have many reference images but want the same prompt applied to all of them.</p>
+              </div>
+            </div>
+
+            <p class="guide-tip"><strong>Quick rule:</strong> Use <em>Shared Ref</em> or <em>1:1 Batch</em> for one-off jobs. Use <em>Add to Library</em> for images you want to keep and reuse across multiple jobs.</p>
+          </div>
+        </details>
+
+        <!-- Gallery & Buttons -->
+        <details class="accordion" id="guide-gallery">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </span>
+            Gallery — Every Button Explained
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <p>The Gallery tab has two sub-tabs: <strong>Images</strong> and <strong>Videos</strong>. Each has its own set of controls.</p>
+
+            <div class="guide-screenshot">
+              <img src="images/gallery-images-full.png" alt="Images gallery showing all controls: 1K resolution dropdown, Scan All button, Import Images, sort dropdown, Random Pick, Pick Matched, Deselect All, Download, and Animate Images" loading="lazy">
+              <span class="screenshot-caption">Images Gallery — All Controls</span>
+            </div>
+
+            <h4 class="guide-subheading">Image Gallery Buttons</h4>
+            <div class="button-explainer-list">
+              <div class="btn-explain"><strong>Scan All</strong> <span class="btn-tag gold">Gold Button</span><p>Scans the Google Flow page to find all generated images. Click this after generation completes to populate the gallery. It detects images from all prompt groups.</p></div>
+              <div class="btn-explain"><strong>Import Images</strong><p>Manually import local images into the gallery. Useful if you want to bring in images from outside Google Flow.</p></div>
+              <div class="btn-explain"><strong>Random Pick</strong><p>Randomly selects <strong>1 image per prompt group</strong>. If you generated 4 images per prompt, it picks 1 random winner from each group. Great for quickly curating the best outputs.</p></div>
+              <div class="btn-explain"><strong>Pick Matched</strong><p>Selects <strong>matched image + video pairs</strong>. If you generated images and then animated them into videos, this finds the pairs that go together — so you can download both the source image and its video. Works best with the <a href="#guide-formatting">prompt formatting guide</a> below.</p></div>
+              <div class="btn-explain"><strong>Deselect All</strong><p>Clears all current selections in the gallery.</p></div>
+              <div class="btn-explain"><strong>Download (N)</strong><p>Downloads all selected images at the chosen resolution. The number shows how many are selected. See <a href="#guide-resolution">Download Resolution</a> for details on 1K/2K/4K.</p></div>
+              <div class="btn-explain"><strong>Animate Images</strong><p>Sends all selected images to the <strong>Frame-to-Video</strong> queue. This creates a new job that will animate each selected image into a video using your video prompts.</p></div>
+            </div>
+
+            <div class="guide-screenshot">
+              <img src="images/gallery-videos.png" alt="Videos gallery showing 1080p resolution dropdown, Scan All button, sort dropdown, Speed and Volume controls, Random Pick and Download buttons" loading="lazy">
+              <span class="screenshot-caption">Videos Gallery — Playback & Download Controls</span>
+            </div>
+
+            <h4 class="guide-subheading">Video Gallery Buttons</h4>
+            <div class="button-explainer-list">
+              <div class="btn-explain"><strong>Scan All</strong> <span class="btn-tag gold">Gold Button</span><p>Same as images — scans the page for all generated videos.</p></div>
+              <div class="btn-explain"><strong>Random Pick</strong><p>Randomly selects 1 video per prompt group.</p></div>
+              <div class="btn-explain"><strong>Speed / Vol</strong><p>Control video playback speed (0.5x to 6x) and volume directly in the gallery preview. Useful for quickly reviewing outputs.</p></div>
+              <div class="btn-explain"><strong>Download (N)</strong><p>Downloads selected videos at the chosen resolution (720p, 1080p, or 4K).</p></div>
+            </div>
+
+            <h4 class="guide-subheading">Layout Options</h4>
+            <div class="button-explainer-list">
+              <div class="btn-explain"><strong>Default</strong><p>4-column grid layout. Good for browsing many images at once.</p></div>
+              <div class="btn-explain"><strong>Large</strong><p>2-column layout with bigger thumbnails. Better for comparing details.</p></div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Prompt Formatting -->
+        <details class="accordion" id="guide-formatting">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </span>
+            Prompt Formatting Guide
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <p>How you format your prompts determines how Auto Flow processes them and how the gallery sorts your results.</p>
+
+            <h4 class="guide-subheading">Basic Format</h4>
+            <p>One prompt per line. Each line = one generation task.</p>
+            <div class="code-example">a golden retriever running on the beach, slow motion, cinematic<br>a cat sleeping in a sunbeam on a window sill<br>a hummingbird hovering near red flowers, macro shot</div>
+
+            <h4 class="guide-subheading">Tagged Format (Recommended)</h4>
+            <p>Use tags like <code>[V1-S1]</code> to organize by video and scene. This enables proper sorting and <strong>Pick Matched</strong> functionality.</p>
+            <div class="code-example">[V1-S1] a character walks into a dark laboratory, wide shot<br>[V1-S2] close-up of the character's face as they see the experiment<br>[V1-S3] the experiment glows bright blue, camera pulls back<br>[V2-S1] a chef prepares a meal in a busy restaurant kitchen<br>[V2-S2] close-up of the dish being plated with garnish</div>
+            <p class="guide-tip"><strong>V</strong> = Video number, <strong>S</strong> = Scene number. This tells Auto Flow which prompts belong together. The gallery will group them and <strong>Pick Matched</strong> will pair images with their animated videos by matching these tags.</p>
+
+            <h4 class="guide-subheading">Multi-line Prompts</h4>
+            <p>Separate prompts with a blank line if a single prompt spans multiple lines:</p>
+            <div class="code-example">A detailed scene of a medieval castle at sunrise,<br>with fog rolling through the valley below.<br><br>A close-up of a knight's armor reflecting firelight,<br>cinematic depth of field.</div>
+
+            <h4 class="guide-subheading">Image-to-Video Format</h4>
+            <p>When using Frame-to-Video with the <code>|||</code> delimiter (for Auto Flow paste):</p>
+            <div class="code-example">[V#-S#] image prompt ||| [V#-S#] video prompt</div>
+            <p>The left side generates the image, the right side animates it. Tags must match on both sides.</p>
+
+            <h4 class="guide-subheading">Full Example (2 videos, 5 scenes each)</h4>
+            <p>Here's a complete real-world example showing how to structure a multi-video project:</p>
+            <div class="code-example">[V1-S1] Neon city skyline in rain, reflective rooftops, dramatic clouds ||| [V1-S1] Cinematic tilt from skyline to street with rainfall streaking across lens.<br>[V1-S2] Courier under glowing signage, wet jacket, intense expression ||| [V1-S2] Slow dolly-in while steam drifts and signs pulse.<br>[V1-S3] Close-up data chip in gloved hand, water droplets, amber glow ||| [V1-S3] Macro rack-focus from droplets to glowing chip core.<br>[V1-S4] Narrow alley with hologram ads and mist, long perspective lines ||| [V1-S4] Handheld forward move through alley with subtle parallax.<br>[V1-S5] Rooftop dawn reveal, storm clearing over city skyline ||| [V1-S5] Crane-up shot as sunlight breaks through clouds.<br><br>[V2-S1] Desert outpost at sunset, dust haze, long warm shadows ||| [V2-S1] Slow panorama establishing outpost and surrounding dunes.<br>[V2-S2] Pilot inspecting drone wing by hangar, toolkit on ground ||| [V2-S2] Medium orbit around pilot with drifting dust particles.<br>[V2-S3] Cracked visor close-up reflecting lightning from distant storm ||| [V2-S3] Push-in close-up with subtle head turn and light flicker.<br>[V2-S4] Convoy vehicles driving into dunes, headlights cutting dust ||| [V2-S4] Side tracking shot matching convoy speed with motion blur.<br>[V2-S5] Night camp under stars, blue emergency lamps, quiet atmosphere ||| [V2-S5] Slow pullback to wide aerial while camp lights dim.</div>
+            <p><a href="sample-prompts.txt" download class="btn btn-outline" style="margin-top:8px; display:inline-flex;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download sample-prompts.txt
+            </a></p>
+
+            <h4 class="guide-subheading">AI Prompting Guide</h4>
+            <p>Use this prompt with <strong>ChatGPT, Claude, Gemini, or any AI</strong> to generate Auto Flow-compatible prompts. Save it as a custom instruction or paste it at the start of your conversation:</p>
+            <div class="code-example" style="white-space: pre-wrap;">You are an Auto Flow prompt generator. You create prompts for bulk AI video and image generation.
+
+FORMAT RULES:
+- Each line is one prompt. One line = one generation.
+- Use [V#-S#] tags: V = video number, S = scene number.
+- For image-to-video: [V#-S#] image prompt ||| [V#-S#] video prompt
+- Image prompts describe the STILL FRAME (composition, lighting, subject).
+- Video prompts describe the CAMERA MOTION and ANIMATION (dolly, pan, tilt, zoom, tracking).
+- Keep each prompt on a SINGLE LINE (no line breaks within a prompt).
+- Be specific about: camera angle, lighting, mood, color palette, movement.
+- DO NOT add headers, comments, or blank lines between prompts.
+
+CAMERA VOCABULARY FOR VIDEO PROMPTS:
+Dolly-in/out, Pan left/right, Tilt up/down, Crane up/down,
+Tracking shot, Orbit/arc, Push-in, Pull-back, Handheld,
+Rack-focus, Slow zoom, Whip pan, Parallax, Aerial/drone.
+
+When I describe a concept, generate prompts in Auto Flow format.
+Output ONLY the prompts, no explanations.</div>
+            <p class="guide-tip">Copy the prompt above and paste it into your AI of choice. Then just describe what kind of video you want and it will output ready-to-paste Auto Flow prompts.</p>
+          </div>
+        </details>
+
+        <!-- Gallery Sorting -->
+        <details class="accordion" id="guide-sorting">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            </span>
+            Gallery Sorting Options
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <p>The sort dropdown controls how images and videos are ordered in the gallery:</p>
+            <div class="button-explainer-list">
+              <div class="btn-explain"><strong>Newest First</strong> <span class="btn-tag blue">Default</span><p>Most recently generated content appears at the top. Best for reviewing your latest batch.</p></div>
+              <div class="btn-explain"><strong>1 &rarr; 99</strong><p>Sort by prompt index ascending. Prompt 1 first, then 2, 3, etc. Follows the order you wrote your prompts.</p></div>
+              <div class="btn-explain"><strong>99 &rarr; 1</strong><p>Sort by prompt index descending. Last prompt first. Useful when your latest prompts are at the bottom.</p></div>
+              <div class="btn-explain"><strong>A &rarr; Z</strong><p>Alphabetical sort. If you used tags like <code>[V1-S1]</code>, this groups all scenes of each video together in order — V1-S1, V1-S2, V1-S3, then V2-S1, etc.</p></div>
+              <div class="btn-explain"><strong>Z &rarr; A</strong><p>Reverse alphabetical. Last video/scene first.</p></div>
+            </div>
+            <p class="guide-tip">Use <strong>A &rarr; Z</strong> sorting with tagged prompts like <code>[V1-S1]</code> for the cleanest gallery organization. All scenes from Video 1 will group together, then Video 2, etc.</p>
+          </div>
+        </details>
+
+        <!-- Download Resolution -->
+        <details class="accordion" id="guide-resolution">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </span>
+            Download Resolution (1K / 2K / 4K)
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <p>The resolution dropdown in the Gallery controls the quality of downloaded files.</p>
+
+            <h4 class="guide-subheading">Image Resolution</h4>
+            <div class="button-explainer-list">
+              <div class="btn-explain"><strong>1K</strong> <span class="btn-tag blue">Default</span><p>Standard resolution (~1024px). Fast downloads, smaller file size. Good for previews, social media, or high-volume workflows where speed matters.</p></div>
+              <div class="btn-explain"><strong>2K</strong><p>High resolution (~2048px). Good balance of quality and file size. Suitable for most final outputs including prints and high-quality posts.</p></div>
+              <div class="btn-explain"><strong>4K</strong> <span class="btn-tag gold">Pro</span><p>Maximum resolution (~4096px). Largest file size but highest quality. Best for large format prints, zoom-in detail, or archival quality. Requires Pro subscription.</p></div>
+            </div>
+
+            <h4 class="guide-subheading">Video Resolution</h4>
+            <div class="button-explainer-list">
+              <div class="btn-explain"><strong>720p</strong><p>Standard definition. Smaller files, faster downloads. Fine for social media where platforms compress anyway.</p></div>
+              <div class="btn-explain"><strong>1080p (Upscaled)</strong> <span class="btn-tag blue">Default</span><p>Full HD. Upscaled from native resolution. Good quality for most uses.</p></div>
+              <div class="btn-explain"><strong>4K</strong> <span class="btn-tag gold">Pro</span><p>Ultra HD. Maximum quality. Requires Pro subscription. Best for professional work and highest quality exports.</p></div>
+            </div>
+
+            <p class="guide-tip">Higher resolution = larger file size = longer download time. For batch workflows with many images, start with 1K to preview, then re-download your picks at 2K or 4K.</p>
+          </div>
+        </details>
+
+        <!-- Queue Management -->
+        <details class="accordion" id="guide-queue">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </span>
+            Queue Management
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <ol>
+              <li>Build up multiple jobs by clicking <strong>Add to Queue</strong> multiple times</li>
+              <li>Click <strong>Manage</strong> to view/edit queued jobs</li>
+              <li>Set a custom <strong>Job Download Folder</strong> name</li>
+              <li>Enable <strong>Auto-start next job in queue</strong> to chain them</li>
+              <li>Click <strong>Start</strong> — Auto Flow runs each job sequentially</li>
+              <li>Monitor progress with the live Task Progress table</li>
+            </ol>
+            <div class="guide-screenshot">
+              <img src="images/progress-tracking.png" alt="Queue and progress tracking section" loading="lazy">
+              <span class="screenshot-caption">Progress Tracking & Task Status Table</span>
+            </div>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- ====== FORMAT GUIDE ====== -->
+    <section class="guide" id="format-guide">
+      <div class="section-header">
+        <h2 class="section-title">Format Guide</h2>
+        <p class="section-subtitle">Structural tokens that tell Auto Flow how to split prompts, map references, and keep characters consistent. Descriptions can be in any language &mdash; the tokens stay the same.</p>
+      </div>
+
+      <div class="accordion-list">
+
+        <!-- Token Cheat Sheet -->
+        <details class="accordion" id="fmt-tokens" open>
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </span>
+            Token Cheat Sheet
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <div class="button-explainer-list">
+              <div class="btn-explain"><strong>Scene tag &mdash; <code>[V1-S1]</code></strong><p>Optional, but useful for ordering and matching. V = video number, S = scene number.</p></div>
+              <div class="btn-explain"><strong>Frame split &mdash; <code>image prompt ||| video prompt</code></strong><p>Left side creates the image. Right side animates it.</p></div>
+              <div class="btn-explain"><strong>Character handle &mdash; <code>@gary_before</code></strong><p>ASCII handle, no spaces. Use underscores for display names with spaces.</p></div>
+              <div class="btn-explain"><strong>Character fields &mdash; <code>||| voice: none ||| info: notes</code></strong><p>Optional fields after the character description.</p></div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Character References -->
+        <details class="accordion" id="fmt-characters">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            Character References (@handles)
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <p>Reuse the same character across scenes by giving it a handle once, then referencing that handle wherever the character appears.</p>
+            <ol>
+              <li>In <strong>Character Prompts</strong>, define each reusable handle once.</li>
+              <li>In <strong>Character Sources</strong>, upload source images or pick existing project/reference images for each handle.</li>
+              <li>In scene prompts, reuse the exact same <code>@handle</code>.</li>
+              <li>For existing Flow characters, map the handle to the existing character instead of recreating it.</li>
+            </ol>
+            <h4 class="guide-subheading">Syntax</h4>
+            <p><strong>Basic:</strong> <code>@handle character description</code><br><strong>Advanced:</strong> <code>@handle character description ||| voice: Flow voice name ||| info: extra notes</code></p>
+            <div class="code-example" style="white-space: pre-wrap;">@gary_before Overweight white man, plain white t-shirt, cheap athletic shorts, nervous expression. ||| voice: none
+
+@deandre Tall tan man, chiseled body, wavy dark hair, open shirt, smug relaxed face. ||| voice: Charon</div>
+            <h4 class="guide-subheading">Using characters in scene prompts</h4>
+            <p>Use the same handle wherever identity matters. For long scripts, bind the important speaker/identity mentions first rather than every descriptive mention.</p>
+            <div class="code-example" style="white-space: pre-wrap;">[Scene 2] Hotel hallway at night. @gary_before rushes forward and shoves @deandre against the wall.
+
+Dialogue:
+@gary_before, furious: "Who are you?"
+@deandre, calm: "Back up."</div>
+            <p class="guide-tip"><strong>Do not use spaces inside handles.</strong> Use <code>@gary_before</code>, not <code>@ gary before</code>. A display name like &ldquo;Gary Before&rdquo; can still map to the handle <code>@gary_before</code>.</p>
+          </div>
+        </details>
+
+        <!-- Packet Import -->
+        <details class="accordion" id="fmt-packet">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </span>
+            Auto Flow Packet Import
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <p>Use <strong>Paste Auto Flow Packet</strong> to bring characters, video prompts, and notes in as one block. Auto Flow previews the packet before applying it into the Character Prompts and Video Prompts sections.</p>
+            <div class="code-example" style="white-space: pre-wrap;"># CHARACTER PROMPTS
+@test_luma Luma is a fictional young adult explorer with a teal jacket, silver backpack, short black hair, warm expression. ||| voice: none ||| info: curious, calm, adventurous
+
+@test_orren Orren is a fictional young adult inventor with an amber hoodie, round glasses, curly brown hair, thoughtful expression. ||| voice: none ||| info: clever, nervous, precise
+
+# VIDEO PROMPTS
+[V1-S1] @test_luma stands at the edge of a glowing forest path, teal jacket catching soft blue light, cinematic fantasy realism. ||| Slow dolly-in as @test_luma looks toward the trees.
+
+[V1-S2] @test_orren kneels beside a small device on a wooden table, warm workshop lighting. ||| Camera pushes in as @test_orren adjusts the device and glances toward @test_luma.
+
+# NOTES
+Style: cinematic fantasy realism, soft lighting, shallow depth of field.
+Continuity: Keep @test_luma in teal jacket. Keep @test_orren in amber hoodie and glasses.</div>
+            <h4 class="guide-subheading">Prompt for your LLM</h4>
+            <div class="code-example" style="white-space: pre-wrap;">You are writing an Auto Flow Packet. Use # CHARACTER PROMPTS, # VIDEO PROMPTS, and # NOTES. Define every @handle before using it. Use fictional non-famous characters. Use lowercase snake_case handles. Do not invent undefined @mentions. Use ||| to split the first-frame/image prompt from the video motion prompt. Use @handles only where identity matters.</div>
+            <p class="guide-tip">After applying a packet, use <strong>Create / Verify Native Characters</strong> so Auto Flow maps each <code>@handle</code> to a real Flow character before generation.</p>
+          </div>
+        </details>
+
+        <!-- Matching Modes -->
+        <details class="accordion" id="fmt-matching">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+            </span>
+            Matching Modes
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <div class="button-explainer-list">
+              <div class="btn-explain"><strong>Flow Native @ Match</strong> <span class="btn-tag blue">Characters</span><p>For existing or created Flow characters. Uses Google's native character chip / entity binding path.</p></div>
+              <div class="btn-explain"><strong>Auto Flow Classic Match</strong> <span class="btn-tag gold">Images</span><p>Auto Flow's original matcher for image references in Create Image, Frame-to-Video, and Ingredients. Maps uploaded refs by handle, filename, or prompt row.</p></div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Language-Agnostic -->
+        <details class="accordion" id="fmt-language">
+          <summary class="accordion-trigger">
+            <span class="accordion-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            </span>
+            Language-Agnostic Rules
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="accordion-content">
+            <p>Description text can be any language. Auto Flow only depends on the structural tokens:</p>
+            <ul>
+              <li>Keep <code>@handle</code> in ASCII with no spaces.</li>
+              <li>Keep <code>|||</code> as the split marker.</li>
+              <li>Keep optional field names as <code>voice:</code> and <code>info:</code>.</li>
+              <li>Everything after those tokens can be natural prompt text.</li>
+            </ul>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- ====== CTA BANNER ====== -->
+    <section class="cta-banner">
+      <div class="cta-content">
+        <h2 class="cta-title">Start automating today</h2>
+        <p class="cta-subtitle">Join 60,000+ creators using Auto Flow.</p>
+        <div class="cta-buttons">
+          <a href="https://chromewebstore.google.com/detail/auto-flow-auto-veo-nano-b/lhcmnhdbddgagibbbgppakocflbnknoa" target="_blank" class="btn btn-primary btn-lg" id="ctaInstall">Install Free</a>
+          <a href="https://discord.gg/WK2qVXCrHE" target="_blank" class="btn btn-outline btn-lg">Join Discord</a>
+          <a href="https://t.me/+2caK2vnkw8IwODFl" target="_blank" class="btn btn-outline btn-lg btn-telegram">Telegram</a>
+          <a href="https://chromewebstore.google.com/detail/auto-flow-auto-veo-nano-b/lhcmnhdbddgagibbbgppakocflbnknoa/reviews" target="_blank" class="btn btn-outline btn-lg btn-review">&#9733; Leave a Review</a>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-name">Auto Flow</span>
+        <span class="footer-version">v10.8.13</span>
+      </div>
+      <div class="footer-links">
+        <span class="footer-credit">by <a href="#">@duckmartians</a> &amp; <a href="https://ergophobia.info">@ergophobian</a></span>
+        <a href="https://ergophobia.info/autoflow/mcp-cli.html">MCP/CLI Docs</a>
+        <a href="https://ergophobia.info/autoflow/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        <a href="https://discord.gg/WK2qVXCrHE" target="_blank">Discord</a>
+        <a href="https://t.me/+2caK2vnkw8IwODFl" target="_blank">Telegram</a>
+        <a href="https://chromewebstore.google.com/detail/auto-flow-auto-veo-nano-b/lhcmnhdbddgagibbbgppakocflbnknoa/reviews" target="_blank">Leave a Review</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

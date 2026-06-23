@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="darkreader-lock">
+  <title>Auto Flow — Features</title>
+  <meta name="description" content="Every Auto Flow feature explained: 4 generation modes, smart gallery, full configuration, queue and progress tracking, and every button in the panel.">
+  <meta property="og:title" content="Auto Flow — Features">
+  <meta property="og:description" content="Every Auto Flow feature explained: 4 generation modes, smart gallery, full configuration, queue and progress tracking, and every button in the panel.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ergophobia.info/autoflow/features.html">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23f59e0b'/%3E%3Cellipse cx='20' cy='22' rx='13' ry='11' fill='%23fbbf24'/%3E%3Ccircle cx='15' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Ccircle cx='25' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Cellipse cx='20' cy='21' rx='5' ry='3' fill='%23f97316'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ====== HEADER ====== -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="index.html" class="header-brand">
+        <div class="logo-ring">
+          <img src="data:image/svg+xml,%3Csvg viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23f59e0b'/%3E%3Cellipse cx='20' cy='22' rx='13' ry='11' fill='%23fbbf24'/%3E%3Ccircle cx='15' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Ccircle cx='25' cy='16' r='2.5' fill='%231a1a2e'/%3E%3Cellipse cx='20' cy='21' rx='5' ry='3' fill='%23f97316'/%3E%3Ccircle cx='14' cy='15' r='.8' fill='%23fff'/%3E%3Ccircle cx='24' cy='15' r='.8' fill='%23fff'/%3E%3C/svg%3E" alt="Auto Flow" width="32" height="32">
+        </div>
+        <span class="header-title">Auto Flow</span>
+        <span class="version-pill">v10.8.13</span>
+      </a>
+      <nav class="header-nav" id="headerNav">
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guide.html" class="nav-link">Guide</a>
+        <a href="mcp-cli.html" class="nav-link">MCP/CLI</a>
+        <a href="changelog.html" class="nav-link">Changelog</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+      </nav>
+      <div class="header-actions">
+        <a href="https://discord.gg/WK2qVXCrHE" target="_blank" class="btn-icon" title="Discord">
+          <svg width="20" height="15" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0045.4.2a.2.2 0 00-.2.1 40.8 40.8 0 00-1.8 3.7 54 54 0 00-16.2 0A37.3 37.3 0 0025.4.3a.2.2 0 00-.2-.1A58.4 58.4 0 0010.5 5 59.6 59.6 0 00.4 45a.3.3 0 00.1.2A58.9 58.9 0 0018.1 55a.2.2 0 00.3-.1 42.1 42.1 0 003.6-5.9.2.2 0 00-.1-.3 38.8 38.8 0 01-5.5-2.6.2.2 0 01 0-.4c.4-.3.7-.6 1.1-.8a.2.2 0 01.3 0 42 42 0 0035.8 0 .2.2 0 01.2 0l1.1.9a.2.2 0 010 .3 36.4 36.4 0 01-5.5 2.6.2.2 0 00-.1.4 47.2 47.2 0 003.6 5.8.2.2 0 00.3.1A58.7 58.7 0 0071 45.2a.2.2 0 00.1-.2c1.6-16.6-2.7-31-11.4-43.8a.2.2 0 00-.1-.1zM23.7 37c-3.8 0-6.9-3.5-6.9-7.7s3-7.7 6.9-7.7c3.9 0 7 3.5 6.9 7.7 0 4.3-3 7.7-6.9 7.7zm25.5 0c-3.8 0-6.9-3.5-6.9-7.7s3-7.7 6.9-7.7c3.9 0 7 3.5 6.9 7.7 0 4.3-3 7.7-6.9 7.7z"/></svg>
+        </a>
+        <a href="https://t.me/+2caK2vnkw8IwODFl" target="_blank" class="btn-icon" title="Telegram">
+          <svg width="20" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </a>
+        <a href="https://chromewebstore.google.com/detail/auto-flow-auto-veo-nano-b/lhcmnhdbddgagibbbgppakocflbnknoa" target="_blank" class="btn btn-install" id="installBtn">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 12.5a5.5 5.5 0 110-11 5.5 5.5 0 010 11zM7.25 5v3.44L5.53 6.72l-1.06 1.06L8 11.31l3.53-3.53-1.06-1.06-1.72 1.72V5h-1.5z"/></svg>
+          Install Extension
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ====== FEATURES ====== -->
+    <section class="features" id="features">
+      <div class="section-header">
+        <h2 class="section-title">Everything you need</h2>
+        <p class="section-subtitle">Four powerful tabs. One seamless workflow.</p>
+      </div>
+
+      <!-- Feature 1: Control Panel -->
+      <div class="feature-row" id="feat-control">
+        <div class="feature-text">
+          <div class="feature-icon feature-icon--control">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          </div>
+          <h3 class="feature-name">Control Panel</h3>
+          <p class="feature-desc">Four generation modes in one interface. Switch between Create Image, Text-to-Video, Frame-to-Video, and Ingredients mode instantly. Import prompts from text files, manage reference images, and map them to individual prompts.</p>
+          <ul class="feature-list">
+            <li>4 generation modes with one-click switching</li>
+            <li>Bulk prompt import from .txt files</li>
+            <li>Shared Ref Upload or 1:1 Batch Upload</li>
+            <li>Per-prompt reference image mapping</li>
+            <li>Reference Library with persistent storage</li>
+          </ul>
+        </div>
+        <div class="feature-screenshots">
+          <div class="screenshot-card">
+            <img src="images/control-modes.png" alt="Control Panel header with 4 generation mode buttons: Create Image, Text-to-Video, Frame-to-Video, and Ingredients" loading="lazy">
+            <span class="screenshot-caption">4 Generation Modes</span>
+          </div>
+          <div class="screenshot-card">
+            <img src="images/input-upload.png" alt="Input section showing Prompt List with Import file button, Queue Images with Shared Ref Upload and 1:1 Batch Upload buttons, Bulk mode toggle, and Reference Library" loading="lazy">
+            <span class="screenshot-caption">Prompt Input & Upload Options</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 2: Gallery -->
+      <div class="feature-row feature-row--reverse" id="feat-gallery">
+        <div class="feature-text">
+          <div class="feature-icon feature-icon--gallery">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <h3 class="feature-name">Smart Gallery</h3>
+          <p class="feature-desc">Scan, browse, and manage all your generated content. Golden "Scan All" button finds every image and video. Smart selection tools let you pick randoms, matched pairs, or custom selections — then download at up to 4K resolution or send images directly to the video queue.</p>
+          <ul class="feature-list">
+            <li>Scan All with one-click golden button</li>
+            <li>Random Pick & Pick Matched for curation</li>
+            <li>Default or Large grid layout</li>
+            <li>Download at 1K, 2K, or 4K resolution</li>
+            <li>Animate Images — send to Frame-to-Video queue</li>
+          </ul>
+        </div>
+        <div class="feature-screenshots">
+          <div class="screenshot-card screenshot-card--wide">
+            <img src="images/gallery-overview.png" alt="Gallery tab showing Images/Videos toggle, layout options (Default/Large), Scan All button with gold glow, Import Images, sort dropdown, Random Pick, Pick Matched, Deselect All, Download, and Animate Images buttons" loading="lazy">
+            <span class="screenshot-caption">Gallery — Images Tab with All Controls</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3: Settings -->
+      <div class="feature-row" id="feat-settings">
+        <div class="feature-text">
+          <div class="feature-icon feature-icon--settings">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          </div>
+          <h3 class="feature-name">Full Configuration</h3>
+          <p class="feature-desc">Fine-tune every aspect of generation. Choose video models (Veo 3.1 Fast/Quality), set aspect ratios, configure timing with humanized mode, auto-download in your preferred resolution, and pick from 14+ interface languages.</p>
+          <ul class="feature-list">
+            <li>Video Model: Veo 3.1 Fast or Quality</li>
+            <li>Image Model: Nano Banana 2</li>
+            <li>Aspect Ratios: 16:9, 9:16, 1:1</li>
+            <li>Humanized mode with speed control</li>
+            <li>Auto-download at up to 4K</li>
+            <li>14+ language interface</li>
+          </ul>
+        </div>
+        <div class="feature-screenshots">
+          <div class="screenshot-card">
+            <img src="images/settings-full.png" alt="Settings tab showing General Settings: Videos per task, Video Model (Veo 3.1 Fast), Video Ratio (Portrait 9:16), Images per task, Image Model (Nano Banana 2), Image Ratio, Start from index, and Timing section" loading="lazy">
+            <span class="screenshot-caption">General Settings & Model Selection</span>
+          </div>
+          <div class="screenshot-card">
+            <img src="images/settings-download.png" alt="Download Settings showing Auto-download videos toggle, Video Resolution (Upscaled 1080p), Auto-download images toggle with 1K resolution, and tip about browser download settings" loading="lazy">
+            <span class="screenshot-caption">Download Settings</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 4: Queue & Progress -->
+      <div class="feature-row feature-row--reverse" id="feat-queue">
+        <div class="feature-text">
+          <div class="feature-icon feature-icon--queue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </div>
+          <h3 class="feature-name">Queue & Progress Tracking</h3>
+          <p class="feature-desc">Stack multiple jobs and let Auto Flow run them sequentially. Monitor every prompt with live status updates — Waiting, Generating, Done, or Error. Failed prompts are captured separately for easy retry.</p>
+          <ul class="feature-list">
+            <li>Multi-job queue with auto-start</li>
+            <li>Custom download folder per job</li>
+            <li>Live task progress table</li>
+            <li>Per-prompt status: Waiting → Generating → Done</li>
+            <li>Failed prompt capture with one-click retry</li>
+          </ul>
+        </div>
+        <div class="feature-screenshots">
+          <div class="screenshot-card">
+            <img src="images/progress-tracking.png" alt="Queue section showing Job Download Folder name, auto-start toggle, progress bar at Job 2/3, and Task Progress table with prompt statuses showing GENERATING state" loading="lazy">
+            <span class="screenshot-caption">Progress Tracking & Task Table</span>
+          </div>
+          <div class="screenshot-card">
+            <img src="images/queue-config.png" alt="Queue configuration showing Job Download Folder field, clear queue button, and Auto-start next job toggle enabled" loading="lazy">
+            <span class="screenshot-caption">Queue Configuration</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== BUTTON EXPLAINER ====== -->
+    <section class="explainer" id="explainer">
+      <div class="section-header">
+        <h2 class="section-title">Every button, explained</h2>
+        <p class="section-subtitle">A visual guide to every control in Auto Flow.</p>
+      </div>
+
+      <div class="explainer-grid">
+        <div class="explainer-group" id="exp-uploads">
+          <h4 class="explainer-group-title">Upload Controls</h4>
+          <div class="explainer-items">
+            <div class="explainer-item">
+              <div class="explainer-img"><img src="images/btn-shared-ref.png" alt="Shared Ref Upload button with upload icon" loading="lazy"></div>
+              <div class="explainer-info">
+                <strong>Shared Ref Upload</strong>
+                <p>Upload reference images shared across all prompts. Every prompt in your list uses these images as visual references.</p>
+              </div>
+            </div>
+            <div class="explainer-item">
+              <div class="explainer-img"><img src="images/btn-batch-upload.png" alt="1:1 Batch Upload button with lightning icon" loading="lazy"></div>
+              <div class="explainer-info">
+                <strong>1:1 Batch Upload</strong>
+                <p>Pair images 1-to-1 with prompts. First image goes with first prompt, second with second, and so on.</p>
+              </div>
+            </div>
+            <div class="explainer-item">
+              <div class="explainer-img"><img src="images/btn-toggles.png" alt="Bulk mode toggle (off) and Repeat first prompt toggle (on) with help buttons" loading="lazy"></div>
+              <div class="explainer-info">
+                <strong>Bulk Mode & Repeat</strong>
+                <p><em>Bulk mode:</em> 1 image per prompt in line order. <em>Repeat first prompt:</em> reuses the first prompt text for all uploaded images.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="explainer-group" id="exp-mapping">
+          <h4 class="explainer-group-title">Reference Mapping</h4>
+          <div class="explainer-items">
+            <div class="explainer-item">
+              <div class="explainer-img"><img src="images/ref-mapping-table.png" alt="Map references by prompt panel showing 3 prompts with 2 refs active and 3 custom mapped, Select all/Apply/Clear buttons, and prompt list with MAPPED status badges" loading="lazy"></div>
+              <div class="explainer-info">
+                <strong>Prompt Mapping Table</strong>
+                <p>Assign specific reference images to individual prompts. Select All, Apply Active Refs, or Clear Selected. Each prompt shows MAPPED or UNMAPPED status.</p>
+              </div>
+            </div>
+            <div class="explainer-item">
+              <div class="explainer-img"><img src="images/ref-mapping-images.png" alt="Reference mapping showing UNMAPPED and MAPPED prompts with image thumbnails assigned to each prompt row" loading="lazy"></div>
+              <div class="explainer-info">
+                <strong>Image Thumbnails per Prompt</strong>
+                <p>See exactly which reference images are assigned to each prompt. Unmapped prompts use default refs, mapped ones use your custom selection.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="explainer-group" id="exp-gallery">
+          <h4 class="explainer-group-title">Gallery Actions</h4>
+          <div class="explainer-items">
+            <div class="explainer-item">
+              <div class="explainer-img"><img src="images/gallery-full.png" alt="Gallery tab full view showing Images/Videos toggle, Default/Large layout buttons, Scan All golden button, Import Images, sort by Newest First, Random Pick, Pick Matched, Deselect All, Download, and Animate Images buttons" loading="lazy"></div>
+              <div class="explainer-info">
+                <strong>Full Gallery Controls</strong>
+                <p><em>Scan All</em> (gold button) finds all generated content. <em>Random Pick</em> selects 1 per prompt group. <em>Pick Matched</em> selects paired image+video sets. <em>Animate Images</em> sends selected to Frame-to-Video.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="explainer-group" id="exp-settings">
+          <h4 class="explainer-group-title">Settings Panels</h4>
+          <div class="explainer-items">
+            <div class="explainer-item">
+              <div class="explainer-img"><img src="images/settings-timing.png" alt="Timing settings showing Video creation wait time slider (10 to 20 seconds), Humanized mode toggle (experimental), and Typing speed humanized slider at 1.00x" loading="lazy"></div>
+              <div class="explainer-info">
+                <strong>Timing Controls</strong>
+                <p>Set video creation wait times. Enable <em>Humanized mode</em> to add natural typing speed variation — makes automation less detectable.</p>
+              </div>
+            </div>
+            <div class="explainer-item">
+              <div class="explainer-img"><img src="images/settings-interface.png" alt="Interface section showing Language dropdown with 14+ options including English, Vietnamese, Turkish, Arabic, German, French, Japanese, Indonesian, Korean, Italian, Russian. Subscription status and Maintenance section visible" loading="lazy"></div>
+              <div class="explainer-info">
+                <strong>Interface & Language</strong>
+                <p>14+ languages including Vietnamese, Turkish, Arabic, German, French, Japanese, Korean, and more. Full UI translation.</p>
+              </div>
+            </div>
+            <div class="explainer-item">
+              <div class="explainer-img"><img src="images/settings-maintenance.png" alt="Maintenance section with red Clear Flow Cache button, description text, and User Guide links for Vietnamese and English plus Discord button" loading="lazy"></div>
+              <div class="explainer-info">
+                <strong>Maintenance & Help</strong>
+                <p><em>Clear Flow Cache</em> resets the page when generation stops working. User guide links and Discord access directly from settings.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="explainer-group" id="exp-help">
+          <h4 class="explainer-group-title">Help Center</h4>
+          <div class="explainer-items">
+            <div class="explainer-item">
+              <div class="explainer-img"><img src="images/help-center.png" alt="Duck Auto Flow Help Center overlay with Video Tutorial and Discord buttons, guide sections for Text to Video, Create Image, Image to Video pipeline, Gallery usage, and guided walkthrough button" loading="lazy"></div>
+              <div class="explainer-info">
+                <strong>Built-in Help Center</strong>
+                <p>Click the <strong>?</strong> button for instant help. Guides for every mode, video tutorials, and a guided walkthrough. Direct links to Discord support.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== CTA BANNER ====== -->
+    <section class="cta-banner">
+      <div class="cta-content">
+        <h2 class="cta-title">Start automating today</h2>
+        <p class="cta-subtitle">Join 60,000+ creators using Auto Flow.</p>
+        <div class="cta-buttons">
+          <a href="https://chromewebstore.google.com/detail/auto-flow-auto-veo-nano-b/lhcmnhdbddgagibbbgppakocflbnknoa" target="_blank" class="btn btn-primary btn-lg" id="ctaInstall">Install Free</a>
+          <a href="https://discord.gg/WK2qVXCrHE" target="_blank" class="btn btn-outline btn-lg">Join Discord</a>
+          <a href="https://t.me/+2caK2vnkw8IwODFl" target="_blank" class="btn btn-outline btn-lg btn-telegram">Telegram</a>
+          <a href="https://chromewebstore.google.com/detail/auto-flow-auto-veo-nano-b/lhcmnhdbddgagibbbgppakocflbnknoa/reviews" target="_blank" class="btn btn-outline btn-lg btn-review">&#9733; Leave a Review</a>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-name">Auto Flow</span>
+        <span class="footer-version">v10.8.13</span>
+      </div>
+      <div class="footer-links">
+        <span class="footer-credit">by <a href="#">@duckmartians</a> &amp; <a href="https://ergophobia.info">@ergophobian</a></span>
+        <a href="https://ergophobia.info/autoflow/mcp-cli.html">MCP/CLI Docs</a>
+        <a href="https://ergophobia.info/autoflow/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        <a href="https://discord.gg/WK2qVXCrHE" target="_blank">Discord</a>
+        <a href="https://t.me/+2caK2vnkw8IwODFl" target="_blank">Telegram</a>
+        <a href="https://chromewebstore.google.com/detail/auto-flow-auto-veo-nano-b/lhcmnhdbddgagibbbgppakocflbnknoa/reviews" target="_blank">Leave a Review</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

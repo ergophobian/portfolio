@@ -238,8 +238,9 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;
 .header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   height: var(--header-h);
-  background: rgba(10, 10, 11, 0.85);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  /* near-opaque solid bg instead of a per-frame backdrop blur — keeps the look
+     without repainting a blurred backdrop on every scroll frame */
+  background: rgba(10, 10, 11, 0.94);
   border-bottom: 1px solid var(--border);
   transition: background 0.3s var(--ease);
 }
@@ -272,6 +273,11 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;
   transition: color 0.2s var(--ease); text-decoration: none;
 }
 .header-nav .nav-link:hover { color: var(--text-1); }
+.header-nav .nav-link--active { color: var(--text-1); font-weight: 600; }
+.header-nav .nav-link--active::after {
+  content: ''; display: block; height: 2px; margin-top: 4px;
+  border-radius: 2px; background: var(--blue);
+}
 .header-actions { display: flex; align-items: center; gap: 12px; }
 .hamburger {
   display: none; background: none; border: none; cursor: pointer;
@@ -298,7 +304,7 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;
 }
 .hero-orb {
   position: absolute; border-radius: 50%;
-  filter: blur(100px); opacity: 0.35;
+  filter: blur(64px); opacity: 0.32;
 }
 .hero-orb--1 {
   width: 500px; height: 500px; top: -10%; right: -5%;
@@ -630,6 +636,116 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;
 }
 
 /* ============================================
+   INTERIOR PAGE CLEARANCE (fixed header)
+   ============================================ */
+body:not(.home) main > section:first-child {
+  padding-top: calc(var(--header-h) + 48px);
+}
+
+/* ============================================
+   AGENT MODE BAND (home)
+   ============================================ */
+.agent-band {
+  padding: 72px 24px;
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(91,155,255,0.14) 0%, transparent 55%),
+    var(--bg-surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.agent-band-inner {
+  max-width: var(--content-max); margin: 0 auto;
+  display: grid; grid-template-columns: 1.5fr 1fr;
+  gap: 48px; align-items: center;
+}
+.agent-band-kicker {
+  display: inline-block; margin-bottom: 16px;
+  padding: 5px 12px; border-radius: 999px;
+  background: var(--gold-dim); color: var(--gold);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.agent-band-title { font-size: clamp(26px, 3.5vw, 36px); margin-bottom: 14px; letter-spacing: -0.01em; }
+.agent-band-desc { color: var(--text-2); font-size: 16px; line-height: 1.7; margin-bottom: 18px; max-width: 620px; }
+.agent-band-list {
+  list-style: none; padding: 0; margin: 0 0 26px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.agent-band-list li {
+  position: relative; padding-left: 22px;
+  color: var(--text-2); font-size: 14px;
+}
+.agent-band-list li::before {
+  content: ''; position: absolute; left: 0; top: 7px;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--blue);
+}
+.agent-band-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+.agent-band-badge {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 32px; border-radius: var(--radius-lg);
+  background: var(--bg-card); border: 1px solid rgba(91,155,255,0.22);
+  box-shadow: 0 0 32px rgba(91,155,255,0.10);
+  text-align: center;
+}
+.agent-band-badge-pill {
+  font-size: 22px; font-weight: 800; letter-spacing: 0.02em;
+  background: linear-gradient(135deg, var(--text-1), var(--blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.agent-band-badge-note { color: var(--text-3); font-size: 13px; }
+
+/* ============================================
+   FEATURE TEASER (home)
+   ============================================ */
+.teaser { padding: 96px 24px; max-width: var(--content-max); margin: 0 auto; }
+.teaser-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+.teaser-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 24px;
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.teaser-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+.teaser-name { font-size: 17px; margin: 12px 0 8px; }
+.teaser-desc { color: var(--text-2); font-size: 14px; line-height: 1.6; }
+.teaser-cta { text-align: center; margin-top: 36px; }
+
+/* ============================================
+   CHANGELOG (page)
+   ============================================ */
+.changelog-page {
+  padding: 96px 24px;
+  max-width: 720px; margin: 0 auto;
+}
+.cl-entry { padding: 4px 0; }
+.cl-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px; flex-wrap: wrap;
+}
+.cl-version { font-size: 20px; font-weight: 700; color: var(--text-1); }
+.cl-date { color: var(--text-3); font-size: 14px; }
+.cl-latest {
+  margin-left: auto;
+  padding: 3px 10px; border-radius: 999px;
+  background: var(--gold-dim); color: var(--gold);
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.cl-bullets {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 9px;
+}
+.cl-bullets li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 14px; color: var(--text-2); line-height: 1.5;
+}
+.cl-divider {
+  border: 0; border-top: 1px dashed var(--border-hover);
+  margin: 28px 0;
+}
+
+/* ============================================
    CTA BANNER
    ============================================ */
 .cta-banner {
@@ -694,6 +810,8 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;
   .feature-row--reverse > * { direction: ltr; }
   .explainer-item { grid-template-columns: 1fr; }
   .explainer-img { max-width: 320px; }
+  .agent-band-inner { grid-template-columns: 1fr; gap: 32px; }
+  .teaser-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
@@ -710,7 +828,8 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;
   .hero-title { font-size: 32px; }
   .hero-stats { gap: 16px; }
   .stat-num { font-size: 22px; }
-  .features, .explainer, .guide, .faq { padding: 64px 16px; }
+  .features, .explainer, .guide, .faq, .teaser, .agent-band, .changelog-page { padding: 64px 16px; }
+  .teaser-grid { grid-template-columns: 1fr; }
   .feature-row { gap: 32px; margin-bottom: 64px; }
   .section-title { font-size: 28px; }
   .modal-card { padding: 24px; }

@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var CURRENT_VERSION = '10.7.56';
+  var CURRENT_VERSION = '10.8.13';
   var LS_KEY = 'af_changelog_seen';
 
   // --- Changelog Modal ---
@@ -28,7 +28,7 @@
   }
 
   // Show modal if user hasn't seen this version
-  // Extension can trigger with ?changelog or ?v=10.7.56
+  // Extension can trigger with ?changelog or ?v=10.8.13
   var params = new URLSearchParams(window.location.search);
   var forceShow = params.has('changelog') || params.has('v');
   var seenVersion = null;
@@ -54,7 +54,7 @@
   });
 
   // --- Scroll Reveal ---
-  var revealEls = document.querySelectorAll('.feature-row, .explainer-group, .accordion, .cta-banner');
+  var revealEls = document.querySelectorAll('.feature-row, .explainer-group, .accordion, .agent-band, .teaser-card, .cl-entry, .cta-banner');
   revealEls.forEach(function (el) { el.classList.add('reveal'); });
 
   var revealObserver = new IntersectionObserver(function (entries) {
@@ -83,27 +83,18 @@
     });
   }
 
-  // --- Active Nav on Scroll ---
-  var sections = document.querySelectorAll('section[id]');
+  // --- Active Nav (by current page, no scroll listener) ---
+  // Derive the active link from the URL filename instead of reading layout on
+  // every scroll frame. Cheap, and correct for a multi-page site.
   var navLinks = document.querySelectorAll('.header-nav .nav-link');
-
-  function updateActiveNav() {
-    var scrollY = window.scrollY + 120;
-    sections.forEach(function (section) {
-      var top = section.offsetTop;
-      var height = section.offsetHeight;
-      var id = section.getAttribute('id');
-      if (scrollY >= top && scrollY < top + height) {
-        navLinks.forEach(function (link) {
-          link.style.color = '';
-          if (link.getAttribute('href') === '#' + id) {
-            link.style.color = '#e8e8ed';
-          }
-        });
-      }
-    });
-  }
-  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  var currentPage = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  if (currentPage === '') currentPage = 'index.html';
+  navLinks.forEach(function (link) {
+    var target = (link.getAttribute('href') || '').split('/').pop().toLowerCase();
+    if (target === currentPage) {
+      link.classList.add('nav-link--active');
+    }
+  });
 
   // --- Smooth Scroll ---
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
