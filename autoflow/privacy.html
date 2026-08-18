@@ -3,15 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Auto Flow Privacy Policy</title>
-  <meta name="description" content="Privacy Policy for Auto Flow Chrome extension.">
-  <meta property="og:title" content="Auto Flow Privacy Policy">
-  <meta property="og:description" content="How Auto Flow collects, uses, and stores data.">
+  <title>AutoFlow Pro / Auto Flow Privacy Policy</title>
+  <meta name="description" content="Privacy Policy for the AutoFlow Pro and Auto Flow Chrome extensions.">
+  <meta property="og:title" content="AutoFlow Pro / Auto Flow Privacy Policy">
+  <meta property="og:description" content="How AutoFlow Pro and Auto Flow access, use, disclose, and retain data.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ergophobia.info/autoflow/privacy.html">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #070b1a;
@@ -21,23 +18,19 @@
       --line: #273a6a;
       --accent: #86b7ff;
       --accent-2: #66e0c2;
+      --notice: #15264a;
     }
 
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: radial-gradient(1200px 500px at 10% -10%, #1b2b5e 0%, transparent 60%), var(--bg);
       color: var(--text);
       line-height: 1.65;
     }
 
-    .wrap {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 48px 20px 80px;
-    }
-
+    .wrap { max-width: 900px; margin: 0 auto; padding: 48px 20px 80px; }
     .card {
       background: linear-gradient(180deg, rgba(26, 39, 78, 0.75), rgba(15, 24, 51, 0.9));
       border: 1px solid var(--line);
@@ -45,33 +38,21 @@
       padding: 28px;
       backdrop-filter: blur(8px);
     }
-
-    h1 {
-      margin: 0 0 8px;
-      font-size: clamp(28px, 4vw, 40px);
-      line-height: 1.15;
+    .notice {
+      margin: 18px 0;
+      padding: 16px;
+      border: 1px solid #3a5d96;
+      border-radius: 12px;
+      background: var(--notice);
     }
-
-    h2 {
-      margin: 28px 0 10px;
-      font-size: 20px;
-      color: var(--accent);
-    }
-
+    h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 40px); line-height: 1.15; }
+    h2 { margin: 30px 0 10px; font-size: 20px; color: var(--accent); }
+    h3 { margin: 18px 0 8px; font-size: 16px; color: var(--accent-2); }
     p, li { color: var(--text); }
     .muted { color: var(--muted); }
-    .meta {
-      margin: 0 0 16px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    a {
-      color: var(--accent-2);
-      text-decoration: none;
-    }
+    .meta { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+    a { color: var(--accent-2); text-decoration: none; }
     a:hover { text-decoration: underline; }
-
     ul { padding-left: 20px; }
     code {
       background: rgba(12, 20, 44, 0.8);
@@ -81,110 +62,149 @@
       color: #c9d9ff;
       font-size: 0.95em;
     }
-
-    .toplink {
-      display: inline-block;
-      margin-bottom: 18px;
-      color: var(--accent);
-      font-weight: 600;
-    }
+    .toplink { display: inline-block; margin-bottom: 18px; color: var(--accent); font-weight: 600; }
   </style>
 </head>
 <body>
   <main class="wrap">
     <a class="toplink" href="https://ergophobia.info/autoflow">← Back to Auto Flow</a>
     <section class="card">
-      <h1>Auto Flow Privacy Policy</h1>
-      <p class="meta"><strong>Effective date:</strong> March 4, 2026</p>
+      <h1>AutoFlow Pro / Auto Flow Privacy Policy</h1>
+      <p class="meta"><strong>Effective date:</strong> August 18, 2026</p>
       <p class="muted">
-        This Privacy Policy explains how Auto Flow ("we", "our", "us") handles data when you use the Auto Flow Chrome extension.
+        This policy covers the AutoFlow Pro and Auto Flow Chrome extensions distributed by the ergophobian Chrome Web Store publisher (collectively, “Auto Flow,” “we,” “our,” or “us”). It explains the data the extension accesses, where processing occurs, why data is used, and the choices available to users.
       </p>
 
-      <h2>1. What Auto Flow Does</h2>
+      <div class="notice">
+        <strong>Chrome Web Store Limited Use disclosure.</strong>
+        Auto Flow’s use and transfer of information received from Google APIs, Google Flow pages, and Chrome extension permissions adheres to the Chrome Web Store User Data Policy, including the Limited Use requirements. We use this data only to provide, maintain, secure, or measure the reliability of Auto Flow’s disclosed single purpose. We do not use or transfer it for personalized advertising, unrelated purposes, creditworthiness, or lending.
+      </div>
+
+      <h2>1. Auto Flow’s Single Purpose</h2>
       <p>
-        Auto Flow helps users automate media generation workflows on Google Flow pages and manage downloads and queue operations.
+        Auto Flow helps a user organize, run, monitor, reconcile, and download user-directed image and video generation workflows in Google Flow from a Chrome side panel. Related authentication, licensing, reliability, gallery, Agent Mode, and user-enabled local bridge functions exist only to support that purpose.
       </p>
 
-      <h2>2. Data We Process</h2>
-      <p>Depending on features you use, Auto Flow may process:</p>
+      <h2>2. Data the Extension Handles</h2>
+      <p>The extension handles only data reasonably necessary for features the user chooses to use:</p>
       <ul>
-        <li><strong>Account data:</strong> email address and authentication/session tokens when you sign in.</li>
-        <li><strong>License/subscription data:</strong> plan tier and license status used to enable feature access.</li>
-        <li><strong>User configuration data:</strong> extension settings, queue state, mode selections, and preferences stored in browser extension storage.</li>
-        <li><strong>Workflow data:</strong> prompts, task metadata, project identifiers/URLs, and media URLs needed for automation and download handling.</li>
-        <li><strong>Local file references:</strong> reference images and generated file naming/download metadata needed to execute your selected workflow.</li>
+        <li><strong>Personally identifiable information:</strong> the email address entered for OTP sign-in.</li>
+        <li><strong>Authentication information:</strong> one-time verification codes while entered, and Supabase access/refresh tokens stored in extension storage to keep the user signed in. We do not receive the reviewer mailbox password or the user’s Google password.</li>
+        <li><strong>Financial and subscription information:</strong> product, plan, license status, Stripe customer/subscription/price identifiers, subscription period dates, cancellation state, and billing-portal state. Payment-card details are entered directly with Stripe and are not received or stored by Auto Flow.</li>
+        <li><strong>Website content and workflow data:</strong> prompts, reference images selected by the user, generated images/videos, media URLs, project identifiers, task settings, model/mode choices, status data, and download/file-naming metadata.</li>
+        <li><strong>Personal communications:</strong> chat-style prompts, instructions, and responses processed when the user chooses Agent Mode or another conversational Google Flow feature.</li>
+        <li><strong>Limited web-page information:</strong> URLs, titles, tab IDs, and project IDs for supported Google Flow pages. Auto Flow does not build or sell a general browsing-history profile and does not inspect unrelated sites.</li>
+        <li><strong>User activity and diagnostics:</strong> user-requested queue actions, prompt counts, task ID, mode, submit path, source, idempotency key, timestamps, bounded operational logs, download status, and a one-way device fingerprint derived from extension/browser characteristics for entitlement enforcement, abuse prevention, and reliability.</li>
+        <li><strong>Local extension configuration:</strong> settings, queue/task state, project bindings, cached reference metadata and blobs, gallery/download records, and user-enabled bridge settings.</li>
       </ul>
-
-      <h2>3. How We Use Data</h2>
-      <ul>
-        <li>Provide core automation features (queueing, mode switching, task orchestration).</li>
-        <li>Authenticate users and verify subscription/license status.</li>
-        <li>Save your extension preferences and session state.</li>
-        <li>Trigger and manage browser downloads you request.</li>
-        <li>Diagnose reliability issues when logs/debug features are used.</li>
-      </ul>
-
-      <h2>4. Where Data Is Stored</h2>
-      <ul>
-        <li><strong>Local/browser storage:</strong> most settings, queue state, and runtime data are stored on your device in extension storage/IndexedDB.</li>
-        <li><strong>Cloud services:</strong> account, auth, and license/config requests may be processed through our backend services (including Supabase-hosted endpoints).</li>
-      </ul>
-
-      <h2>5. Third-Party Services</h2>
-      <p>Auto Flow interacts with third-party services required for functionality, including:</p>
-      <ul>
-        <li>Google Flow pages that you choose to automate.</li>
-        <li>Supabase infrastructure used for authentication/license/config operations.</li>
-        <li>Payment/subscription processors when applicable to your purchase flow.</li>
-      </ul>
-      <p class="muted">
-        Third-party services process data under their own privacy policies.
-      </p>
-
-      <h2>6. Permissions Use (Chrome Extension)</h2>
-      <ul>
-        <li><code>activeTab</code>, <code>tabs</code>, <code>scripting</code>, <code>sidePanel</code>: to run automation UI/actions on supported pages.</li>
-        <li><code>storage</code>: to save user settings, queue state, and runtime metadata.</li>
-        <li><code>downloads</code>: to create and manage files you explicitly request to download.</li>
-      </ul>
-
-      <h2>7. Data Sharing</h2>
       <p>
-        We do not sell your personal data. We share data only as needed to provide the service (for example, authentication/license checks, infrastructure providers, or legal compliance).
+        Auto Flow does not intentionally collect health information, precise geolocation, contacts, or unrelated browsing history. Normal internet requests expose network metadata such as an IP address to the receiving service; Auto Flow does not use that metadata to infer or track precise location.
       </p>
 
-      <h2>8. Data Retention</h2>
+      <h2>3. Where Processing Occurs</h2>
+      <h3>On the user’s device</h3>
       <ul>
-        <li>Local extension data remains on your device until you clear extension data or uninstall the extension.</li>
-        <li>Account/license records may be retained for operational, billing, fraud prevention, and legal compliance purposes.</li>
+        <li>Settings, queues, cached references, task state, project bindings, logs, and download records are primarily stored in Chrome extension storage or IndexedDB.</li>
+        <li>The extension reads and changes supported Google Flow page content only after the user accepts the in-product privacy notice and invokes or enables the relevant workflow.</li>
+        <li>User-enabled CLI, MCP, PatchWork, WebSocket, or native-messaging connections operate through approved pages or local loopback services and require their own pairing/approval controls.</li>
       </ul>
-
-      <h2>9. Your Choices</h2>
+      <h3>External services</h3>
       <ul>
-        <li>Do not sign in if you do not want account-linked features.</li>
-        <li>Clear stored extension data and browser downloads at any time.</li>
-        <li>Uninstall Auto Flow to stop all extension data processing.</li>
+        <li><strong>Google Flow / Google:</strong> receives prompts, references, Agent messages, project actions, and media requests the user directs to Google Flow. Google controls Google accounts, models, quotas, safety systems, generated content, and its own retention.</li>
+        <li><strong>Supabase:</strong> provides OTP authentication, session management, licensing, account records, bounded product-usage enforcement, and backend database/functions.</li>
+        <li><strong>Stripe:</strong> provides checkout, subscription lifecycle, fraud controls, receipts, and the Customer Portal. Auto Flow receives subscription and entitlement metadata, not full card details.</li>
+        <li><strong>Resend:</strong> delivers OTP and necessary transactional account/service-continuity messages. Email addresses are not provided for third-party advertising.</li>
+        <li><strong>Cloudflare R2:</strong> serves declared product/static assets. User reference images and generated media are not uploaded to this asset bucket by the extension.</li>
+        <li><strong>GitHub Pages:</strong> hosts the Auto Flow website and this policy; ordinary website request logs may be processed under GitHub’s policies.</li>
       </ul>
-
-      <h2>10. Security</h2>
       <p>
-        We implement reasonable safeguards for service operations, but no internet or storage system is 100% secure.
+        These providers receive only data reasonably necessary for their function. Their independent services are also governed by their own terms and privacy policies.
       </p>
 
-      <h2>11. Children</h2>
+      <h2>4. How Data Is Used</h2>
+      <ul>
+        <li>Perform user-directed Google Flow automation, queueing, monitoring, reconciliation, and downloads.</li>
+        <li>Authenticate users and restore the correct free, paid, or manual entitlement.</li>
+        <li>Provide checkout, subscription management, cancellation, receipts, and service-continuity notices.</li>
+        <li>Persist settings and recover user-directed workflows.</li>
+        <li>Prevent duplicate submissions, enforce product limits, detect abuse, diagnose failures, and maintain security and reliability.</li>
+        <li>Respond to support, privacy, security, or legal requests.</li>
+      </ul>
+
+      <h2>5. Prohibited Uses and Transfers</h2>
+      <p>Auto Flow does not:</p>
+      <ul>
+        <li>sell, rent, license, or exchange user data for value;</li>
+        <li>transfer user data to data brokers, information resellers, or advertising networks;</li>
+        <li>use or transfer user data for personalized, retargeted, or interest-based advertising;</li>
+        <li>use or transfer user data for purposes unrelated to Auto Flow’s disclosed single purpose; or</li>
+        <li>use or transfer user data to determine creditworthiness, credit eligibility, insurance eligibility, or for lending purposes.</li>
+      </ul>
+      <p>
+        Data may be transferred only to provide the user-requested functionality described above, to service providers acting for that functionality, to protect against fraud or security threats, when required by law, or as otherwise permitted by the Chrome Web Store User Data Policy with any required consent.
+      </p>
+
+      <h2>6. Human Access</h2>
+      <p>
+        We do not permit humans to read user workflow content except when the user gives explicit consent for support, when access is necessary to investigate abuse or a security incident, when required by law, or when the data has been aggregated and anonymized for permitted internal reliability operations. Users should remove sensitive information before voluntarily sharing diagnostics with support.
+      </p>
+
+      <h2>7. Chrome Permissions</h2>
+      <ul>
+        <li><code>sidePanel</code>: displays the product interface.</li>
+        <li><code>tabs</code>, <code>scripting</code>, and supported host permissions: find and operate only supported Google Flow tabs and user-approved PatchWork/local integrations.</li>
+        <li><code>cookies</code> and <code>browsingData</code>: perform explicit Google Flow session-maintenance/recovery actions; not inspect or erase unrelated browsing history.</li>
+        <li><code>storage</code> and <code>unlimitedStorage</code>: retain settings, queue state, references, and long-running project records locally.</li>
+        <li><code>alarms</code>: refresh authentication and supervise user-started work while the service worker sleeps.</li>
+        <li><code>downloads</code>: save and validate media the user requests.</li>
+        <li><code>debugger</code>: temporarily attach to the selected Google Flow tab for bounded structural automation and request/acceptance proof, then detach.</li>
+        <li><code>nativeMessaging</code>: provide an optional, user-enabled legacy local bridge. The normal local bridge uses loopback WebSocket transport.</li>
+      </ul>
+
+      <h2>8. Consent and User Choices</h2>
+      <ul>
+        <li>On first use, Auto Flow displays a prominent notice describing handled data and external services. The extension remains inactive unless the user selects <strong>Agree and continue</strong>.</li>
+        <li>Selecting <strong>Decline</strong> leaves workflow access, authentication, licensing, and bridge processing disabled.</li>
+        <li>Users can avoid account-linked features by not signing in, disable optional bridge integrations, clear extension storage/IndexedDB and download records, or uninstall the extension.</li>
+        <li>If data practices materially change, Auto Flow will update this notice and request consent again before the changed handling begins.</li>
+      </ul>
+
+      <h2>9. Email Communications</h2>
+      <p>
+        We may send OTP codes, security notices, receipts, subscription/license notices, support replies, and material service-continuity or privacy-policy updates. These are transactional messages needed to operate the account or service. We do not send promotional marketing email without any consent required by applicable law, and opting out of marketing does not block necessary authentication, billing, security, or service messages.
+      </p>
+
+      <h2>10. Retention and Deletion</h2>
+      <ul>
+        <li><strong>Local data:</strong> remains until the user clears extension data, removes individual records through available controls, or uninstalls the extension.</li>
+        <li><strong>Authentication sessions:</strong> remain until expiration, sign-out, revocation, or deletion.</li>
+        <li><strong>Account, license, subscription, and usage-enforcement records:</strong> remain while needed to provide access and are then retained only as reasonably necessary for billing records, fraud/abuse prevention, dispute resolution, security, and legal obligations.</li>
+        <li><strong>Operational diagnostics:</strong> are retained only as long as reasonably necessary to investigate reliability or security and are minimized where practical.</li>
+        <li><strong>Provider records:</strong> Google, Supabase, Stripe, Resend, Cloudflare, and GitHub apply their own retention obligations to data they process.</li>
+      </ul>
+      <p>
+        To request access, correction, or deletion of backend account data, email <a href="mailto:partnerships@somnicoremedia.com">partnerships@somnicoremedia.com</a> with “Auto Flow Privacy” in the subject. We may need to verify the request and may retain records where legally required.
+      </p>
+
+      <h2>11. Security</h2>
+      <p>
+        External service traffic uses HTTPS/WSS or equivalent modern encrypted transport. Local bridge traffic is limited to loopback interfaces and protected by origin, pairing, registration, and capability checks. Authentication tokens are stored in extension storage and are not intentionally exposed to web pages. Payment-card information is handled by Stripe. Access to backend systems is restricted. No internet or storage system can be guaranteed 100% secure.
+      </p>
+
+      <h2>12. Children</h2>
       <p>
         Auto Flow is not directed to children under 13, and we do not knowingly collect personal data from children under 13.
       </p>
 
-      <h2>12. Changes to This Policy</h2>
+      <h2>13. Changes to This Policy</h2>
       <p>
-        We may update this Privacy Policy from time to time. Changes are posted at this URL with an updated effective date.
+        We may update this policy to reflect product, legal, or security changes. The effective date will be updated here. Material changes to extension data practices will also be disclosed in the product, and fresh consent will be requested before new handling begins when required.
       </p>
 
-      <h2>13. Contact</h2>
+      <h2>14. Contact</h2>
       <p>
-        For privacy questions or requests, contact us at:
-        <a href="https://ergophobia.info/autoflow">https://ergophobia.info/autoflow</a>
+        Privacy requests: <a href="mailto:partnerships@somnicoremedia.com">partnerships@somnicoremedia.com</a><br>
+        Product and support information: <a href="https://ergophobia.info/autoflow/faq.html">https://ergophobia.info/autoflow/faq.html</a>
       </p>
     </section>
   </main>
