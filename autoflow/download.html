@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="darkreader-lock">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Download AutoFlow Pro</title>
+  <meta name="description" content="Official temporary AutoFlow Pro download and installation instructions for active subscribers while Chrome Web Store review is pending.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .download-page { min-height: 100vh; padding: 56px 20px; background: radial-gradient(circle at 50% 0%, rgba(91,155,255,.14), transparent 38%), var(--bg-body); }
+    .download-shell { width: min(820px, 100%); margin: 0 auto; }
+    .download-brand { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 36px; color: var(--text-1); font-weight: 700; }
+    .download-brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; color: #fff; background: linear-gradient(135deg, var(--blue), #7b61ff); box-shadow: 0 0 24px var(--blue-glow); }
+    .download-card { padding: clamp(28px, 6vw, 52px); border: 1px solid var(--border-hover); border-radius: 20px; background: rgba(19,19,32,.96); box-shadow: 0 24px 70px rgba(0,0,0,.42); }
+    .download-kicker { color: var(--green); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .download-title { margin: 10px 0 14px; font-size: clamp(34px, 7vw, 56px); letter-spacing: -.04em; }
+    .download-lead { max-width: 650px; color: var(--text-2); font-size: 17px; }
+    .download-alert { margin: 28px 0; padding: 18px 20px; border: 1px solid rgba(255,213,109,.2); border-radius: 12px; background: var(--gold-dim); color: var(--text-2); }
+    .download-alert strong { color: var(--gold); }
+    .download-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 14px; }
+    .download-meta { color: var(--text-3); font-size: 12px; overflow-wrap: anywhere; }
+    .download-section { margin-top: 42px; }
+    .download-section h2 { margin-bottom: 18px; font-size: 24px; }
+    .install-steps { list-style: none; display: grid; gap: 14px; counter-reset: steps; }
+    .install-steps li { position: relative; padding: 18px 18px 18px 58px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-card); color: var(--text-2); counter-increment: steps; }
+    .install-steps li::before { content: counter(steps); position: absolute; left: 18px; top: 16px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--blue-dim); color: var(--blue); font-weight: 700; }
+    .install-steps strong { display: block; margin-bottom: 3px; }
+    .download-note { margin-top: 24px; padding: 18px 20px; border-left: 3px solid var(--green); border-radius: 0 10px 10px 0; background: var(--green-dim); color: var(--text-2); }
+    .download-footer { margin-top: 24px; color: var(--text-3); font-size: 13px; text-align: center; }
+    @media (max-width: 560px) { .download-page { padding: 28px 14px; } .download-card { padding: 26px 20px; } .download-actions .btn { width: 100%; justify-content: center; } }
+  </style>
+</head>
+<body>
+  <main class="download-page">
+    <div class="download-shell">
+      <a class="download-brand" href="index.html" aria-label="AutoFlow home">
+        <span class="download-brand-mark">AF</span>
+        <span>AutoFlow Pro</span>
+      </a>
+
+      <article class="download-card">
+        <p class="download-kicker">Official subscriber download</p>
+        <h1 class="download-title">AutoFlow Pro 10.8.25</h1>
+        <p class="download-lead">Use this temporary manual-install package while the new AutoFlow Pro Chrome Web Store listing is under Google review.</p>
+
+        <div class="download-alert">
+          <strong>Your subscription is unchanged.</strong> Sign in with the same billing email you already use for AutoFlow Pro. Do not purchase another subscription.
+        </div>
+
+        <div class="download-actions">
+          <a class="btn btn-primary btn-lg" href="downloads/autoflow-pro-10.8.25.zip" download>Download AutoFlow Pro</a>
+          <a class="btn btn-outline btn-lg" href="faq.html">Get help</a>
+        </div>
+        <p class="download-meta"><strong>Version:</strong> 10.8.25<br><strong>SHA-256:</strong> a4357a6ecc2281f46de6f3f95e72f443af4f6fc621c23a18d2fc9ebdb0f1a339</p>
+
+        <section class="download-section">
+          <h2>Install in Chrome</h2>
+          <ol class="install-steps">
+            <li><strong>Download and unzip the file.</strong> Keep the unzipped AutoFlow Pro folder somewhere permanent.</li>
+            <li><strong>Open <code>chrome://extensions</code>.</strong> Paste that address into Chrome's address bar.</li>
+            <li><strong>Turn on Developer mode.</strong> Use the switch in the top-right corner of the Extensions page.</li>
+            <li><strong>Choose Load unpacked.</strong> Select the unzipped folder that directly contains <code>manifest.json</code>.</li>
+            <li><strong>Open AutoFlow Pro.</strong> Review the privacy notice and select <em>Agree and continue</em> to activate it.</li>
+            <li><strong>Sign in with your billing email.</strong> Your existing Pro access and billing-management options will be restored automatically.</li>
+          </ol>
+        </section>
+
+        <p class="download-note">Chrome may show a standard Developer mode notice for manually installed extensions. This official package is the same version submitted to Google for review.</p>
+      </article>
+
+      <p class="download-footer">Only download AutoFlow Pro from ergophobia.info or its official Chrome Web Store listing.</p>
+    </div>
+  </main>
+</body>
+</html>
