@@ -47,8 +47,8 @@ document.documentElement.classList.toggle('touch', isTouch);
 // Loading
 // ---------------------------------------------------------------------------------
 const MODELS = {
-  hoodie: 'hoodie', shiba: 'shiba', husky: 'husky', cat: 'cat',
-  desk: 'metal_office_desk', chair: 'mid_century_lounge_chair', tv: 'television_02', lamp: 'desk_lamp_arm_01',
+  player: 'player', shiba: 'shiba', husky: 'husky', cat: 'cat_longhair',
+  desk: 'metal_office_desk', chair: 'gaming_chair', tv: 'television_02', lamp: 'desk_lamp_arm_01',
   plantSmall: 'potted_plant_04', plantBig: 'potted_plant_02', boombox: 'boombox', lantern: 'wooden_lantern_01',
   rocks: 'rock_moss_set_01', fern: 'fern_02', sorrel: 'shrub_sorrel_01', bench: 'painted_wooden_bench', stump: 'tree_stump_01',
 };
@@ -108,7 +108,7 @@ async function boot() {
   createScatter(scene, models, quality);
   createGrass(scene, quality);
   createFlowers(scene, quality);
-  const player = new Player(models.hoodie);
+  const player = new Player(models.player);
   scene.add(player.root);
   const animals = createAnimals(scene, models, quality);
   const critters = createCritters(scene, quality);

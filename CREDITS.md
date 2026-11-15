@@ -8,7 +8,6 @@ Raw downloads are optimized by `tools/optimize-assets.mjs` (Meshopt geometry, We
 | File (`assets/models/`) | Asset | Author / source | License |
 | --- | --- | --- | --- |
 | `metal_office_desk.glb` | Metal Office Desk | [Poly Haven](https://polyhaven.com/a/metal_office_desk) | CC0 1.0 |
-| `mid_century_lounge_chair.glb` | Mid Century Lounge Chair | [Poly Haven](https://polyhaven.com/a/mid_century_lounge_chair) | CC0 1.0 |
 | `television_02.glb` | Television 02 (the CRT monitor) | [Poly Haven](https://polyhaven.com/a/television_02) | CC0 1.0 |
 | `desk_lamp_arm_01.glb` | Desk Lamp Arm 01 | [Poly Haven](https://polyhaven.com/a/desk_lamp_arm_01) | CC0 1.0 |
 | `potted_plant_04.glb` | Potted Plant 04 | [Poly Haven](https://polyhaven.com/a/potted_plant_04) | CC0 1.0 |
@@ -22,8 +21,9 @@ Raw downloads are optimized by `tools/optimize-assets.mjs` (Meshopt geometry, We
 | `shrub_sorrel_01.glb` | Shrub Sorrel 01 | [Poly Haven](https://polyhaven.com/a/shrub_sorrel_01) | CC0 1.0 |
 | `shiba.glb` | Shiba Inu (rigged, animated) | Quaternius, via [Poly Pizza](https://poly.pizza/m/y4wdQpg767) | CC0 1.0 |
 | `husky.glb` | Husky (rigged, animated) | Quaternius, via [Poly Pizza](https://poly.pizza/m/wcWiuEqwzq) | CC0 1.0 |
-| `cat.glb` | **Cat by J-Toastie** (rigged) | J-Toastie, via [Poly Pizza](https://poly.pizza/m/DJ9rpAhrh3) | [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/) — attribution required. Changes: tinted per instance, bundled clip unused, walk cycle is procedural. |
-| `hoodie.glb` | Hoodie character (rigged, animated) | Optimized copy of `hoodie-character.glb`, which was already in this repo since the January 2026 version. Mesh, bone and clip names match Quaternius' free character packs (CC0). **Kyle: please confirm the original source.** | Believed CC0 — unverified |
+| `player.glb` | The Sound Guy – Animated (player character; run reuses the walk cycle, wave is procedural) | Tony Flanagan, via [Fab](https://www.fab.com/listings/4eb5363a-3da1-488a-87ea-1f81c1181d41) | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) — attribution required |
+| `cat_longhair.glb` | Cat long haired (rigged, walk and run) | Sean4297, via [Fab](https://www.fab.com/listings/b3513111-6dc1-4345-9706-201c8f37b832) | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) — attribution required. Changes: one copy tinted warmer. |
+| `gaming_chair.glb` | SillaGamerBlack (gaming chair) | MashiMaro, via [Fab](https://www.fab.com/listings/985d2295-ff1e-4c0e-9ea0-015a883ed617) | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) — attribution required |
 
 ## Textures and sky
 

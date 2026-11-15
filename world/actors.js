@@ -31,6 +31,17 @@ function actionsOf(mixer, clips) {
   return out;
 }
 
+const _pa = new THREE.Vector3(), _pb = new THREE.Vector3(), _dq = new THREE.Quaternion(), _pq = new THREE.Quaternion(), _wq = new THREE.Quaternion(), _iq = new THREE.Quaternion();
+/** Turns `bone` (blended by w) so the bone→child segment points along the world-space `dir`. Axis-agnostic. */
+function aimBone(bone, child, dir, w) {
+  bone.getWorldPosition(_pa); child.getWorldPosition(_pb);
+  _dq.setFromUnitVectors(_pb.sub(_pa).normalize(), dir);
+  if (w < 1) _dq.copy(_iq.identity().slerp(_dq, w));
+  bone.getWorldQuaternion(_wq); bone.parent.getWorldQuaternion(_pq);
+  bone.quaternion.copy(_pq.invert().multiply(_dq).multiply(_wq));
+  bone.updateMatrixWorld(true);
+}
+
 // ---------------------------------------------------------------------------------
 // Player
 // ---------------------------------------------------------------------------------
@@ -44,11 +55,27 @@ export class Player {
     this.actions = actionsOf(this.mixer, gltf.animations);
     const { Idle, Walk, Run, Wave, Interact } = this.actions;
     this.idle = this.actions.Idle_Neutral || Idle;
-    this.walk = Walk; this.run = Run; this.wave = Wave; this.interact = Interact;
+    this.walk = Walk; this.wave = Wave; this.interact = Interact;
+    // Rigs without a run clip (the Fab character) run on a second, faster copy of the walk cycle.
+    this.runFromWalk = !Run;
+    if (!Wave) {
+      // No wave clip: raise and wave the right arm procedurally (see update()).
+      // This rig has one skeleton copy per skinned mesh, so collect the arm chain from every skeleton.
+      const sets = new Map();
+      gltf.scene.traverse((o) => {
+        if (!o.isSkinnedMesh) return;
+        const by = (n) => o.skeleton.bones.find((b) => b.name.includes(n));
+        const arm = by('RightArm'), fore = by('RightForeArm'), hand = by('RightHand');
+        if (arm && fore && hand) sets.set(arm, { arm, fore, hand });
+      });
+      if (sets.size) { this.armBones = [...sets.values()]; this.wave = { procedural: true }; }
+    }
+    this.waveT = 0;
+    this.run = Run || this.mixer.clipAction(Walk.getClip().clone());
     for (const a of [this.idle, this.walk, this.run]) { a.play(); a.setEffectiveWeight(0); }
     this.idle.setEffectiveWeight(1);
     for (const a of [this.wave, this.interact]) {
-      if (!a) continue;
+      if (!a?.setLoop) continue;
       a.setLoop(THREE.LoopOnce, 1);
       a.clampWhenFinished = false;
     }
@@ -68,6 +95,7 @@ export class Player {
   get position() { return this.root.position; }
 
   playEmote(action) {
+    if (action?.procedural) { if (this.waveT <= 0 && this.speed < 0.4) this.waveT = 2.4; return; }
     if (!action || this.emoteAction || this.speed > 0.4) return;
     this.emoteAction = action;
     action.reset().setEffectiveWeight(1).fadeIn(0.2).play();
@@ -115,9 +143,28 @@ export class Player {
     this.idle.setEffectiveWeight(this.weights.idle * loco);
     this.walk.setEffectiveWeight(this.weights.walk * loco);
     this.run.setEffectiveWeight(this.weights.run * loco);
-    this.walk.setEffectiveTimeScale(clamp(sp / 1.75, 0.6, 1.7));
-    this.run.setEffectiveTimeScale(clamp(sp / 5.0, 0.7, 1.35));
+    if (this.runFromWalk) {
+      // Same clip on both actions: one shared time scale keeps them in phase while blending.
+      const ts = clamp(sp / 1.75, 0.6, 2.3);
+      this.walk.setEffectiveTimeScale(ts);
+      this.run.setEffectiveTimeScale(ts);
+    } else {
+      this.walk.setEffectiveTimeScale(clamp(sp / 1.75, 0.6, 1.7));
+      this.run.setEffectiveTimeScale(clamp(sp / 5.0, 0.7, 1.35));
+    }
     this.mixer.update(dt);
+    if (this.armBones && this.waveT > 0) {
+      this.waveT = this.speed > 0.6 ? Math.min(this.waveT, 0.35) : this.waveT;
+      this.waveT -= dt;
+      const w = clamp(Math.min((2.4 - this.waveT) / 0.3, this.waveT / 0.35), 0, 1);
+      const sy = Math.sin(this.yaw), cy = Math.cos(this.yaw);
+      const fwd = new THREE.Vector3(sy, 0, cy), right = new THREE.Vector3(-cy, 0, sy), up = new THREE.Vector3(0, 1, 0);
+      this.root.updateMatrixWorld(true);
+      const upper = right.clone().multiplyScalar(0.62).addScaledVector(up, 0.72).addScaledVector(fwd, 0.18).normalize();
+      const sway = Math.sin((2.4 - this.waveT) * 11) * 0.45;
+      const lower = up.clone().addScaledVector(right, 0.15 + sway).addScaledVector(fwd, 0.12).normalize();
+      for (const { arm, fore, hand } of this.armBones) { aimBone(arm, fore, upper, w); aimBone(fore, hand, lower, w); }
+    }
   }
 }
 
@@ -201,7 +248,8 @@ class Animal {
     this.gait = opt.procedural ? new QuadrupedGait(model) : null;
     this.model = model;
     this.baseY = model.position.y;
-    if (!this.gait) this.play(opt.idles[0], 0);
+    if (!this.gait) this.play(opt.stillIdle ? 'Walk' : opt.idles[0], 0);
+    if (opt.stillIdle) { this.current.time = this.rand() * this.current.getClip().duration; this.current.setEffectiveTimeScale(0); }
   }
 
   play(name, fade = 0.35) {
@@ -307,6 +355,10 @@ class Animal {
     } else if (this.speed > 0.12) {
       this.play('Walk');
       this.current.setEffectiveTimeScale(clamp(this.speed / o.walk, 0.6, 1.5) * (o.walkRate || 1));
+    } else if (o.stillIdle) {
+      // No idle clip (the Fab cat): let the walk cycle wind down and hold the pose it lands in.
+      this.play('Walk');
+      this.current.setEffectiveTimeScale(clamp(this.speed / o.walk, 0, 1) * (o.walkRate || 1));
     } else if (this.state === 'idle' || this.state === 'follow') {
       if (!o.idles.includes(this.current?.getClip().name)) this.play(this.idleClip || o.idles[0]);
     }
@@ -320,7 +372,7 @@ class Animal {
     this.state = 'idle';
     this.timer = 2 + this.rand() * 6;
     this.idleClip = this.opt.idles[(this.rand() * this.opt.idles.length) | 0];
-    if (this.speed < 0.3 && !this.gait) this.play(this.idleClip);
+    if (this.speed < 0.3 && !this.gait && !this.opt.stillIdle) this.play(this.idleClip);
   }
   flee(player) {
     const pos = this.root.position;
@@ -336,12 +388,11 @@ class Animal {
 
 export function createAnimals(scene, models, quality) {
   const dogIdles = ['Idle', 'Idle_2', 'Idle_2_HeadLow', 'Eating'];
-  const catIdles = ['IdleCat'];
   const specs = [
     { model: models.shiba, name: 'shiba', height: 0.62, home: [4.2, 11.5], range: 9, walk: 1.05, run: 4.6, runClip: 'Gallop', idles: dogIdles, friendly: true, side: 1 },
-    { model: models.cat, name: 'cat-grey', height: 0.44, home: [-3.4, 3.2], range: 6, walk: 0.75, run: 3.4, idles: catIdles, shy: true, procedural: true, yawOffset: -Math.PI / 2, tint: [1.9, 1.9, 2.05] },
+    { model: models.cat, name: 'cat-tabby', height: 0.36, home: [-3.4, 3.2], range: 6, walk: 0.75, run: 3.4, runClip: 'Run', idles: [], stillIdle: true, shy: true },
     { model: models.husky, name: 'husky', height: 0.7, home: [-5.5, 12.5], range: 10, walk: 1.1, run: 5.0, runClip: 'Gallop', idles: dogIdles, friendly: true, side: -1 },
-    { model: models.cat, name: 'cat-ginger', height: 0.4, home: [7.5, -2.5], range: 7, walk: 0.75, run: 3.4, idles: catIdles, shy: true, procedural: true, yawOffset: -Math.PI / 2, tint: [3.0, 1.7, 0.75] },
+    { model: models.cat, name: 'cat-ginger', height: 0.33, home: [7.5, -2.5], range: 7, walk: 0.75, run: 3.4, runClip: 'Run', idles: [], stillIdle: true, shy: true, tint: [1.25, 0.95, 0.7] },
   ].slice(0, quality.animals);
   const animals = specs.map((s, i) => new Animal(s.model, s, 100 + i * 17));
   animals.forEach((a) => scene.add(a.root));

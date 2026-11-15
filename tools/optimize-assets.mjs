@@ -19,7 +19,6 @@ for (const d of ['models', 'textures', 'hdri']) mkdirSync(join(OUT, d), { recurs
 // --- Poly Haven props (CC0) -------------------------------------------------
 const props = [
   { id: 'metal_office_desk', tex: 1024 },
-  { id: 'mid_century_lounge_chair', tex: 1024 },
   { id: 'television_02', tex: 1024 },
   { id: 'desk_lamp_arm_01', tex: 512, ratio: 0.5 },
   { id: 'potted_plant_04', tex: 512 },
@@ -58,24 +57,33 @@ for (const p of props) {
 // --- Rigged characters / animals: keep only the clips the world uses ---------
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS);
 const rigged = [
-  { name: 'hoodie', src: resolve(here, '..', 'hoodie-character.glb'), keep: ['Idle', 'Idle_Neutral', 'Walk', 'Run', 'Wave', 'Interact'] },
   { name: 'shiba', src: join(RAW, 'pizza', 'shiba.glb'), keep: ['Idle', 'Idle_2', 'Idle_2_HeadLow', 'Walk', 'Gallop', 'Eating'] },
   { name: 'husky', src: join(RAW, 'pizza', 'husky.glb'), keep: ['Idle', 'Idle_2', 'Idle_2_HeadLow', 'Walk', 'Gallop', 'Eating'] },
-  { name: 'cat', src: join(RAW, 'pizza', 'cat_jt.glb'), keep: ['IdleCat'] },
+  // Fab (CC-BY) downloads, see CREDITS.md. Raw files live in tools/raw/fab/.
+  { name: 'player', src: join(RAW, 'fab', 'soundguy.glb'), keep: ['Idle', 'Walk'], rename: { Walking: 'Walk' }, tex: 1024 },
+  { name: 'cat_longhair', src: join(RAW, 'fab', 'longcat.glb'), keep: ['Walk', 'Run'] },
 ];
 for (const r of rigged) {
   if (filter && !r.name.includes(filter)) continue;
+  if (!existsSync(r.src)) { console.warn(`skip ${r.name}: missing ${r.src}`); continue; }
   const doc = await io.read(r.src);
   const seen = new Set();
   for (const anim of doc.getRoot().listAnimations()) {
-    const short = anim.getName().split('|').pop();
+    let short = anim.getName().split('|').pop();
+    short = r.rename?.[short] ?? short;
     if (!r.keep.includes(short) || seen.has(short)) { anim.dispose(); continue; }
     seen.add(short);
     anim.setName(short);
   }
   const tmp = join(RAW, `_${r.name}.glb`);
   await io.write(tmp, doc);
-  optimize(tmp, join(OUT, 'models', `${r.name}.glb`), { tex: 512, skinned: true });
+  optimize(tmp, join(OUT, 'models', `${r.name}.glb`), { tex: r.tex ?? 512, skinned: true });
+}
+
+// --- Fab static props (CC-BY) ---------------------------------------------------
+if (!filter || 'gaming_chair'.includes(filter)) {
+  const src = join(RAW, 'fab', 'gamerchair.glb');
+  if (existsSync(src)) optimize(src, join(OUT, 'models', 'gaming_chair.glb'), { tex: 1024 });
 }
 
 // --- Textures -----------------------------------------------------------------

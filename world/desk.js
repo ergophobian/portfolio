@@ -6,11 +6,20 @@ import { addCollider, heightAt, WORLD } from './util.js';
 const DESK_TOP = 0.79;
 const TV_SCALE = 1.32;
 
-function place(scene, gltf, { x = 0, y = 0, z = 0, rot = 0, scale = 1, shadow = true } = {}) {
+function place(scene, gltf, { x = 0, y = 0, z = 0, rot = 0, scale = 1, height = 0, shadow = true } = {}) {
   const obj = gltf.scene;
   obj.position.set(x, y, z);
   obj.rotation.y = rot;
   obj.scale.setScalar(scale);
+  if (height) {
+    // Assets that are not authored in metres (the Fab gaming chair): fit to a height, rest on the floor.
+    obj.updateMatrixWorld(true);
+    const box = new THREE.Box3().setFromObject(obj);
+    obj.scale.multiplyScalar(height / (box.max.y - box.min.y));
+    obj.updateMatrixWorld(true);
+    box.setFromObject(obj);
+    obj.position.y += y - box.min.y;
+  }
   obj.traverse((o) => {
     if (!o.isMesh) return;
     o.castShadow = shadow;
@@ -125,7 +134,7 @@ export function createDesk(scene, models) {
 
   place(group, models.desk);
   const tv = place(group, models.tv, { y: DESK_TOP, z: -0.1, scale: TV_SCALE });
-  place(group, models.chair, { x: 0.95, z: 1.3, rot: Math.PI + 0.55 });
+  place(group, models.chair, { x: 0.95, z: 1.3, rot: 0.55, height: 1.3 }); // Fab chair faces -z (Poly Haven faces +z)
   place(group, models.lamp, { x: 0.78, y: DESK_TOP, z: -0.2, rot: -2.2 });
   place(group, models.plantSmall, { x: 0.5, y: DESK_TOP, z: -0.28, scale: 1.15 });
   place(group, models.boombox, { x: -0.6, y: DESK_TOP, z: -0.18, rot: 0.18, scale: 0.92 });
