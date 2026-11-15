@@ -27,7 +27,7 @@ const context = await browser.newContext(mobile
 const page = await context.newPage();
 const logs = [];
 page.on('console', (m) => { if (['error', 'warning'].includes(m.type())) logs.push(`[${m.type()}] ${m.text()}`); });
-page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
+page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message} @ ${(e.stack || '').split('\n').slice(1, 3).join(' | ')}`));
 page.on('requestfailed', (r) => logs.push(`[requestfailed] ${r.url()} ${r.failure()?.errorText}`));
 page.on('response', (r) => { if (r.status() >= 400) logs.push(`[http ${r.status()}] ${r.url()}`); });
 
@@ -69,13 +69,19 @@ try {
       await page.keyboard.down('KeyW'); await page.waitForTimeout(1300); await page.keyboard.up('KeyW');
       await page.waitForTimeout(500); await shot('2-prompt');
       await waitMode('desktop', 15000); await page.waitForTimeout(900); await shot('3-desktop');
-      await page.keyboard.press('Escape').catch(() => {});
+      const os = page.frameLocator('#os-frame');
+      await os.locator('.dock-btn[data-app="projects"]').click(); await page.waitForTimeout(600); await shot('4-app-open');
+      await os.locator('.dock-btn[data-app="arcade"]').click(); await os.locator('.cab[data-game="tetris"]').click();
+      await page.waitForTimeout(1200); await shot('5-game');
+      console.log('os windows:', await page.frames().find((f) => f.url().includes('/os/')).evaluate(() => KyleOS.windows()));
+      await os.locator('#menu-leave').click(); await waitMode('play', 8000); await page.waitForTimeout(700);
+      await shot('6-back-in-world'); await stats('back');
     },
     async tour() {
       await page.click('#btn-start'); await waitMode('play');
       const views = [
         ['pond', -6, 10, 2.2, 0.22, 6], ['dogs', 3.5, 13, 0.6, 0.2, 5.5], ['trees', 4, -5, 3.6, 0.1, 7],
-        ['desk-close', 0.2, 2.6, 0.5, 0.18, 3.2], ['wide', 10, 16, 0.6, 0.38, 10],
+        ['desk-close', 0.7, 3.5, 0.45, 0.16, 3.4], ['wide', 10, 16, 0.6, 0.38, 10],
       ];
       for (const [name, x, z, yaw, pitch, dist] of views) {
         await world(([x, z, yaw, pitch, dist]) => { __world.player.position.set(x, 0, z); Object.assign(__world.rig, { yaw, pitch, dist }); }, [x, z, yaw, pitch, dist]);

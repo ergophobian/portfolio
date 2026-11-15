@@ -123,7 +123,7 @@ export function createDesk(scene, models) {
   group.position.set(WORLD.desk.x, heightAt(WORLD.desk.x, WORLD.desk.z), WORLD.desk.z);
   scene.add(group);
 
-  place(group, models.desk, { rot: Math.PI });
+  place(group, models.desk);
   const tv = place(group, models.tv, { y: DESK_TOP, z: -0.1, scale: TV_SCALE });
   place(group, models.chair, { x: 0.95, z: 1.3, rot: Math.PI + 0.55 });
   place(group, models.lamp, { x: 0.78, y: DESK_TOP, z: -0.2, rot: -2.2 });

@@ -48,7 +48,7 @@ export async function createSky(scene) {
   scene.backgroundRotation.set(0, rot, 0);
   scene.environmentRotation.set(0, rot, 0);
   scene.backgroundIntensity = 1.0;
-  scene.environmentIntensity = 0.3;
+  scene.environmentIntensity = 0.36;
 
   const sunDir = new THREE.Vector3(
     Math.cos(SUN_AZIMUTH) * Math.cos(elevation), Math.sin(elevation), Math.sin(SUN_AZIMUTH) * Math.cos(elevation),
@@ -123,7 +123,7 @@ export function createTerrain(scene, quality) {
   const macro = mx_noise_float(p.mul(0.045)).mul(0.5).add(0.5);          // large colour patches
   const grassUV = p.mul(0.3);
   const grassCol = texture(grassDiff, grassUV).rgb.mul(texture(grassDiff, p.mul(0.047)).rgb.mul(2.2).add(0.35))
-    .mul(mix(vec3(0.62, 0.98, 0.34), vec3(0.95, 1.05, 0.42), macro)).mul(1.25);
+    .mul(mix(vec3(0.42, 0.78, 0.22), vec3(0.72, 0.9, 0.3), macro)).mul(0.95);
   const dirtUV = p.mul(0.42);
   const dirtCol = texture(dirtDiff, dirtUV).rgb.mul(vec3(0.9, 0.8, 0.68));
 

@@ -36,7 +36,7 @@
     { id: 'terminal', title: 'Terminal', tone: '#39425f', w: 580, h: 380, flush: true },
     { id: 'calc', title: 'Calculator', tone: '#7f8bb5', w: 300, h: 440, flush: true },
     { id: 'coffee', title: 'Buy me a coffee', label: 'Coffee', tone: '#e8894a', w: 420, h: 520 },
-    { id: 'settings', title: 'Settings', tone: '#5d6b8a', w: 500, h: 480 },
+    { id: 'settings', title: 'Settings', tone: '#5d6b8a', w: 500, h: 560 },
     { id: 'classic', title: 'Classic XP (2026 desktop)', label: 'Classic XP', tone: '#2f6fe0', w: 1100, h: 720, frame: '../desktop.html', max: true },
   ];
   const GAMES = {

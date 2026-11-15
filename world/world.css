@@ -223,10 +223,6 @@ body[data-mode='title'] #hints, body[data-mode='title'] #btn-desktop { display: 
 }
 #os.open { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
 #os-frame { width: 100%; height: 100%; border: 0; display: block; background: #16233f; }
-.chip.leave {
-  position: absolute; z-index: 2; left: 50%; bottom: calc(14px + var(--safe-b)); transform: translateX(-50%);
-  background: rgba(10, 14, 26, 0.6); display: none;
-}
 
 /* ---------- Fallback ---------- */
 #fallback { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 24px; background: var(--ink); }

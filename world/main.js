@@ -222,7 +222,6 @@ async function boot() {
   $('btn-start').addEventListener('click', startPlaying);
   $('btn-skip').addEventListener('click', () => enterDesktop(true));
   $('btn-desktop').addEventListener('click', () => enterDesktop(true));
-  $('btn-leave').addEventListener('click', exitDesktop);
   ui.use.addEventListener('click', () => enterDesktop());
   ui.mute.addEventListener('click', () => {
     audio.start();
