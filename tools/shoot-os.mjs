@@ -1,0 +1,36 @@
+// Screenshots of the KyleOS desktop on its own (no 3D world). Usage: node shoot-os.mjs [--mobile]
+import { chromium, devices } from 'playwright';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+const OUT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '.preview');
+const mobile = process.argv.includes('--mobile');
+const tag = mobile ? 'os-mobile' : 'os';
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const context = await browser.newContext(mobile ? { ...devices['iPhone 14 Pro'] } : { viewport: { width: 1440, height: 900 } });
+const page = await context.newPage();
+const logs = [];
+page.on('console', (m) => { if (['error', 'warning'].includes(m.type())) logs.push(`[${m.type()}] ${m.text()}`); });
+page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
+page.on('response', (r) => { if (r.status() >= 400) logs.push(`[http ${r.status()}] ${r.url()}`); });
+await page.goto('http://127.0.0.1:4173/os/index.html');
+await page.waitForTimeout(1500);
+const shot = async (n) => { await page.screenshot({ path: `${OUT}/${tag}-${n}.png` }); console.log(`saved .preview/${tag}-${n}.png`); };
+await shot('1-desktop');
+const openApp = (id) => page.evaluate((i) => { KyleOS.open(i); }, id);
+const closeAll = () => page.evaluate(() => KyleOS.windows().forEach((k) => KyleOS.close(k)));
+await openApp('about'); await page.waitForTimeout(500); await shot('2-about');
+if (!mobile) { await openApp('projects'); await openApp('terminal'); await page.waitForTimeout(300);
+  await page.keyboard.type('neofetch'); await page.keyboard.press('Enter'); await page.keyboard.type('open calc'); await page.keyboard.press('Enter');
+  await page.waitForTimeout(500); await shot('3-windows'); }
+await closeAll(); await page.waitForTimeout(300);
+await openApp('projects'); await page.waitForTimeout(500); await shot('4-projects');
+await closeAll(); await openApp('socials'); await page.waitForTimeout(400); await shot('5-socials');
+await closeAll(); await openApp('arcade'); await page.waitForTimeout(300);
+await page.click('.cab[data-game="snake"]'); await page.waitForTimeout(1200); await shot('6-arcade-snake');
+await closeAll(); await page.evaluate(() => KyleOS.open('pinball', { title: '3D Pinball — Space Cadet', src: '../pinball/index.html', w: 660, h: 560 })); await page.waitForTimeout(4000); await shot('7-pinball');
+await closeAll(); await openApp('classic'); await page.waitForTimeout(4500); await shot('8-classic-xp');
+await closeAll(); await openApp('settings'); await page.waitForTimeout(300);
+await page.click('[data-setting="wallpaper"] [data-value="meadow"]'); await page.waitForTimeout(700); await shot('9-settings-meadow');
+console.log('windows api:', await page.evaluate(() => ({ apps: KyleOS.apps, games: KyleOS.games })));
+console.log(logs.length ? 'CONSOLE:\n' + [...new Set(logs)].slice(0, 20).join('\n') : 'console clean');
+await browser.close();
