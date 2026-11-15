@@ -10,3 +10,4 @@ export { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 export { ao } from 'three/addons/tsl/display/GTAONode.js';
 export { bloom } from 'three/addons/tsl/display/BloomNode.js';
 export { fxaa } from 'three/addons/tsl/display/FXAANode.js';
+export { denoise } from 'three/addons/tsl/display/DenoiseNode.js';

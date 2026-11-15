@@ -61,7 +61,7 @@ const rigged = [
   { name: 'hoodie', src: resolve(here, '..', 'hoodie-character.glb'), keep: ['Idle', 'Idle_Neutral', 'Walk', 'Run', 'Wave', 'Interact'] },
   { name: 'shiba', src: join(RAW, 'pizza', 'shiba.glb'), keep: ['Idle', 'Idle_2', 'Idle_2_HeadLow', 'Walk', 'Gallop', 'Eating'] },
   { name: 'husky', src: join(RAW, 'pizza', 'husky.glb'), keep: ['Idle', 'Idle_2', 'Idle_2_HeadLow', 'Walk', 'Gallop', 'Eating'] },
-  { name: 'cat', src: join(RAW, 'pizza', 'cat_a.glb'), keep: ['Idle', 'Idle_Eating', 'Walk', 'Run'] },
+  { name: 'cat', src: join(RAW, 'pizza', 'cat_jt.glb'), keep: ['IdleCat'] },
 ];
 for (const r of rigged) {
   if (filter && !r.name.includes(filter)) continue;
@@ -88,7 +88,6 @@ if (!filter || filter === 'tex') {
   for (const t of ['forrest_ground_01', 'dirt_floor']) {
     await webp(join(RAW, 'tex', `${t}_Diffuse.jpg`), join(T, `${t}_diff.webp`), 1024);
     await webp(join(RAW, 'tex', `${t}_nor_gl.jpg`), join(T, `${t}_nor.webp`), 1024, { quality: 88 });
-    await webp(join(RAW, 'tex', `${t}_arm.jpg`), join(T, `${t}_arm.webp`), 512);
   }
   // Tree bark (tileable) + leaf fronds from the Poly Haven jacaranda (alpha keyed from the black background).
   const J = join(RAW, 'jacaranda_tree', 'textures');
